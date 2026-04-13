@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Bridge ABA | Applied Behavior Analysis in MA & NM</title>
+  <meta name="description" content="Golden Bridge ABA provides in-home and in-school ABA therapy services in Massachusetts and New Mexico. Accepting most major insurance plans." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="intake.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- EmailJS — sends form submissions to michael@goldaba.com -->
+  <!-- SETUP: Sign up at https://emailjs.com, create a service + template, then replace the 3 placeholders in script.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="#home" class="logo">
+        <span class="logo-icon">&#9670;</span>
+        <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#locations">Locations</a>
+        <a href="#insurance">Insurance</a>
+        <a href="intake.html">Intake Form</a>
+        <a href="#contact" class="nav-cta">Get Started</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <div class="hero-badge">Serving Massachusetts &amp; New Mexico</div>
+      <h1>Building Brighter Futures Through <em>ABA Therapy</em></h1>
+      <p class="hero-sub">Golden Bridge ABA delivers compassionate, evidence-based Applied Behavior Analysis therapy in the home and school environments where children thrive most.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Schedule a Consultation</a>
+        <a href="#services" class="btn btn-outline">Learn More</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <span class="stat-label">States Served</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Service Settings</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Insurances Accepted</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-card card-1">
+            <div class="card-icon">&#127775;</div>
+            <p>Evidence-Based Practice</p>
+          </div>
+          <div class="about-card card-2">
+            <div class="card-icon">&#128149;</div>
+            <p>Family-Centered Care</p>
+          </div>
+          <div class="about-card card-3">
+            <div class="card-icon">&#127891;</div>
+            <p>School &amp; Home Support</p>
+          </div>
+          <div class="about-bridge">&#9679;</div>
+        </div>
+        <div class="about-text">
+          <div class="section-label">Who We Are</div>
+          <h2>Connecting Families to the Care They Deserve</h2>
+          <p>At Golden Bridge ABA, we believe every child has the potential to grow, communicate, and connect. Our team of Board Certified Behavior Analysts (BCBAs) and Registered Behavior Technicians (RBTs) design individualized programs grounded in the science of Applied Behavior Analysis.</p>
+          <p>We meet children where they are — at home and at school — partnering closely with families and educators to build meaningful, lasting skills.</p>
+          <ul class="about-list">
+            <li><span class="check">&#10003;</span> Individualized treatment plans</li>
+            <li><span class="check">&#10003;</span> BCBA-supervised programs</li>
+            <li><span class="check">&#10003;</span> Family training &amp; collaboration</li>
+            <li><span class="check">&#10003;</span> Regular progress monitoring</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">What We Offer</div>
+        <h2>Our Services</h2>
+        <p>We provide ABA therapy in the settings that matter most for your child's development.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">&#127968;</div>
+          <h3>In-Home ABA Therapy</h3>
+          <p>Therapy delivered in the comfort of your home, where your child feels most at ease. Our therapists work within your family's natural routines to build skills that generalize across everyday settings.</p>
+          <ul>
+            <li>Flexible scheduling</li>
+            <li>Parent training included</li>
+            <li>Naturalistic teaching strategies</li>
+            <li>Sibling &amp; family involvement</li>
+          </ul>
+        </div>
+        <div class="service-card service-card-featured">
+          <div class="service-badge">Most Popular</div>
+          <div class="service-icon">&#127979;</div>
+          <h3>In-School ABA Therapy</h3>
+          <p>Our therapists collaborate directly with teachers and school staff to support your child's academic and social success within their school environment.</p>
+          <ul>
+            <li>IEP goal alignment</li>
+            <li>Classroom behavior support</li>
+            <li>Staff &amp; teacher consultation</li>
+            <li>Social skills development</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#128101;</div>
+          <h3>BCBA Supervision &amp; Consultation</h3>
+          <p>All programs are designed and overseen by Board Certified Behavior Analysts who provide ongoing supervision, data review, and program updates to ensure your child's continued progress.</p>
+          <ul>
+            <li>Comprehensive assessments</li>
+            <li>Data-driven decision making</li>
+            <li>Monthly caregiver meetings</li>
+            <li>Transition planning support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="section locations" id="locations">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Where We Serve</div>
+        <h2>Our Locations</h2>
+        <p>Golden Bridge ABA proudly serves families across two states.</p>
+      </div>
+      <div class="locations-grid">
+        <div class="location-card">
+          <div class="location-header">
+            <div class="location-flag">&#127474;&#127462;</div>
+            <div>
+              <h3>Massachusetts</h3>
+              <span class="location-tag">In-Home &amp; In-School</span>
+            </div>
+          </div>
+          <p>Serving families throughout the Commonwealth of Massachusetts, bringing quality ABA therapy to children in their homes and schools across the state.</p>
+          <div class="location-detail">
+            <span>&#128205;</span> Massachusetts
+          </div>
+        </div>
+        <div class="location-card location-card-nm">
+          <div class="location-header">
+            <div class="location-flag">&#127475;&#127474;</div>
+            <div>
+              <h3>New Mexico</h3>
+              <span class="location-tag">In-Home &amp; In-School</span>
+            </div>
+          </div>
+          <p>Serving families throughout the Land of Enchantment, providing compassionate ABA therapy services in homes and schools across New Mexico.</p>
+          <div class="location-detail">
+            <span>&#128205;</span> New Mexico
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSURANCE -->
+  <section class="section insurance" id="insurance">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Coverage</div>
+        <h2>Accepted Insurance Plans</h2>
+        <p>We work with a wide range of insurance providers to make ABA therapy accessible to your family.</p>
+      </div>
+      <div class="insurance-grid">
+        <div class="insurance-col">
+          <div class="insurance-state-header">
+            <div class="state-dot"></div>
+            <h3>Massachusetts</h3>
+          </div>
+          <ul class="insurance-list">
+            <li><span class="ins-check">&#10003;</span> MassHealth (Medicaid)</li>
+            <li><span class="ins-check">&#10003;</span> Blue Cross Blue Shield of MA</li>
+            <li><span class="ins-check">&#10003;</span> Tufts Health Plan</li>
+            <li><span class="ins-check">&#10003;</span> Aetna</li>
+            <li><span class="ins-check">&#10003;</span> Cigna</li>
+          </ul>
+        </div>
+        <div class="insurance-divider"></div>
+        <div class="insurance-col">
+          <div class="insurance-state-header">
+            <div class="state-dot state-dot-nm"></div>
+            <h3>New Mexico</h3>
+          </div>
+          <ul class="insurance-list">
+            <li><span class="ins-check">&#10003;</span> Medicaid</li>
+            <li><span class="ins-check">&#10003;</span> Blue Cross Blue Shield</li>
+            <li><span class="ins-check">&#10003;</span> Molina Healthcare</li>
+            <li><span class="ins-check">&#10003;</span> United Healthcare</li>
+            <li><span class="ins-check">&#10003;</span> Presbyterian Health Plan</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insurance-note">
+        <p>Not sure if your insurance is covered? <a href="#contact">Contact us</a> — we'll verify your benefits at no cost to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section why">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Why Golden Bridge</div>
+        <h2>Our Commitment to Your Family</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">&#128200;</div>
+          <h4>Data-Driven</h4>
+          <p>Every session is documented and analyzed. We use real data to track progress and continuously refine your child's program.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">&#128140;</div>
+          <h4>Individualized Plans</h4>
+          <p>No two children are alike. We conduct thorough assessments and craft programs tailored specifically to each child's unique needs and goals.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">&#128106;</div>
+          <h4>Family Partnership</h4>
+          <p>We train and include parents and caregivers every step of the way, because the most impactful therapy extends beyond our sessions.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">&#127891;</div>
+          <h4>Qualified Team</h4>
+          <p>All therapy is supervised by BCBAs and delivered by trained RBTs who are passionate about making a difference in children's lives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / BOOKING -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- LEFT: Info panel -->
+        <div class="contact-info">
+          <div class="section-label">Book a Consultation</div>
+          <h2>Let's Start the Conversation</h2>
+          <p>Getting started is simple. Choose a date and time that works for you and we'll reach out to confirm your free consultation.</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <span class="contact-icon">&#128222;</span>
+              <div>
+                <strong>Call or Text</strong>
+                <p>Available Monday–Friday, 9am–5pm</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">&#128140;</span>
+              <div>
+                <strong>Email Us</strong>
+                <p>michael@goldaba.com</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">&#128205;</span>
+              <div>
+                <strong>Service Areas</strong>
+                <p>Massachusetts &amp; New Mexico</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step progress indicator -->
+          <div class="step-progress">
+            <div class="step-item active" id="prog-1">
+              <div class="step-dot">1</div>
+              <span>Your Info</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="prog-2">
+              <div class="step-dot">2</div>
+              <span>Pick a Date</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="prog-3">
+              <div class="step-dot">3</div>
+              <span>Pick a Time</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="prog-4">
+              <div class="step-dot">4</div>
+              <span>Confirm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Multi-step form -->
+        <div class="contact-form-wrap">
+
+          <!-- STEP 1: Personal Info -->
+          <div class="form-step active" id="step-1">
+            <div class="step-header">
+              <span class="step-tag">Step 1 of 4</span>
+              <h3>Tell Us About Yourself</h3>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Smith" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" />
+            </div>
+            <div class="form-group">
+              <label for="state">State *</label>
+              <select id="state" name="state" required>
+                <option value="" disabled selected>Select your state</option>
+                <option value="MA">Massachusetts</option>
+                <option value="NM">New Mexico</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">How Can We Help?</label>
+              <textarea id="message" name="message" rows="3" placeholder="Tell us a little about your child and what you're looking for..."></textarea>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" onclick="goToStep(2)">Next: Choose a Date &rarr;</button>
+          </div>
+
+          <!-- STEP 2: Calendar -->
+          <div class="form-step" id="step-2">
+            <div class="step-header">
+              <span class="step-tag">Step 2 of 4</span>
+              <h3>Select a Date</h3>
+              <p class="step-sub">Consultations available Monday – Friday</p>
+            </div>
+            <div class="calendar-wrap">
+              <div class="cal-nav">
+                <button type="button" class="cal-nav-btn" id="prevMonth">&#8592;</button>
+                <span class="cal-month-label" id="calMonthLabel"></span>
+                <button type="button" class="cal-nav-btn" id="nextMonth">&#8594;</button>
+              </div>
+              <div class="cal-dow">
+                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+            </div>
+            <div class="step-footer">
+              <button type="button" class="btn btn-ghost" onclick="goToStep(1)">&larr; Back</button>
+              <button type="button" class="btn btn-primary" id="toStep3Btn" onclick="goToStep(3)" disabled>Next: Choose a Time &rarr;</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Time Slots -->
+          <div class="form-step" id="step-3">
+            <div class="step-header">
+              <span class="step-tag">Step 3 of 4</span>
+              <h3>Select a Time</h3>
+              <p class="step-sub" id="selectedDateLabel">—</p>
+            </div>
+            <div class="time-slots" id="timeSlots"></div>
+            <div class="step-footer">
+              <button type="button" class="btn btn-ghost" onclick="goToStep(2)">&larr; Back</button>
+              <button type="button" class="btn btn-primary" id="toStep4Btn" onclick="goToStep(4)" disabled>Next: Confirm &rarr;</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Review & Confirm -->
+          <div class="form-step" id="step-4">
+            <div class="step-header">
+              <span class="step-tag">Step 4 of 4</span>
+              <h3>Review &amp; Confirm</h3>
+              <p class="step-sub">Please review your details before submitting.</p>
+            </div>
+            <div class="review-card">
+              <div class="review-row"><span>Name</span><strong id="rev-name">—</strong></div>
+              <div class="review-row"><span>Email</span><strong id="rev-email">—</strong></div>
+              <div class="review-row"><span>Phone</span><strong id="rev-phone">—</strong></div>
+              <div class="review-row"><span>State</span><strong id="rev-state">—</strong></div>
+              <div class="review-row"><span>Date</span><strong id="rev-date">—</strong></div>
+              <div class="review-row"><span>Time</span><strong id="rev-time">—</strong></div>
+              <div class="review-row review-row-msg"><span>Message</span><strong id="rev-message">—</strong></div>
+            </div>
+            <div class="step-footer">
+              <button type="button" class="btn btn-ghost" onclick="goToStep(3)">&larr; Back</button>
+              <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitBooking()">&#10003; Confirm Booking</button>
+            </div>
+          </div>
+
+          <!-- SUCCESS STATE -->
+          <div class="form-step" id="step-success" style="display:none;">
+            <div class="form-success">
+              <div class="success-icon">&#10003;</div>
+              <h3>You're Booked!</h3>
+              <p>A confirmation has been sent to <strong id="success-email">your email</strong>. Our team will reach out to confirm your appointment.</p>
+              <div class="success-details">
+                <p id="success-datetime"></p>
+              </div>
+              <button type="button" class="btn btn-outline-dark" onclick="resetForm()">Schedule Another</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTAKE FORM CTA -->
+  <section class="intake-cta-section">
+    <div class="intake-cta-inner">
+      <h3>Already Scheduled? Complete Your Intake Form</h3>
+      <p>
+        Save time at your first appointment by completing your client intake form online.
+        It takes about 10&ndash;15 minutes and helps our clinical team prepare a personalized
+        care plan for your child before your first session.
+      </p>
+      <a href="intake.html" class="btn-intake-cta">
+        &#128274; Complete Intake Form &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="logo logo-light">
+          <span class="logo-icon">&#9670;</span>
+          <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
+        </a>
+        <p>Evidence-based ABA therapy delivered in the home and school settings across Massachusetts and New Mexico.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
+        <a href="#locations">Locations</a>
+        <a href="#insurance">Insurance</a>
+        <a href="intake.html">Intake Form</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-locations">
+        <h4>Serving</h4>
+        <p>Massachusetts</p>
+        <p>New Mexico</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Golden Bridge ABA. All rights reserved.</p>
+        <p>ABA therapy services provided by qualified BCBAs and RBTs.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

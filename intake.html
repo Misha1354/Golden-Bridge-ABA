@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Intake Form | Golden Bridge ABA</title>
+  <meta name="description" content="Complete your client intake form for Golden Bridge ABA therapy services in Massachusetts and New Mexico. HIPAA-compliant and secure." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="intake.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- EmailJS — sends form submissions to michael@goldaba.com -->
+  <!-- NOTE: For full HIPAA compliance, this form must be served over HTTPS -->
+  <!-- and EmailJS must have a signed BAA in place. -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body class="intake-page">
+
+  <!-- ══════════════════════════════════════════════════════
+       HIPAA SECURITY BANNER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="hipaa-banner" role="banner" aria-label="HIPAA Security Notice">
+    <span class="lock-icon" aria-hidden="true">&#128274;</span>
+    <span>
+      This form is protected. Submitted over a secure connection. Your health information is kept
+      confidential in accordance with HIPAA.
+      &nbsp;&mdash;&nbsp;
+      <a href="#npp" id="bannerNppLink">View Our Privacy Practices</a>
+    </span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════════════════════════ -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">&#9670;</span>
+        <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#locations">Locations</a>
+        <a href="index.html#insurance">Insurance</a>
+        <a href="intake.html" class="nav-active">Intake Form</a>
+        <a href="index.html#contact" class="nav-cta">Get Started</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="intake-hero">
+    <div class="container">
+      <h1>Client Intake Form</h1>
+      <p class="hero-subtitle">
+        Begin your journey with Golden Bridge ABA. This form collects the clinical,
+        insurance, and authorization information we need to get started with your
+        child&rsquo;s care.
+      </p>
+      <div class="phi-notice">
+        <span class="phi-icon" aria-hidden="true">&#128274;</span>
+        <span>
+          Please complete all sections as accurately as possible. Information collected is
+          <strong>protected health information (PHI)</strong> subject to HIPAA privacy regulations.
+          All fields marked <strong>*</strong> are required.
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN INTAKE FORM
+  ══════════════════════════════════════════════════════════ -->
+  <main>
+    <div class="intake-container">
+
+      <!-- ── Progress Bar ────────────────────────────────── -->
+      <div class="intake-progress" role="navigation" aria-label="Form progress">
+        <div class="intake-progress-inner">
+          <div class="progress-step active" id="prog-step-1" aria-current="step">
+            <div class="progress-circle">1</div>
+            <span class="progress-label">Patient Info</span>
+          </div>
+          <div class="progress-step" id="prog-step-2">
+            <div class="progress-circle">2</div>
+            <span class="progress-label">Parent &amp; Guardian</span>
+          </div>
+          <div class="progress-step" id="prog-step-3">
+            <div class="progress-circle">3</div>
+            <span class="progress-label">Insurance</span>
+          </div>
+          <div class="progress-step" id="prog-step-4">
+            <div class="progress-circle">4</div>
+            <span class="progress-label">Medical History</span>
+          </div>
+          <div class="progress-step" id="prog-step-5">
+            <div class="progress-circle">5</div>
+            <span class="progress-label">School &amp; Contacts</span>
+          </div>
+          <div class="progress-step" id="prog-step-6">
+            <div class="progress-circle">6</div>
+            <span class="progress-label">Consents &amp; Authorization</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Success State (hidden until submit) ─────────── -->
+      <div class="intake-success" id="intake-success" role="alert" aria-live="polite">
+        <div class="success-check-circle" aria-hidden="true">&#10003;</div>
+        <h2>Intake Form Received!</h2>
+        <p class="success-sub">
+          Thank you, <strong id="success-guardian-name">there</strong>. We have successfully
+          received the intake form for <strong id="success-patient-name">your child</strong>.
+        </p>
+        <div class="success-detail-box">
+          <p>&#128337; <strong>What happens next?</strong></p>
+          <p>Our care team will review your intake form and contact you within
+             <strong>2 business days</strong> to discuss next steps, verify insurance coverage,
+             and schedule your initial consultation.</p>
+          <p>&#128140; Questions in the meantime? Email us at
+             <strong>michael@goldaba.com</strong></p>
+          <p>&#128274; Your information is stored securely and handled in accordance with
+             HIPAA privacy regulations.</p>
+        </div>
+        <a href="index.html" class="btn btn-primary">Return to Home</a>
+      </div>
+
+      <!-- ── Form Wrapper ────────────────────────────────── -->
+      <div id="intake-form-wrap">
+
+        <!-- ════════════════════════════════════════════════
+             STEP 1 — CHILD / PATIENT INFORMATION
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step active" id="intake-step-1">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 1 of 6</span>
+            <h2>Child / Patient Information</h2>
+            <p>Please provide the legal name and basic information for the child or patient
+               who will be receiving ABA therapy services.</p>
+          </div>
+
+          <!-- Personal Details -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128101; Personal Details</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="patient_first_name">Legal First Name <span class="req">*</span></label>
+                <input type="text" id="patient_first_name" name="patient_first_name"
+                       placeholder="e.g. Jordan" required autocomplete="given-name" />
+                <span class="field-error">Legal first name is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="patient_last_name">Legal Last Name <span class="req">*</span></label>
+                <input type="text" id="patient_last_name" name="patient_last_name"
+                       placeholder="e.g. Smith" required autocomplete="family-name" />
+                <span class="field-error">Legal last name is required.</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="patient_nickname">Preferred Nickname</label>
+                <input type="text" id="patient_nickname" name="patient_nickname"
+                       placeholder="What does your child like to be called?" />
+              </div>
+              <div class="form-group">
+                <label for="patient_dob">Date of Birth <span class="req">*</span></label>
+                <input type="date" id="patient_dob" name="patient_dob" required />
+                <span class="field-error">Date of birth is required.</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="patient_sex">Sex Assigned at Birth <span class="req">*</span></label>
+                <select id="patient_sex" name="patient_sex" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Intersex">Intersex</option>
+                  <option value="Unknown / Prefer not to say">Unknown / Prefer not to say</option>
+                </select>
+                <span class="field-error">Please select sex assigned at birth.</span>
+              </div>
+              <div class="form-group">
+                <label for="patient_gender">Gender Identity</label>
+                <input type="text" id="patient_gender" name="patient_gender"
+                       placeholder="e.g. Boy, Girl, Non-binary, etc." />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="patient_language">Primary Language <span class="req">*</span></label>
+                <input type="text" id="patient_language" name="patient_language"
+                       placeholder="e.g. English, Spanish, Portuguese" required />
+                <span class="field-error">Primary language is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="school_enrolled">Currently Enrolled in School? <span class="req">*</span></label>
+                <select id="school_enrolled" name="school_enrolled" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <span class="field-error">Please indicate school enrollment.</span>
+              </div>
+            </div>
+            <div class="collapsible-section" id="school_name_fields">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="school_name_step1">School Name</label>
+                  <input type="text" id="school_name_step1" name="school_name_step1"
+                         placeholder="e.g. Lincoln Elementary School" />
+                </div>
+                <div class="form-group">
+                  <label for="grade_step1">Grade / Program</label>
+                  <input type="text" id="grade_step1" name="grade_step1"
+                         placeholder="e.g. 2nd Grade, Pre-K, SPED" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Diagnosis -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128203; Diagnosis &amp; Clinical Information</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="primary_diagnosis">Primary Diagnosis <span class="req">*</span></label>
+                <select id="primary_diagnosis" name="primary_diagnosis" required>
+                  <option value="" disabled selected>Select primary diagnosis</option>
+                  <option value="Autism Spectrum Disorder (ASD)">Autism Spectrum Disorder (ASD)</option>
+                  <option value="Attention Deficit Hyperactivity Disorder (ADHD)">Attention Deficit Hyperactivity Disorder (ADHD)</option>
+                  <option value="Developmental Delay">Developmental Delay</option>
+                  <option value="Intellectual Disability">Intellectual Disability</option>
+                  <option value="Other">Other</option>
+                </select>
+                <span class="field-error">Primary diagnosis is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="other_diagnoses">Other / Additional Diagnoses</label>
+                <input type="text" id="other_diagnoses" name="other_diagnoses"
+                       placeholder="Any other diagnoses (comma-separated)" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="diagnosing_provider">Diagnosing Provider Name</label>
+                <input type="text" id="diagnosing_provider" name="diagnosing_provider"
+                       placeholder="e.g. Dr. Maria Gonzalez" />
+              </div>
+              <div class="form-group">
+                <label for="diagnosis_date">Date of Diagnosis</label>
+                <input type="date" id="diagnosis_date" name="diagnosis_date" />
+              </div>
+            </div>
+          </div>
+
+          <div class="intake-nav-btns">
+            <span></span>
+            <button type="button" class="btn-next" onclick="nextStep(1)">
+              Parent &amp; Guardian Info &rarr;
+            </button>
+          </div>
+        </div><!-- /step 1 -->
+
+
+        <!-- ════════════════════════════════════════════════
+             STEP 2 — PARENT / GUARDIAN INFORMATION
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step" id="intake-step-2">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 2 of 6</span>
+            <h2>Parent / Guardian Information</h2>
+            <p>Please provide contact information for the primary guardian or parent
+               who will be the primary point of contact for care coordination.</p>
+          </div>
+
+          <!-- Primary Guardian -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128100; Primary Guardian</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="g1_first">First Name <span class="req">*</span></label>
+                <input type="text" id="g1_first" name="g1_first" required
+                       placeholder="First name" autocomplete="given-name" />
+                <span class="field-error">First name is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="g1_last">Last Name <span class="req">*</span></label>
+                <input type="text" id="g1_last" name="g1_last" required
+                       placeholder="Last name" autocomplete="family-name" />
+                <span class="field-error">Last name is required.</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="g1_relationship">Relationship to Child <span class="req">*</span></label>
+                <select id="g1_relationship" name="g1_relationship" required>
+                  <option value="" disabled selected>Select relationship</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Father">Father</option>
+                  <option value="Stepmother">Stepmother</option>
+                  <option value="Stepfather">Stepfather</option>
+                  <option value="Legal Guardian">Legal Guardian</option>
+                  <option value="Grandparent">Grandparent</option>
+                  <option value="Foster Parent">Foster Parent</option>
+                  <option value="Other">Other</option>
+                </select>
+                <span class="field-error">Relationship is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="g1_dob">Guardian Date of Birth <span class="req">*</span></label>
+                <input type="date" id="g1_dob" name="g1_dob" required />
+                <span class="field-error">Date of birth is required.</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="g1_cell">Cell Phone <span class="req">*</span></label>
+                <input type="tel" id="g1_cell" name="g1_cell" required
+                       placeholder="(555) 000-0000" autocomplete="tel" />
+                <span class="field-error">Cell phone is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="g1_home_phone">Home Phone</label>
+                <input type="tel" id="g1_home_phone" name="g1_home_phone"
+                       placeholder="(555) 000-0000" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="g1_work_phone">Work Phone</label>
+                <input type="tel" id="g1_work_phone" name="g1_work_phone"
+                       placeholder="(555) 000-0000" />
+              </div>
+              <div class="form-group">
+                <label for="g1_contact_time">Best Time to Contact</label>
+                <select id="g1_contact_time" name="g1_contact_time">
+                  <option value="" disabled selected>Select time</option>
+                  <option value="Morning (8am–12pm)">Morning (8am–12pm)</option>
+                  <option value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</option>
+                  <option value="Evening (5pm–8pm)">Evening (5pm–8pm)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="g1_email">Email Address <span class="req">*</span></label>
+              <input type="email" id="g1_email" name="g1_email" required
+                     placeholder="guardian@email.com" autocomplete="email" />
+              <span class="field-error">A valid email address is required.</span>
+            </div>
+            <div class="form-divider"></div>
+            <div class="form-group">
+              <label for="g1_address1">Address Line 1 <span class="req">*</span></label>
+              <input type="text" id="g1_address1" name="g1_address1" required
+                     placeholder="123 Main Street" autocomplete="address-line1" />
+              <span class="field-error">Address is required.</span>
+            </div>
+            <div class="form-group">
+              <label for="g1_address2">Address Line 2</label>
+              <input type="text" id="g1_address2" name="g1_address2"
+                     placeholder="Apt, Suite, Unit, etc." autocomplete="address-line2" />
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label for="g1_city">City <span class="req">*</span></label>
+                <input type="text" id="g1_city" name="g1_city" required
+                       placeholder="City" autocomplete="address-level2" />
+                <span class="field-error">City is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="g1_state">State <span class="req">*</span></label>
+                <select id="g1_state" name="g1_state" required autocomplete="address-level1">
+                  <option value="" disabled selected>Select</option>
+                  <option value="MA">Massachusetts (MA)</option>
+                  <option value="NM">New Mexico (NM)</option>
+                  <option value="Other">Other State</option>
+                </select>
+                <span class="field-error">State is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="g1_zip">ZIP Code <span class="req">*</span></label>
+                <input type="text" id="g1_zip" name="g1_zip" required
+                       placeholder="00000" maxlength="10" autocomplete="postal-code" />
+                <span class="field-error">ZIP code is required.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="g1_employer">Employer / Occupation</label>
+              <input type="text" id="g1_employer" name="g1_employer"
+                     placeholder="e.g. Registered Nurse at Boston Medical Center" />
+            </div>
+          </div>
+
+          <!-- Secondary Guardian Toggle -->
+          <div class="toggle-check-wrap">
+            <input type="checkbox" id="toggle_secondary_guardian" name="toggle_secondary_guardian" />
+            <label for="toggle_secondary_guardian">&#43; Add Secondary Guardian / Parent</label>
+          </div>
+
+          <div class="collapsible-section" id="secondary_guardian_section">
+            <div class="intake-section-card">
+              <div class="card-title">&#128100; Secondary Guardian</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g2_first">First Name</label>
+                  <input type="text" id="g2_first" name="g2_first" placeholder="First name" />
+                </div>
+                <div class="form-group">
+                  <label for="g2_last">Last Name</label>
+                  <input type="text" id="g2_last" name="g2_last" placeholder="Last name" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g2_relationship">Relationship to Child</label>
+                  <select id="g2_relationship" name="g2_relationship">
+                    <option value="" disabled selected>Select relationship</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Father">Father</option>
+                    <option value="Stepmother">Stepmother</option>
+                    <option value="Stepfather">Stepfather</option>
+                    <option value="Legal Guardian">Legal Guardian</option>
+                    <option value="Grandparent">Grandparent</option>
+                    <option value="Foster Parent">Foster Parent</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="g2_dob">Date of Birth</label>
+                  <input type="date" id="g2_dob" name="g2_dob" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g2_cell">Cell Phone</label>
+                  <input type="tel" id="g2_cell" name="g2_cell" placeholder="(555) 000-0000" />
+                </div>
+                <div class="form-group">
+                  <label for="g2_email">Email Address</label>
+                  <input type="email" id="g2_email" name="g2_email"
+                         placeholder="guardian2@email.com" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g2_address1">Address Line 1</label>
+                  <input type="text" id="g2_address1" name="g2_address1"
+                         placeholder="If different from above" />
+                </div>
+                <div class="form-group">
+                  <label for="g2_city">City</label>
+                  <input type="text" id="g2_city" name="g2_city" placeholder="City" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g2_state">State</label>
+                  <select id="g2_state" name="g2_state">
+                    <option value="" disabled selected>Select</option>
+                    <option value="MA">Massachusetts (MA)</option>
+                    <option value="NM">New Mexico (NM)</option>
+                    <option value="Other">Other State</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="g2_zip">ZIP Code</label>
+                  <input type="text" id="g2_zip" name="g2_zip"
+                         placeholder="00000" maxlength="10" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="g2_employer">Employer / Occupation</label>
+                <input type="text" id="g2_employer" name="g2_employer"
+                       placeholder="e.g. Teacher, Engineer, etc." />
+              </div>
+            </div>
+          </div>
+
+          <!-- Custody -->
+          <div class="intake-section-card">
+            <div class="card-title">&#9878; Custody &amp; Care Decisions</div>
+            <div class="form-group">
+              <label>Does a custody agreement affect care decisions for this child?</label>
+              <div class="radio-group" style="margin-top:8px;">
+                <label class="radio-item">
+                  <input type="radio" id="custody_yes" name="custody_agreement" value="yes" />
+                  Yes
+                </label>
+                <label class="radio-item">
+                  <input type="radio" id="custody_no"  name="custody_agreement" value="no" checked />
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="collapsible-section" id="custody_details_section">
+              <div class="form-group">
+                <label for="custody_details_text">Please describe the custody arrangement and how it affects care decisions:</label>
+                <textarea id="custody_details_text" name="custody_details_text" rows="3"
+                          placeholder="e.g. Both parents must consent to treatment changes. Child lives primarily with mother Mon–Fri."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="intake-nav-btns">
+            <button type="button" class="btn-prev" onclick="prevStep(2)">&larr; Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(2)">
+              Insurance Information &rarr;
+            </button>
+          </div>
+        </div><!-- /step 2 -->
+
+
+        <!-- ════════════════════════════════════════════════
+             STEP 3 — INSURANCE INFORMATION
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step" id="intake-step-3">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 3 of 6</span>
+            <h2>Insurance Information</h2>
+            <p>We will verify your benefits at no cost to you prior to beginning services.
+               Please have your insurance card available.</p>
+          </div>
+
+          <div class="info-note">
+            <span class="info-icon">&#8505;</span>
+            <span>Your insurance card contains most of the information needed below.
+                  If you have any questions about these fields, please contact us and
+                  we&rsquo;ll help you locate the information.</span>
+          </div>
+
+          <!-- Primary Insurance -->
+          <div class="intake-section-card" id="primary_insurance_section">
+            <div class="card-title">&#127959; Primary Insurance</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ins_company">Insurance Company <span class="req">*</span></label>
+                <input type="text" id="ins_company" name="ins_company" required
+                       placeholder="e.g. Blue Cross Blue Shield, MassHealth, Aetna" />
+                <span class="field-error">Insurance company is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="ins_plan_type">Plan Type</label>
+                <select id="ins_plan_type" name="ins_plan_type">
+                  <option value="" disabled selected>Select plan type</option>
+                  <option value="HMO">HMO</option>
+                  <option value="PPO">PPO</option>
+                  <option value="Medicaid">Medicaid</option>
+                  <option value="Medicare">Medicare</option>
+                  <option value="CHIP">CHIP / Children&rsquo;s Health Plan</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ins_member_id">Member ID / Policy Number <span class="req">*</span></label>
+                <input type="text" id="ins_member_id" name="ins_member_id" required
+                       placeholder="Found on your insurance card" />
+                <span class="field-error">Member ID is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="ins_group_number">Group Number</label>
+                <input type="text" id="ins_group_number" name="ins_group_number"
+                       placeholder="Group # (if applicable)" />
+              </div>
+            </div>
+            <div class="form-divider"></div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;font-weight:600;">
+              Subscriber Information (the person the insurance is under):
+            </p>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ins_subscriber_name">Subscriber Full Name <span class="req">*</span></label>
+                <input type="text" id="ins_subscriber_name" name="ins_subscriber_name" required
+                       placeholder="Full legal name of the insured person" />
+                <span class="field-error">Subscriber name is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="ins_subscriber_dob">Subscriber Date of Birth <span class="req">*</span></label>
+                <input type="date" id="ins_subscriber_dob" name="ins_subscriber_dob" required />
+                <span class="field-error">Subscriber date of birth is required.</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ins_subscriber_rel">Subscriber Relationship to Patient <span class="req">*</span></label>
+                <select id="ins_subscriber_rel" name="ins_subscriber_rel" required>
+                  <option value="" disabled selected>Select relationship</option>
+                  <option value="Self">Self (patient is the subscriber)</option>
+                  <option value="Parent">Parent</option>
+                  <option value="Spouse">Spouse</option>
+                  <option value="Legal Guardian">Legal Guardian</option>
+                  <option value="Other">Other</option>
+                </select>
+                <span class="field-error">Subscriber relationship is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="ins_phone">Insurance Company Phone</label>
+                <input type="tel" id="ins_phone" name="ins_phone"
+                       placeholder="(found on back of insurance card)" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ins_prior_auth">Prior Authorization Number (if already obtained)</label>
+              <input type="text" id="ins_prior_auth" name="ins_prior_auth"
+                     placeholder="Leave blank if not yet obtained — we will request one" />
+              <span class="field-hint">If your insurance requires prior authorization for ABA services and you have already obtained one, enter the number here.</span>
+            </div>
+          </div>
+
+          <!-- Secondary Insurance Toggle -->
+          <div class="toggle-check-wrap">
+            <input type="checkbox" id="toggle_secondary_insurance" name="toggle_secondary_insurance" />
+            <label for="toggle_secondary_insurance">&#43; I have secondary / supplemental insurance</label>
+          </div>
+
+          <div class="collapsible-section" id="secondary_insurance_section">
+            <div class="intake-section-card">
+              <div class="card-title">&#127959; Secondary Insurance</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="ins2_company">Secondary Insurance Company</label>
+                  <input type="text" id="ins2_company" name="ins2_company"
+                         placeholder="Insurance company name" />
+                </div>
+                <div class="form-group">
+                  <label for="ins2_plan_type">Plan Type</label>
+                  <select id="ins2_plan_type" name="ins2_plan_type">
+                    <option value="" disabled selected>Select plan type</option>
+                    <option value="HMO">HMO</option>
+                    <option value="PPO">PPO</option>
+                    <option value="Medicaid">Medicaid</option>
+                    <option value="Medicare">Medicare</option>
+                    <option value="CHIP">CHIP</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="ins2_member_id">Member ID / Policy Number</label>
+                  <input type="text" id="ins2_member_id" name="ins2_member_id"
+                         placeholder="Member ID" />
+                </div>
+                <div class="form-group">
+                  <label for="ins2_group_number">Group Number</label>
+                  <input type="text" id="ins2_group_number" name="ins2_group_number"
+                         placeholder="Group # (if applicable)" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="ins2_subscriber_name">Subscriber Full Name</label>
+                  <input type="text" id="ins2_subscriber_name" name="ins2_subscriber_name"
+                         placeholder="Full legal name" />
+                </div>
+                <div class="form-group">
+                  <label for="ins2_subscriber_dob">Subscriber Date of Birth</label>
+                  <input type="date" id="ins2_subscriber_dob" name="ins2_subscriber_dob" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Self-Pay -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128179; Payment Information</div>
+            <div class="toggle-check-wrap" style="margin-bottom:0;">
+              <input type="checkbox" id="self_pay" name="self_pay" />
+              <label for="self_pay">We will be self-pay (no insurance)</label>
+            </div>
+            <div class="self-pay-note" id="self_pay_note">
+              &#128179; We offer flexible payment plans for self-pay families. A member of our
+              team will discuss payment options during your consultation. Please contact us at
+              michael@goldaba.com with any questions about fees and payment arrangements.
+            </div>
+          </div>
+
+          <div class="intake-nav-btns">
+            <button type="button" class="btn-prev" onclick="prevStep(3)">&larr; Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(3)">
+              Medical History &rarr;
+            </button>
+          </div>
+        </div><!-- /step 3 -->
+
+
+        <!-- ════════════════════════════════════════════════
+             STEP 4 — MEDICAL HISTORY & CLINICAL INFORMATION
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step" id="intake-step-4">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 4 of 6</span>
+            <h2>Medical History &amp; Clinical Information</h2>
+            <p>This information helps our clinical team understand your child&rsquo;s full picture
+               and design the most effective treatment plan.</p>
+          </div>
+
+          <!-- Medications & Allergies -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128138; Medications &amp; Allergies</div>
+            <div class="form-group">
+              <label for="medications">Current Medications</label>
+              <textarea id="medications" name="medications" rows="4"
+                        placeholder="List medication name, dosage, and prescribing provider (e.g., Ritalin 10mg – Dr. Chen). Write 'None' if not applicable."></textarea>
+              <span class="field-hint">Include all prescription medications, over-the-counter medications, vitamins, and supplements.</span>
+            </div>
+            <div class="form-group">
+              <label for="allergies">Known Allergies</label>
+              <textarea id="allergies" name="allergies" rows="3"
+                        placeholder="List all known allergies (food, medication, environmental, latex, etc.). Write 'None' if not applicable."></textarea>
+            </div>
+          </div>
+
+          <!-- Co-occurring Conditions -->
+          <div class="intake-section-card">
+            <div class="card-title">&#127968; Co-Occurring Conditions</div>
+            <p class="field-hint" style="margin-bottom:12px;">
+              Check all conditions that have been diagnosed or are suspected for your child:
+            </p>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Anxiety" />
+                Anxiety
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Depression" />
+                Depression
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="ADHD" />
+                ADHD
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Epilepsy / Seizures" />
+                Epilepsy / Seizures
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Sensory Processing Disorder" />
+                Sensory Processing Disorder
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Sleep Difficulties" />
+                Sleep Difficulties
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Feeding / Eating Issues" />
+                Feeding / Eating Issues
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="co_occurring" value="Other" />
+                Other (describe in notes)
+              </label>
+            </div>
+          </div>
+
+          <!-- Previous ABA -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128200; Previous ABA Therapy</div>
+            <div class="form-group">
+              <label>Has your child previously received ABA therapy?</label>
+              <div class="radio-group" style="margin-top:8px;">
+                <label class="radio-item">
+                  <input type="radio" id="prev_aba_yes" name="prev_aba" value="yes" />
+                  Yes
+                </label>
+                <label class="radio-item">
+                  <input type="radio" id="prev_aba_no" name="prev_aba" value="no" checked />
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="collapsible-section" id="prev_aba_details">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prev_aba_provider">Previous ABA Provider Name</label>
+                  <input type="text" id="prev_aba_provider" name="prev_aba_provider"
+                         placeholder="Agency or clinic name" />
+                </div>
+                <div class="form-group">
+                  <label for="prev_aba_dates">Approximate Dates of Service</label>
+                  <input type="text" id="prev_aba_dates" name="prev_aba_dates"
+                         placeholder="e.g. January 2022 – June 2023" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="prev_aba_reason">Reason for Ending Services</label>
+                <textarea id="prev_aba_reason" name="prev_aba_reason" rows="2"
+                          placeholder="e.g. Moved to a new state, insurance change, provider closure, etc."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Other Current Therapies -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128140; Other Current Therapies &amp; Services</div>
+            <p class="field-hint" style="margin-bottom:12px;">
+              Select all therapies or services your child is currently receiving:
+            </p>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Occupational Therapy (OT)" />
+                Occupational Therapy (OT)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Speech-Language Therapy (SLP)" />
+                Speech-Language Therapy (SLP)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Physical Therapy (PT)" />
+                Physical Therapy (PT)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Counseling / Behavioral Health" />
+                Counseling / Behavioral Health
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Social Skills Group" />
+                Social Skills Group
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="other_therapies" value="Other" />
+                Other
+              </label>
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label for="other_therapies_text">If &ldquo;Other,&rdquo; please describe:</label>
+              <input type="text" id="other_therapies_text" name="other_therapies_text"
+                     placeholder="Describe other services" />
+            </div>
+          </div>
+
+          <!-- Providers -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128105;&#8205;&#9877; Providers &amp; Referral</div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;font-weight:600;">
+              Primary Care Physician:
+            </p>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label for="pcp_name">PCP Name</label>
+                <input type="text" id="pcp_name" name="pcp_name"
+                       placeholder="Dr. First Last" />
+              </div>
+              <div class="form-group">
+                <label for="pcp_practice">Practice / Clinic Name</label>
+                <input type="text" id="pcp_practice" name="pcp_practice"
+                       placeholder="Practice name" />
+              </div>
+              <div class="form-group">
+                <label for="pcp_phone">PCP Phone</label>
+                <input type="tel" id="pcp_phone" name="pcp_phone"
+                       placeholder="(555) 000-0000" />
+              </div>
+            </div>
+            <div class="form-divider"></div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;font-weight:600;">
+              Referring Provider (if referred by a physician or specialist):
+            </p>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label for="referring_name">Referring Provider Name</label>
+                <input type="text" id="referring_name" name="referring_name"
+                       placeholder="Dr. First Last" />
+              </div>
+              <div class="form-group">
+                <label for="referring_practice">Practice / Clinic Name</label>
+                <input type="text" id="referring_practice" name="referring_practice"
+                       placeholder="Practice name" />
+              </div>
+              <div class="form-group">
+                <label for="referring_phone">Referring Provider Phone</label>
+                <input type="tel" id="referring_phone" name="referring_phone"
+                       placeholder="(555) 000-0000" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Goals -->
+          <div class="intake-section-card">
+            <div class="card-title">&#127919; Primary Concerns &amp; Therapy Goals</div>
+            <div class="form-group">
+              <label for="therapy_goals">
+                Primary Concerns / Therapy Goals <span class="req">*</span>
+              </label>
+              <textarea id="therapy_goals" name="therapy_goals" rows="5" required
+                        placeholder="Please describe your primary concerns about your child's development and what you hope to achieve through ABA therapy. Be as specific as possible — this helps us design an individualized plan."></textarea>
+              <span class="field-error">Please describe your therapy goals.</span>
+            </div>
+            <div class="form-group">
+              <label>Target Focus Areas (check all that apply):</label>
+              <div class="checkbox-group" style="margin-top:8px;">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Communication & Language" />
+                  Communication &amp; Language
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Social Skills" />
+                  Social Skills
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Self-Care / Daily Living Skills" />
+                  Self-Care / Daily Living Skills
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Challenging Behaviors" />
+                  Challenging Behaviors
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="School Readiness / Academic Skills" />
+                  School Readiness / Academic Skills
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Emotional Regulation" />
+                  Emotional Regulation
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Play & Leisure Skills" />
+                  Play &amp; Leisure Skills
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="target_areas" value="Other" />
+                  Other
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="intake-nav-btns">
+            <button type="button" class="btn-prev" onclick="prevStep(4)">&larr; Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(4)">
+              School &amp; Contacts &rarr;
+            </button>
+          </div>
+        </div><!-- /step 4 -->
+
+
+        <!-- ════════════════════════════════════════════════
+             STEP 5 — EMERGENCY CONTACTS & SCHOOL INFO
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step" id="intake-step-5">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 5 of 6</span>
+            <h2>Emergency Contacts &amp; School Information</h2>
+            <p>Please provide at least one emergency contact who is not listed as a guardian,
+               and any relevant school information if your child receives school-based services.</p>
+          </div>
+
+          <!-- Emergency Contacts -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128222; Emergency Contacts</div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;font-weight:600;">
+              Emergency Contact 1 (required):
+            </p>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ec1_name">Full Name <span class="req">*</span></label>
+                <input type="text" id="ec1_name" name="ec1_name" required
+                       placeholder="Contact&rsquo;s full name" />
+                <span class="field-error">Emergency contact name is required.</span>
+              </div>
+              <div class="form-group">
+                <label for="ec1_relationship">Relationship to Patient <span class="req">*</span></label>
+                <input type="text" id="ec1_relationship" name="ec1_relationship" required
+                       placeholder="e.g. Aunt, Grandparent, Family Friend" />
+                <span class="field-error">Relationship is required.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ec1_phone">Cell Phone <span class="req">*</span></label>
+              <input type="tel" id="ec1_phone" name="ec1_phone" required
+                     placeholder="(555) 000-0000" />
+              <span class="field-error">Emergency contact phone is required.</span>
+            </div>
+            <div class="form-divider"></div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;font-weight:600;">
+              Emergency Contact 2 (optional):
+            </p>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ec2_name">Full Name</label>
+                <input type="text" id="ec2_name" name="ec2_name"
+                       placeholder="Contact&rsquo;s full name" />
+              </div>
+              <div class="form-group">
+                <label for="ec2_relationship">Relationship to Patient</label>
+                <input type="text" id="ec2_relationship" name="ec2_relationship"
+                       placeholder="e.g. Uncle, Neighbor, Therapist" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ec2_phone">Cell Phone</label>
+              <input type="tel" id="ec2_phone" name="ec2_phone"
+                     placeholder="(555) 000-0000" />
+            </div>
+            <div class="form-divider"></div>
+            <div class="form-group">
+              <label for="authorized_pickup">
+                Authorized Pickup Persons (besides listed guardians)
+              </label>
+              <textarea id="authorized_pickup" name="authorized_pickup" rows="3"
+                        placeholder="List names and relationships of additional people authorized to pick up your child (e.g., Aunt Maria Torres — Aunt; John Smith — Family Friend). Leave blank if not applicable."></textarea>
+            </div>
+          </div>
+
+          <!-- School Information -->
+          <div class="intake-section-card">
+            <div class="card-title">&#127979; School Information</div>
+            <div class="info-note">
+              <span class="info-icon">&#8505;</span>
+              <span>Complete this section if your child will be receiving in-school ABA services
+                    or if you would like us to coordinate with your child&rsquo;s school team.</span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="school_name_step5">School Name</label>
+                <input type="text" id="school_name_step5" name="school_name_step5"
+                       placeholder="e.g. Lincoln Elementary School" />
+              </div>
+              <div class="form-group">
+                <label for="school_district">School District</label>
+                <input type="text" id="school_district" name="school_district"
+                       placeholder="e.g. Boston Public Schools" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="teacher_name">Classroom Teacher Name</label>
+                <input type="text" id="teacher_name" name="teacher_name"
+                       placeholder="e.g. Ms. Johnson" />
+              </div>
+              <div class="form-group">
+                <label for="grade_step5">Grade / Classroom</label>
+                <input type="text" id="grade_step5" name="grade_step5"
+                       placeholder="e.g. 3rd Grade, Room 14, Life Skills Class" />
+              </div>
+            </div>
+            <div class="form-divider"></div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Does your child have an IEP (Individualized Education Program)?</label>
+                <div class="radio-group" style="margin-top:8px;">
+                  <label class="radio-item">
+                    <input type="radio" id="iep_yes" name="has_iep" value="yes" />
+                    Yes
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" id="iep_no" name="has_iep" value="no" checked />
+                    No
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Does your child have a 504 Plan?</label>
+                <div class="radio-group" style="margin-top:8px;">
+                  <label class="radio-item">
+                    <input type="radio" id="504_yes" name="has_504" value="yes" />
+                    Yes
+                  </label>
+                  <label class="radio-item">
+                    <input type="radio" id="504_no" name="has_504" value="no" checked />
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="collapsible-section" id="iep_details">
+              <div class="form-group">
+                <label for="iep_coordinator">IEP Coordinator Name</label>
+                <input type="text" id="iep_coordinator" name="iep_coordinator"
+                       placeholder="Name of your child&rsquo;s IEP coordinator or special education contact" />
+              </div>
+            </div>
+            <div class="form-divider"></div>
+            <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;font-weight:600;">
+              School Contact Person (for coordination):
+            </p>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label for="school_contact_name">Name</label>
+                <input type="text" id="school_contact_name" name="school_contact_name"
+                       placeholder="Name &amp; title" />
+              </div>
+              <div class="form-group">
+                <label for="school_contact_phone">Phone</label>
+                <input type="tel" id="school_contact_phone" name="school_contact_phone"
+                       placeholder="(555) 000-0000" />
+              </div>
+              <div class="form-group">
+                <label for="school_contact_email">Email</label>
+                <input type="email" id="school_contact_email" name="school_contact_email"
+                       placeholder="school@district.edu" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Referral & Additional Notes -->
+          <div class="intake-section-card">
+            <div class="card-title">&#128161; Additional Information</div>
+            <div class="form-group">
+              <label for="referral_source">How did you hear about Golden Bridge ABA?</label>
+              <select id="referral_source" name="referral_source">
+                <option value="" disabled selected>Select one</option>
+                <option value="Doctor / Physician Referral">Doctor / Physician Referral</option>
+                <option value="School / Teacher Referral">School / Teacher Referral</option>
+                <option value="Insurance Directory">Insurance Directory</option>
+                <option value="Google Search">Google Search</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Friend / Family Member">Friend / Family Member</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="additional_notes">Additional Notes</label>
+              <textarea id="additional_notes" name="additional_notes" rows="4"
+                        placeholder="Is there anything else you&rsquo;d like us to know about your child that would help us provide the best care possible? (communication style, sensory sensitivities, what motivates your child, fears, etc.)"></textarea>
+            </div>
+          </div>
+
+          <div class="intake-nav-btns">
+            <button type="button" class="btn-prev" onclick="prevStep(5)">&larr; Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(5)">
+              Consents &amp; Authorization &rarr;
+            </button>
+          </div>
+        </div><!-- /step 5 -->
+
+
+        <!-- ════════════════════════════════════════════════
+             STEP 6 — CONSENTS, AUTHORIZATIONS & HIPAA
+        ════════════════════════════════════════════════════ -->
+        <div class="intake-step" id="intake-step-6">
+          <div class="intake-step-header">
+            <span class="step-number-tag">Step 6 of 6</span>
+            <h2>Consents, Authorizations &amp; HIPAA</h2>
+            <p>Please carefully review each section below. All required consents must be
+               acknowledged before submitting. You may expand each section to read the
+               full policy text.</p>
+          </div>
+
+          <div class="info-note">
+            <span class="info-icon">&#128274;</span>
+            <span>
+              All consents are legally binding electronic signatures. By checking each box you
+              acknowledge that you have read, understood, and agree to the terms described.
+              You have the right to request paper copies of any of these documents.
+              Contact us at <strong>michael@goldaba.com</strong> to request copies.
+            </span>
+          </div>
+
+          <p class="required-note">
+            <span class="req-star">*</span> All items marked with an asterisk are required
+            to complete enrollment.
+          </p>
+
+          <!-- ── Consent 1: NPP ───────────────────────────── -->
+          <div class="consent-card" id="consent-card-npp">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128274;</span>
+              1. Notice of Privacy Practices (HIPAA) <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              Golden Bridge ABA is required by law to maintain the privacy and security of your
+              protected health information (PHI) and to provide you with this Notice of Privacy
+              Practices. We may use and disclose your PHI for treatment, payment, and healthcare
+              operations without requiring your separate authorization.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="npp-full-text">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="npp-full-text">
+              <p><strong>How We Use and Disclose Your PHI:</strong></p>
+              <ul>
+                <li><strong>Treatment:</strong> We may use and share PHI to coordinate care with other providers (therapists, physicians, schools) involved in your child&rsquo;s treatment.</li>
+                <li><strong>Payment:</strong> We may use and share PHI to bill and collect payment from your insurance company or other payers.</li>
+                <li><strong>Healthcare Operations:</strong> We may use PHI for quality improvement, staff training, compliance reviews, and business administration.</li>
+                <li><strong>Appointment Reminders:</strong> We may contact you with appointment reminders via phone, text, or email.</li>
+                <li><strong>Required by Law:</strong> We will disclose PHI as required by federal, state, or local law (e.g., mandatory reporting of abuse or neglect).</li>
+              </ul>
+              <p><strong>Your Rights Regarding Your PHI:</strong></p>
+              <ul>
+                <li><strong>Right to Access:</strong> You may request a copy of your child&rsquo;s health record.</li>
+                <li><strong>Right to Amend:</strong> You may request corrections to your child&rsquo;s health record.</li>
+                <li><strong>Right to an Accounting of Disclosures:</strong> You may request a list of certain disclosures we have made of your PHI.</li>
+                <li><strong>Right to Restrict:</strong> You may request restrictions on how we use or disclose PHI (we are not required to agree in all cases).</li>
+                <li><strong>Right to Confidential Communications:</strong> You may request that we communicate with you in a specific way or at a specific location.</li>
+                <li><strong>Right to a Paper Copy of This Notice:</strong> You may request a paper copy of this Notice at any time.</li>
+              </ul>
+              <p><strong>How to File a Complaint:</strong> If you believe your privacy rights have been violated, you may file a complaint with us or with the U.S. Department of Health and Human Services Office for Civil Rights at www.hhs.gov/ocr/privacy. You will not be retaliated against for filing a complaint.</p>
+              <p><strong>Contact:</strong> Golden Bridge ABA Privacy Officer — michael@goldaba.com</p>
+            </div>
+            <label class="consent-check" for="consent_npp">
+              <input type="checkbox" id="consent_npp" name="consent_npp" />
+              <span class="consent-check-label">
+                I acknowledge that I have received and reviewed Golden Bridge ABA&rsquo;s
+                Notice of Privacy Practices. <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ── Consent 2: Treatment ────────────────────── -->
+          <div class="consent-card" id="consent-card-treatment">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128140;</span>
+              2. Consent to ABA Treatment <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              I consent to evaluation and Applied Behavior Analysis therapy services for my
+              child/dependent at Golden Bridge ABA. I understand that ABA is an evidence-based
+              behavioral intervention, and that my active participation as a caregiver is an
+              important component of my child&rsquo;s treatment.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="treatment-full-text">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="treatment-full-text">
+              <p>I authorize Golden Bridge ABA to conduct an initial assessment and provide ongoing Applied Behavior Analysis (ABA) therapy services for my child or dependent. I understand the following:</p>
+              <ul>
+                <li>ABA therapy is a behavioral intervention approach based on the science of learning and behavior. It is widely recognized as an evidence-based treatment for Autism Spectrum Disorder and other developmental conditions.</li>
+                <li>Treatment will be individualized and based on a comprehensive assessment. A BCBA (Board Certified Behavior Analyst) will design and supervise the treatment program.</li>
+                <li>The treatment plan will include measurable goals, data collection, and regular review. The plan may be modified based on my child&rsquo;s progress and response to treatment.</li>
+                <li>Caregiver participation, including parent/guardian training sessions, is expected and is a core part of the treatment model. Participation enhances the effectiveness and generalization of skills.</li>
+                <li>I may withdraw consent for any specific procedure or for continued treatment at any time by notifying Golden Bridge ABA in writing.</li>
+                <li>ABA therapy does not guarantee specific outcomes. Progress varies by individual. The clinical team will communicate regularly about my child&rsquo;s progress.</li>
+              </ul>
+            </div>
+            <label class="consent-check" for="consent_treatment">
+              <input type="checkbox" id="consent_treatment" name="consent_treatment" />
+              <span class="consent-check-label">
+                I consent to ABA therapy evaluation and services for my child/dependent.
+                <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ── Consent 3: HIPAA Authorization ─────────── -->
+          <div class="consent-card" id="consent-card-hipaa">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128196;</span>
+              3. HIPAA Authorization to Use and Disclose PHI <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              I authorize Golden Bridge ABA to use and disclose my child&rsquo;s protected health
+              information (PHI) with insurance companies (for billing and prior authorization),
+              schools (for care coordination), referring physicians, and other treatment providers
+              directly involved in my child&rsquo;s care.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="hipaa-auth-full">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="hipaa-auth-full">
+              <p>I, the undersigned parent or legal guardian, authorize Golden Bridge ABA to use and/or disclose the protected health information (PHI) of my child/dependent as follows:</p>
+              <p><strong>Information to be Used or Disclosed:</strong> Clinical records, assessment results, treatment plans, session notes, progress reports, and billing information.</p>
+              <p><strong>Authorized Recipients:</strong></p>
+              <ul>
+                <li><strong>Insurance Companies:</strong> For the purpose of verifying benefits, submitting claims, and obtaining prior authorizations for ABA services.</li>
+                <li><strong>Schools and Educational Programs:</strong> For the purpose of coordinating care, supporting IEP development, and aligning therapy goals with educational goals.</li>
+                <li><strong>Referring Physicians and Specialists:</strong> For the purpose of care coordination and communicating treatment progress.</li>
+                <li><strong>Other Treatment Providers:</strong> Including occupational therapists, speech-language pathologists, physical therapists, and behavioral health providers currently involved in my child&rsquo;s care, for the purpose of coordinated, integrated care.</li>
+              </ul>
+              <p><strong>Purpose:</strong> Treatment, payment, and healthcare operations as defined under HIPAA.</p>
+              <p><strong>Expiration:</strong> This authorization will remain in effect for the duration of my child&rsquo;s active treatment relationship with Golden Bridge ABA, or until I revoke it in writing.</p>
+              <p><strong>Right to Revoke:</strong> I understand that I have the right to revoke this authorization at any time by submitting a written request to Golden Bridge ABA. Revocation will not affect disclosures already made in reliance on this authorization.</p>
+              <p><strong>Voluntary:</strong> I understand that I am authorizing this voluntarily and that my child&rsquo;s treatment will not be conditioned on my signing this authorization, except where disclosure is necessary to obtain payment for services.</p>
+            </div>
+            <label class="consent-check" for="consent_hipaa_auth">
+              <input type="checkbox" id="consent_hipaa_auth" name="consent_hipaa_auth" />
+              <span class="consent-check-label">
+                I authorize Golden Bridge ABA to use and disclose my child&rsquo;s PHI
+                for the purposes stated above. <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ── Consent 4: Assignment of Benefits ──────── -->
+          <div class="consent-card" id="consent-card-billing">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#127959;</span>
+              4. Assignment of Benefits &amp; Authorization to Bill Insurance <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              I authorize Golden Bridge ABA to bill my insurance company on behalf of my
+              child/dependent and assign benefits payable to Golden Bridge ABA directly.
+              I understand that I am responsible for any amounts not covered by insurance.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="billing-full">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="billing-full">
+              <p>I hereby authorize and request my insurance carrier to make payment directly to Golden Bridge ABA for ABA therapy services rendered to my child/dependent. I understand the following:</p>
+              <ul>
+                <li>I authorize Golden Bridge ABA to submit insurance claims on my behalf for services rendered to my child.</li>
+                <li>I assign all insurance benefits payable for these services directly to Golden Bridge ABA. This assignment will remain in effect until revoked in writing.</li>
+                <li>I authorize the release of any medical information necessary to process claims, including treatment records, assessment reports, and diagnosis codes.</li>
+                <li>I understand that I am responsible for any co-pays, coinsurance, deductibles, or services not covered by my insurance plan, regardless of the amount billed to insurance.</li>
+                <li>I agree to notify Golden Bridge ABA of any changes in my insurance coverage as soon as possible.</li>
+                <li>In the event that my insurance company does not pay for services rendered, I agree to be personally responsible for the balance.</li>
+              </ul>
+            </div>
+            <label class="consent-check" for="consent_billing">
+              <input type="checkbox" id="consent_billing" name="consent_billing" />
+              <span class="consent-check-label">
+                I authorize Golden Bridge ABA to bill my insurance and assign benefits
+                directly to the practice. <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ── Consent 5: Financial Responsibility ────── -->
+          <div class="consent-card" id="consent-card-financial">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128179;</span>
+              5. Financial Responsibility Agreement <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              I understand and accept that I am financially responsible for all co-pays,
+              co-insurance, deductibles, and any services not covered by insurance. I acknowledge
+              the cancellation policy: appointments cancelled with less than 24 hours&rsquo; notice
+              or no-shows may incur a $50 late cancellation fee.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="financial-full">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="financial-full">
+              <p>I, the undersigned, understand and accept the following financial policies of Golden Bridge ABA:</p>
+              <ul>
+                <li><strong>Insurance Co-payments:</strong> Co-pays are due at the time of each session. Golden Bridge ABA will collect the co-pay amount specified by my insurance plan.</li>
+                <li><strong>Deductibles and Co-insurance:</strong> I am responsible for my annual deductible and any co-insurance percentage as determined by my insurance plan. Amounts may be billed after services are rendered once my insurance has processed the claim.</li>
+                <li><strong>Non-Covered Services:</strong> Any services that are not covered by my insurance plan (including services provided while awaiting prior authorization, or services deemed not medically necessary by my insurer) may be billed at the practice&rsquo;s standard rate. I will be notified when possible before such services are provided.</li>
+                <li><strong>Cancellation Policy:</strong> To avoid a cancellation fee, please cancel or reschedule appointments at least 24 hours in advance. Appointments cancelled with less than 24 hours&rsquo; notice or missed without prior notification (no-shows) may incur a late cancellation / no-show fee of <strong>$50.00 per session</strong>. This fee is not billable to insurance and is the responsibility of the guardian/parent.</li>
+                <li><strong>Billing Disputes:</strong> Any billing concerns or disputes must be raised in writing within 60 days of the date of service. Please contact us at michael@goldaba.com.</li>
+                <li><strong>Payment Plans:</strong> Payment plan arrangements are available for families experiencing financial hardship. Please contact our billing team to discuss options.</li>
+              </ul>
+            </div>
+            <label class="consent-check" for="consent_financial">
+              <input type="checkbox" id="consent_financial" name="consent_financial" />
+              <span class="consent-check-label">
+                I understand and accept financial responsibility as described above, including
+                the 24-hour cancellation policy. <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ── Consent 6: Electronic Communications ───── -->
+          <div class="consent-card" id="consent-card-electronic">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128241;</span>
+              6. Electronic Communications Consent <span class="req" style="color:#c0392b;">*</span>
+            </div>
+            <p class="consent-summary">
+              I consent to receive appointment reminders, secure messages, and general
+              communications from Golden Bridge ABA via email and/or text message. I understand
+              that email and text are not 100% secure and agree not to transmit sensitive PHI
+              through unsecured channels.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="electronic-full">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="electronic-full">
+              <p>I consent to receive the following types of communications from Golden Bridge ABA via electronic means (email, text/SMS):</p>
+              <ul>
+                <li>Appointment reminders and scheduling notifications</li>
+                <li>General clinical communications regarding my child&rsquo;s care</li>
+                <li>Administrative communications (billing statements, insurance updates)</li>
+                <li>Practice announcements and general information</li>
+              </ul>
+              <p><strong>Important Notice Regarding Security:</strong> I understand that standard email and text message (SMS) communications are not fully encrypted and are not guaranteed to be secure. Golden Bridge ABA will make reasonable efforts to protect your information, but cannot guarantee the security of PHI transmitted via standard email or SMS.</p>
+              <p>I agree to the following:</p>
+              <ul>
+                <li>I will not transmit sensitive or detailed health information (PHI) via unsecured email or text message. I will call the office for discussions involving detailed clinical matters.</li>
+                <li>I understand that I may opt out of electronic communications at any time by notifying Golden Bridge ABA in writing or calling our office.</li>
+                <li>I accept the risks of electronic communication as described above.</li>
+              </ul>
+            </div>
+            <label class="consent-check" for="consent_electronic">
+              <input type="checkbox" id="consent_electronic" name="consent_electronic" />
+              <span class="consent-check-label">
+                I consent to receive electronic communications from Golden Bridge ABA.
+                <span class="req">*</span>
+              </span>
+            </label>
+            <div class="form-group" style="margin-top:14px;">
+              <label for="preferred_contact_method">Preferred Contact Method:</label>
+              <select id="preferred_contact_method" name="preferred_contact_method"
+                      style="max-width:300px;">
+                <option value="" disabled selected>Select preference</option>
+                <option value="Email">Email</option>
+                <option value="Text / SMS">Text / SMS</option>
+                <option value="Phone Call">Phone Call</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ── Consent 7: Photo/Video Release (Optional) ─ -->
+          <div class="consent-card" id="consent-card-photo">
+            <div class="consent-card-title">
+              <span class="consent-icon">&#128247;</span>
+              7. Photo / Video Release <span style="font-size:0.8rem;font-weight:400;color:var(--gray-4);">(Optional)</span>
+            </div>
+            <p class="consent-summary">
+              Golden Bridge ABA may sometimes use photos or brief video recordings during
+              sessions for treatment planning and clinical monitoring purposes (e.g., documenting
+              skill acquisition or behavioral patterns). This section only covers use within
+              your child&rsquo;s clinical record. No images or videos will be used for marketing
+              without a separate written consent.
+            </p>
+            <button type="button" class="consent-expand-btn" data-target="photo-full">
+              &#9660; Read full text
+            </button>
+            <div class="consent-full-text" id="photo-full">
+              <p>Golden Bridge ABA may wish to photograph or make brief video recordings of your child during therapy sessions for the following purposes only:</p>
+              <ul>
+                <li>Clinical monitoring and documentation of skill progress or behavioral patterns</li>
+                <li>Supervision of therapy staff by BCBAs</li>
+                <li>Treatment planning and program development</li>
+              </ul>
+              <p>All photos and videos will be:</p>
+              <ul>
+                <li>Stored securely within your child&rsquo;s clinical record</li>
+                <li>Accessible only to authorized clinical staff involved in your child&rsquo;s care</li>
+                <li>Deleted or de-identified when no longer needed for clinical purposes</li>
+                <li><strong>Never</strong> used for marketing, advertising, social media, or any purpose other than clinical care without a separate, explicit written consent</li>
+              </ul>
+              <p>You may withdraw this authorization at any time by notifying us in writing.</p>
+            </div>
+            <div class="radio-group" style="margin-top:8px;flex-direction:column;gap:10px;">
+              <label class="radio-item" style="padding:10px 14px;background:var(--gray-1);border-radius:8px;border:1.5px solid var(--gray-2);">
+                <input type="radio" id="photo_yes" name="photo_release" value="yes" />
+                <span>Yes, I authorize Golden Bridge ABA to photograph/record my child
+                      for treatment purposes as described above.</span>
+              </label>
+              <label class="radio-item" style="padding:10px 14px;background:var(--gray-1);border-radius:8px;border:1.5px solid var(--gray-2);">
+                <input type="radio" id="photo_no" name="photo_release" value="no" checked />
+                <span>No, I do not authorize photographs or video recordings of my child.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- ── Certification & Electronic Signature ───── -->
+          <div class="certification-box">
+            <div class="cert-title">
+              &#9997; Electronic Signature &amp; Certification
+            </div>
+            <div class="info-note" style="margin-bottom:20px;">
+              <span class="info-icon">&#128274;</span>
+              <span>
+                By completing the fields below and submitting this form, you are providing an
+                electronic signature with the same legal effect as a handwritten signature.
+              </span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sig_name">
+                  Full Legal Name (Typed Signature) <span class="req">*</span>
+                </label>
+                <div class="signature-wrap">
+                  <input type="text" id="sig_name" name="sig_name" required
+                         class="signature-field"
+                         placeholder="Type your full legal name as signature" />
+                  <div class="signature-line-label">Electronic Signature</div>
+                </div>
+                <span class="field-error">Your full legal name is required as your electronic signature.</span>
+              </div>
+              <div class="form-group">
+                <label for="sig_relationship">
+                  Your Relationship to Patient <span class="req">*</span>
+                </label>
+                <select id="sig_relationship" name="sig_relationship" required>
+                  <option value="" disabled selected>Select relationship</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Father">Father</option>
+                  <option value="Legal Guardian">Legal Guardian</option>
+                  <option value="Stepparent">Stepparent</option>
+                  <option value="Grandparent">Grandparent</option>
+                  <option value="Foster Parent">Foster Parent</option>
+                  <option value="Self (Adult Patient)">Self (Adult Patient)</option>
+                  <option value="Other">Other</option>
+                </select>
+                <span class="field-error">Relationship is required.</span>
+              </div>
+            </div>
+            <div class="form-group" style="max-width:340px;">
+              <label for="sig_date">Date <span class="req">*</span></label>
+              <input type="text" id="sig_date" name="sig_date" required readonly
+                     style="background:var(--gray-1);cursor:default;" />
+            </div>
+            <div class="form-divider"></div>
+            <label class="consent-check" for="consent_certify"
+                   style="margin-bottom:0;margin-top:8px;">
+              <input type="checkbox" id="consent_certify" name="consent_certify" />
+              <span class="consent-check-label">
+                I certify that all information provided in this intake form is accurate and
+                complete to the best of my knowledge. I understand that providing false or
+                misleading information may affect my child&rsquo;s care and/or insurance coverage.
+                <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="intake-nav-btns">
+            <button type="button" class="btn-prev" onclick="prevStep(6)">&larr; Back</button>
+            <button type="button" class="submit-intake-btn"
+                    id="submitIntakeBtn" onclick="submitIntake()">
+              &#128274; Submit Intake Form
+            </button>
+          </div>
+
+        </div><!-- /step 6 -->
+
+      </div><!-- /intake-form-wrap -->
+    </div><!-- /intake-container -->
+  </main>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       NOTICE OF PRIVACY PRACTICES (NPP)
+       Anchor: #npp  |  Linked from banner at top of page
+  ══════════════════════════════════════════════════════════ -->
+  <section class="npp-section" id="npp" aria-labelledby="npp-heading">
+    <div class="npp-inner">
+      <div class="npp-header">
+        <div class="npp-logo">Golden Bridge ABA</div>
+        <h2 id="npp-heading">Notice of Privacy Practices</h2>
+        <p class="npp-effective">
+          Effective Date: January 1, 2025 &nbsp;|&nbsp;
+          This notice describes how protected health information about you may be used and
+          disclosed and how you can get access to this information. Please review it carefully.
+        </p>
+      </div>
+
+      <div class="npp-body">
+
+        <h3>Our Legal Duty</h3>
+        <p>
+          Golden Bridge ABA (&ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our&rdquo;) is required
+          by law to maintain the privacy and security of your protected health information (PHI).
+          We are required to abide by the terms of this Notice and to provide you with notice of
+          our privacy practices. We reserve the right to change the terms of this Notice and to
+          make the new Notice provisions effective for all PHI we maintain. We will post a current
+          copy of this Notice on our website and provide one upon request.
+        </p>
+
+        <h3>How We May Use and Disclose Your PHI</h3>
+
+        <h4>Uses and Disclosures That Do Not Require Your Authorization</h4>
+        <p>We may use and disclose PHI without your written authorization for the following purposes:</p>
+        <ul>
+          <li>
+            <strong>Treatment:</strong> We may use or disclose PHI for treatment purposes,
+            including sharing information with other healthcare providers involved in your
+            child&rsquo;s care (e.g., physicians, specialists, schools, therapists) to coordinate
+            and manage treatment.
+          </li>
+          <li>
+            <strong>Payment:</strong> We may use or disclose PHI to obtain payment for services,
+            including submitting claims to insurance companies, verifying coverage, obtaining
+            prior authorizations, and collecting payment.
+          </li>
+          <li>
+            <strong>Healthcare Operations:</strong> We may use or disclose PHI for our healthcare
+            operations, including quality improvement activities, staff training and supervision,
+            compliance activities, accreditation, and business management.
+          </li>
+          <li>
+            <strong>Appointment Reminders:</strong> We may contact you with appointment reminders
+            using the contact information you have provided (phone, text, email). You may request
+            alternative means of contact.
+          </li>
+          <li>
+            <strong>Required by Law:</strong> We will disclose PHI when required to do so by
+            federal, state, or local law. This includes mandatory reporting of suspected child
+            abuse or neglect, responses to court orders or subpoenas, and public health reporting.
+          </li>
+          <li>
+            <strong>Public Health Activities:</strong> We may disclose PHI to public health
+            authorities for activities such as preventing or controlling disease or injury.
+          </li>
+          <li>
+            <strong>Health Oversight Activities:</strong> We may disclose PHI to health oversight
+            agencies for activities authorized by law, such as audits and investigations.
+          </li>
+          <li>
+            <strong>Serious Threats to Health or Safety:</strong> We may use or disclose PHI
+            if we believe it is necessary to prevent or lessen a serious and imminent threat to
+            the health or safety of a person or the public.
+          </li>
+        </ul>
+
+        <h4>Uses and Disclosures That Require Your Written Authorization</h4>
+        <p>
+          For most uses and disclosures beyond treatment, payment, and healthcare operations
+          — including the use of PHI for marketing purposes, sale of PHI, and psychotherapy
+          notes — we will obtain your written authorization. You may revoke any authorization
+          you provide at any time by submitting a written request to Golden Bridge ABA.
+        </p>
+
+        <h3>Your Rights Regarding Your Protected Health Information</h3>
+
+        <h4>Right to Access and Inspect</h4>
+        <p>
+          You have the right to inspect and obtain a copy of your child&rsquo;s PHI in our
+          records, including medical and billing records, for as long as we maintain them.
+          We may charge a reasonable cost-based fee for providing copies. We may deny access
+          in limited circumstances as allowed by law.
+        </p>
+
+        <h4>Right to Amend</h4>
+        <p>
+          If you believe that PHI we maintain about your child is incorrect or incomplete,
+          you may request that we amend the information. We may deny the request if we
+          determine the information is accurate and complete, was not created by us, or if
+          we do not have the information. If we deny the request, we will explain why in writing.
+        </p>
+
+        <h4>Right to an Accounting of Disclosures</h4>
+        <p>
+          You have the right to request a list of certain disclosures we have made of your
+          child&rsquo;s PHI in the prior six years. This accounting does not include disclosures
+          made for treatment, payment, or healthcare operations, or disclosures you authorized.
+        </p>
+
+        <h4>Right to Request Restrictions</h4>
+        <p>
+          You have the right to request restrictions on how we use or disclose PHI for treatment,
+          payment, or healthcare operations, or to persons involved in your care. We are not
+          required to agree to all restrictions. However, if we agree to a restriction, we will
+          honor it except in emergencies. We are required to honor restrictions on disclosures
+          to health plans if you pay for a service in full out-of-pocket and request the
+          restriction.
+        </p>
+
+        <h4>Right to Confidential Communications</h4>
+        <p>
+          You have the right to request that we communicate with you about PHI by alternative
+          means or at an alternative location (e.g., contacting you only by cell phone or only
+          at a specific address). We will accommodate reasonable requests.
+        </p>
+
+        <h4>Right to a Paper Copy of This Notice</h4>
+        <p>
+          You have the right to receive a paper copy of this Notice at any time, even if you
+          have received it electronically. To obtain a paper copy, contact us at:
+          michael@goldaba.com.
+        </p>
+
+        <h3>Our Duties</h3>
+        <p>
+          Golden Bridge ABA is required by law to: maintain the privacy of PHI; provide
+          individuals with notice of our legal duties and privacy practices with respect to PHI;
+          notify affected individuals following a breach of unsecured PHI; abide by the terms
+          of the Notice currently in effect; and not use or disclose PHI in any way not
+          described in this Notice without your written authorization.
+        </p>
+
+        <h3>Changes to This Notice</h3>
+        <p>
+          We reserve the right to change this Notice and to make the revised Notice effective
+          for PHI we already have, as well as any new information received in the future.
+          We will post a copy of the current Notice at our office and on our website.
+        </p>
+
+        <h3>How to File a Complaint</h3>
+        <p>
+          If you believe your privacy rights have been violated, you may file a complaint with
+          Golden Bridge ABA or with the U.S. Department of Health and Human Services (HHS)
+          Office for Civil Rights. You will not be penalized or retaliated against in any way
+          for filing a complaint.
+        </p>
+
+        <div class="npp-contact-box">
+          <strong>Contact Us / File a Complaint:</strong>
+          <p>
+            <strong>Golden Bridge ABA Privacy Officer</strong><br />
+            Email: michael@goldaba.com<br />
+            Serving: Massachusetts &amp; New Mexico
+          </p>
+          <p>
+            <strong>U.S. Department of Health &amp; Human Services — Office for Civil Rights</strong><br />
+            Website: <a href="https://www.hhs.gov/ocr/privacy" target="_blank"
+                        rel="noopener noreferrer"
+                        style="color:var(--teal);">www.hhs.gov/ocr/privacy</a><br />
+            Phone: 1-800-368-1019 (TDD: 1-800-537-7697)
+          </p>
+        </div>
+
+      </div><!-- /npp-body -->
+    </div><!-- /npp-inner -->
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo logo-light">
+          <span class="logo-icon">&#9670;</span>
+          <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
+        </a>
+        <p>Evidence-based ABA therapy delivered in the home and school settings across
+           Massachusetts and New Mexico.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#locations">Locations</a>
+        <a href="index.html#insurance">Insurance</a>
+        <a href="intake.html">Intake Form</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="footer-locations">
+        <h4>Serving</h4>
+        <p>Massachusetts</p>
+        <p>New Mexico</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Golden Bridge ABA. All rights reserved.</p>
+        <p>ABA therapy services provided by qualified BCBAs and RBTs. &nbsp;|&nbsp;
+           <a href="#npp" style="color:rgba(255,255,255,0.55);text-decoration:underline;">
+             Privacy Practices (HIPAA)
+           </a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+  <script src="intake.js"></script>
+</body>
+</html>

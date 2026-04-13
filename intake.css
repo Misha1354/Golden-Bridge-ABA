@@ -1,0 +1,1151 @@
+/* =============================================================
+   intake.css — Golden Bridge ABA Client Intake Page Styles
+   Complements styles.css. Uses the same CSS variables.
+   NOTE: For full HIPAA compliance, this form must be served
+   over HTTPS and EmailJS must have a signed BAA. Consider a
+   HIPAA-compliant form service (Jotform HIPAA, Formstack) for
+   production use.
+============================================================= */
+
+/* ── HIPAA Security Banner ────────────────────────────────── */
+.hipaa-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: #1a5c38;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 9px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.hipaa-banner .lock-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.hipaa-banner a {
+  color: #a8e6bf;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.hipaa-banner a:hover {
+  color: #d4f5e4;
+}
+
+/* Push header down below HIPAA banner; always show scrolled (white) state */
+body.intake-page .header {
+  top: 36px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 12px 0;
+}
+body.intake-page .header .logo { color: var(--navy, #1A2A3A); }
+body.intake-page .header .nav a:not(.nav-cta) { color: var(--slate, #3D5165); }
+body.intake-page .header .nav a:not(.nav-cta):hover { color: var(--gold, #C9973A); }
+body.intake-page .header .hamburger span { background: var(--navy, #1A2A3A); }
+body.intake-page .header .nav-active { color: var(--gold, #C9973A) !important; font-weight: 700; }
+
+/* ── Intake Hero ──────────────────────────────────────────── */
+.intake-hero {
+  background: linear-gradient(135deg, #1A2A3A 0%, #2A3A4A 50%, #1a3a2a 100%);
+  padding: 80px 0 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 116px; /* clear hipaa banner (36px) + sticky header (~80px) */
+}
+
+.intake-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(201,151,58,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.intake-hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.intake-hero h1 em {
+  color: var(--gold-light, #E8B85A);
+  font-style: normal;
+}
+
+.intake-hero .hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.8);
+  max-width: 580px;
+  margin: 0 auto 20px;
+  line-height: 1.65;
+}
+
+.intake-hero .phi-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.intake-hero .phi-notice .phi-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ── Intake Container ─────────────────────────────────────── */
+.intake-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────── */
+.intake-progress {
+  margin-bottom: 36px;
+  padding: 24px 20px 20px;
+  background: #fff;
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.07));
+  border: 1px solid var(--gray-2, #EEF1F5);
+}
+
+.intake-progress-inner {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* Connector line behind circles */
+.intake-progress-inner::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: calc(100% / 12);
+  right: calc(100% / 12);
+  height: 2px;
+  background: var(--gray-2, #EEF1F5);
+  z-index: 0;
+}
+
+.progress-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+}
+
+.progress-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gray-2, #EEF1F5);
+  color: var(--gray-4, #8898AA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 2px solid var(--gray-3, #C8D0DA);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.progress-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gray-4, #8898AA);
+  text-align: center;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  max-width: 70px;
+  line-height: 1.3;
+}
+
+/* Active step */
+.progress-step.active .progress-circle {
+  background: var(--navy, #1A2A3A);
+  color: #fff;
+  border-color: var(--navy, #1A2A3A);
+  box-shadow: 0 4px 12px rgba(26,42,58,0.3);
+}
+
+.progress-step.active .progress-label {
+  color: var(--navy, #1A2A3A);
+  font-weight: 700;
+}
+
+/* Completed step */
+.progress-step.done .progress-circle {
+  background: var(--teal, #2A7B6F);
+  color: #fff;
+  border-color: var(--teal, #2A7B6F);
+}
+
+.progress-step.done .progress-label {
+  color: var(--teal, #2A7B6F);
+}
+
+/* Connector segments that fill on completion */
+.intake-progress-line {
+  position: absolute;
+  top: 18px;
+  height: 2px;
+  background: var(--teal, #2A7B6F);
+  z-index: 0;
+  transition: width 0.4s ease;
+}
+
+/* ── Form Step ────────────────────────────────────────────── */
+.intake-step {
+  display: none;
+  animation: intakeStepIn 0.35s ease;
+}
+
+.intake-step.active {
+  display: block;
+}
+
+@keyframes intakeStepIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intake-step-header {
+  margin-bottom: 28px;
+}
+
+.step-number-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal, #2A7B6F);
+  margin-bottom: 6px;
+}
+
+.intake-step-header h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 6px;
+}
+
+.intake-step-header p {
+  color: var(--text-light, #5A6B7C);
+  font-size: 0.9rem;
+}
+
+/* ── Section Card ─────────────────────────────────────────── */
+.intake-section-card {
+  background: #fff;
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.07));
+  border: 1px solid var(--gray-2, #EEF1F5);
+  padding: 28px 28px 24px;
+  margin-bottom: 20px;
+}
+
+.intake-section-card .card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal, #2A7B6F);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray-2, #EEF1F5);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Form Fields ──────────────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy, #1A2A3A);
+}
+
+.form-group label .req {
+  color: #c0392b;
+  margin-left: 2px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-3, #C8D0DA);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text, #1E2D3D);
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--teal, #2A7B6F);
+  box-shadow: 0 0 0 3px rgba(42,123,111,0.12);
+}
+
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238898AA' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.55;
+}
+
+/* Error state */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+  display: none;
+}
+
+.field-error.visible {
+  display: block;
+}
+
+/* Hint text */
+.field-hint {
+  font-size: 0.77rem;
+  color: var(--gray-4, #8898AA);
+  margin-top: 2px;
+}
+
+/* ── Checkbox groups / checkboxes ─────────────────────────── */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin-top: 4px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text, #1E2D3D);
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.checkbox-item:hover {
+  background: var(--gray-1, #F7F9FB);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--teal, #2A7B6F);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Toggle checkbox (secondary guardian, secondary insurance, etc.) */
+.toggle-check-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--gray-1, #F7F9FB);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  border: 1.5px solid var(--gray-2, #EEF1F5);
+  transition: border-color 0.2s;
+}
+
+.toggle-check-wrap:hover {
+  border-color: var(--teal, #2A7B6F);
+}
+
+.toggle-check-wrap input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--teal, #2A7B6F);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle-check-wrap label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy, #1A2A3A);
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Collapsible section */
+.collapsible-section {
+  display: none;
+  padding-top: 16px;
+  border-top: 1px dashed var(--gray-3, #C8D0DA);
+  margin-top: 4px;
+}
+
+.collapsible-section.open {
+  display: block;
+}
+
+/* ── Radio groups ─────────────────────────────────────────── */
+.radio-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text, #1E2D3D);
+}
+
+.radio-item input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--teal, #2A7B6F);
+  cursor: pointer;
+}
+
+/* ── Step Navigation Buttons ──────────────────────────────── */
+.intake-nav-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  gap: 12px;
+}
+
+.intake-nav-btns .btn-prev {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: 2px solid var(--gray-3, #C8D0DA);
+  background: transparent;
+  color: var(--text-light, #5A6B7C);
+  transition: all 0.2s ease;
+}
+
+.intake-nav-btns .btn-prev:hover {
+  border-color: var(--navy, #1A2A3A);
+  color: var(--navy, #1A2A3A);
+  background: var(--gray-1, #F7F9FB);
+}
+
+.intake-nav-btns .btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 32px;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 2px solid var(--gold, #C9973A);
+  background: var(--gold, #C9973A);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.intake-nav-btns .btn-next:hover {
+  background: var(--gold-dark, #A07828);
+  border-color: var(--gold-dark, #A07828);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(201,151,58,0.35);
+}
+
+/* ── Consent Cards (Step 6) ───────────────────────────────── */
+.consent-card {
+  background: #fff;
+  border-radius: var(--radius, 12px);
+  border: 1.5px solid var(--gray-2, #EEF1F5);
+  border-left: 4px solid var(--gold, #C9973A);
+  padding: 20px 24px 20px 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.07));
+  transition: border-color 0.2s;
+}
+
+.consent-card.checked {
+  border-left-color: var(--teal, #2A7B6F);
+  background: #f6fdf9;
+}
+
+.consent-card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consent-card-title .consent-icon {
+  font-size: 1.05rem;
+}
+
+.consent-summary {
+  font-size: 0.84rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.consent-expand-btn {
+  background: none;
+  border: none;
+  color: var(--teal, #2A7B6F);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+.consent-expand-btn:hover {
+  color: var(--teal-light, #3A9B8E);
+}
+
+.consent-full-text {
+  display: none;
+  background: var(--gray-1, #F7F9FB);
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.82rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  border: 1px solid var(--gray-2, #EEF1F5);
+}
+
+.consent-full-text.open {
+  display: block;
+}
+
+.consent-full-text p,
+.consent-full-text ul {
+  margin-bottom: 10px;
+}
+
+.consent-full-text ul {
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.consent-full-text ul li {
+  margin-bottom: 4px;
+}
+
+/* ── Consent Checkbox Row ─────────────────────────────────── */
+.consent-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1.5px solid var(--gray-2, #EEF1F5);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.consent-check:hover {
+  background: var(--gray-1, #F7F9FB);
+  border-color: var(--gray-3, #C8D0DA);
+}
+
+.consent-check input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  accent-color: var(--teal, #2A7B6F);
+  cursor: pointer;
+  margin-top: 1px;
+}
+
+.consent-check-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--navy, #1A2A3A);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.consent-check.error-check {
+  border-color: #c0392b;
+  background: #fef6f5;
+}
+
+/* ── Signature Field ──────────────────────────────────────── */
+.signature-field {
+  border: 2px dashed var(--gold, #C9973A) !important;
+  font-style: italic;
+  font-size: 1rem !important;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: var(--navy, #1A2A3A) !important;
+  background: var(--gold-pale, #FDF6E8) !important;
+  padding: 14px 16px !important;
+}
+
+.signature-field:focus {
+  border-color: var(--gold-dark, #A07828) !important;
+  box-shadow: 0 0 0 3px rgba(201,151,58,0.15) !important;
+}
+
+.signature-wrap {
+  position: relative;
+}
+
+.signature-line-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dark, #A07828);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* ── Certification Section ────────────────────────────────── */
+.certification-box {
+  background: linear-gradient(135deg, #f0f8f5, #f8f4ec);
+  border: 2px solid var(--gold, #C9973A);
+  border-radius: var(--radius, 12px);
+  padding: 28px 28px 24px;
+  margin-bottom: 24px;
+}
+
+.certification-box .cert-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Submit Button ────────────────────────────────────────── */
+.submit-intake-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 32px;
+  background: var(--navy, #1A2A3A);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.03em;
+  box-shadow: 0 6px 20px rgba(26,42,58,0.25);
+}
+
+.submit-intake-btn:hover:not(:disabled) {
+  background: #0f1d2b;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(26,42,58,0.35);
+}
+
+.submit-intake-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Success State ────────────────────────────────────────── */
+.intake-success {
+  display: none;
+  text-align: center;
+  padding: 60px 40px;
+  background: #fff;
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,0.10));
+  border: 1px solid var(--gray-2, #EEF1F5);
+}
+
+.intake-success.visible {
+  display: block;
+  animation: intakeStepIn 0.4s ease;
+}
+
+.success-check-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2A7B6F, #3A9B8E);
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 8px 24px rgba(42,123,111,0.3);
+}
+
+.intake-success h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 14px;
+}
+
+.intake-success .success-sub {
+  font-size: 1rem;
+  color: var(--text-light, #5A6B7C);
+  max-width: 500px;
+  margin: 0 auto 28px;
+  line-height: 1.65;
+}
+
+.intake-success .success-detail-box {
+  background: var(--gray-1, #F7F9FB);
+  border-radius: var(--radius, 12px);
+  padding: 20px 28px;
+  max-width: 480px;
+  margin: 0 auto 28px;
+  text-align: left;
+  border: 1px solid var(--gray-2, #EEF1F5);
+}
+
+.intake-success .success-detail-box p {
+  font-size: 0.88rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.intake-success .success-detail-box p:last-child {
+  margin-bottom: 0;
+}
+
+.intake-success .success-detail-box strong {
+  color: var(--navy, #1A2A3A);
+}
+
+/* ── NPP Section ──────────────────────────────────────────── */
+.npp-section {
+  background: var(--gray-1, #F7F9FB);
+  border-top: 3px solid var(--gold, #C9973A);
+  padding: 60px 0 72px;
+}
+
+.npp-section .npp-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.npp-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--gray-3, #C8D0DA);
+}
+
+.npp-header .npp-logo {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 6px;
+}
+
+.npp-header h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.55rem;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 8px;
+}
+
+.npp-header .npp-effective {
+  font-size: 0.84rem;
+  color: var(--gray-4, #8898AA);
+  font-style: italic;
+}
+
+.npp-body h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--navy, #1A2A3A);
+  margin: 28px 0 10px;
+}
+
+.npp-body h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: var(--slate, #3D5165);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 20px 0 8px;
+}
+
+.npp-body p {
+  font-size: 0.88rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.npp-body ul {
+  padding-left: 20px;
+  list-style: disc;
+  margin-bottom: 14px;
+}
+
+.npp-body ul li {
+  font-size: 0.88rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.npp-body .npp-contact-box {
+  background: #fff;
+  border-radius: var(--radius, 12px);
+  border: 1px solid var(--gray-2, #EEF1F5);
+  padding: 20px 24px;
+  margin-top: 28px;
+  font-size: 0.86rem;
+  color: var(--text-light, #5A6B7C);
+  line-height: 1.7;
+}
+
+.npp-body .npp-contact-box strong {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--navy, #1A2A3A);
+  margin-bottom: 6px;
+}
+
+/* ── Intake CTA Section (on index.html) ───────────────────── */
+.intake-cta-section {
+  background: linear-gradient(135deg, var(--navy, #1A2A3A) 0%, #1a3a2a 100%);
+  padding: 48px 0;
+}
+
+.intake-cta-section .intake-cta-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.intake-cta-section h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.55rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.intake-cta-section p {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.97rem;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.intake-cta-section .btn-intake-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: var(--gold, #C9973A);
+  color: #fff;
+  border: 2px solid var(--gold, #C9973A);
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.intake-cta-section .btn-intake-cta:hover {
+  background: var(--gold-dark, #A07828);
+  border-color: var(--gold-dark, #A07828);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201,151,58,0.35);
+}
+
+/* ── Conditional field wrappers ───────────────────────────── */
+.conditional-block {
+  display: none;
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--gray-1, #F7F9FB);
+  border-radius: 8px;
+  border: 1px dashed var(--gray-3, #C8D0DA);
+}
+
+.conditional-block.open {
+  display: block;
+}
+
+/* ── Full-width span utility ──────────────────────────────── */
+.span-full {
+  grid-column: 1 / -1;
+}
+
+/* ── Divider ──────────────────────────────────────────────── */
+.form-divider {
+  height: 1px;
+  background: var(--gray-2, #EEF1F5);
+  margin: 20px 0;
+}
+
+/* ── Info note box ────────────────────────────────────────── */
+.info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--teal-pale, #EAF5F3);
+  border-radius: 8px;
+  border-left: 3px solid var(--teal, #2A7B6F);
+  font-size: 0.82rem;
+  color: #1a4038;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+.info-note .info-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Self-pay note ────────────────────────────────────────── */
+.self-pay-note {
+  display: none;
+  padding: 12px 16px;
+  background: var(--gold-pale, #FDF6E8);
+  border-radius: 8px;
+  border-left: 3px solid var(--gold, #C9973A);
+  font-size: 0.82rem;
+  color: #5a3a00;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+.self-pay-note.open {
+  display: block;
+}
+
+/* ── Consent all-required note ────────────────────────────── */
+.required-note {
+  font-size: 0.8rem;
+  color: var(--gray-4, #8898AA);
+  margin-bottom: 20px;
+}
+
+.required-note .req-star {
+  color: #c0392b;
+  font-weight: 700;
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE
+──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .intake-hero {
+    padding: 56px 0 40px;
+  }
+
+  .intake-hero h1 {
+    font-size: 1.65rem;
+  }
+
+  .form-row,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .intake-section-card {
+    padding: 20px 18px;
+  }
+
+  .intake-progress {
+    padding: 16px 12px 12px;
+    overflow-x: auto;
+  }
+
+  .progress-label {
+    font-size: 0.6rem;
+    max-width: 52px;
+  }
+
+  .progress-circle {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .intake-progress-inner::before {
+    top: 15px;
+  }
+
+  .consent-card {
+    padding: 16px 16px 16px 16px;
+  }
+
+  .intake-nav-btns {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .intake-nav-btns .btn-prev,
+  .intake-nav-btns .btn-next {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+
+  .intake-success {
+    padding: 40px 20px;
+  }
+
+  .certification-box {
+    padding: 20px 18px;
+  }
+
+  .hipaa-banner {
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+
+  body.intake-page .header {
+    top: 48px;
+  }
+
+  .npp-body h3 {
+    font-size: 0.97rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .intake-hero h1 {
+    font-size: 1.4rem;
+  }
+
+  .intake-container {
+    padding: 28px 16px 60px;
+  }
+
+  .intake-progress-inner::before {
+    display: none;
+  }
+
+  .progress-step {
+    min-width: 44px;
+  }
+
+  .progress-label {
+    display: none;
+  }
+}
