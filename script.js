@@ -11,9 +11,10 @@
    5. Replace the three placeholders below with your real values
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // ← replace
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // ← replace
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // ← replace
+const EMAILJS_PUBLIC_KEY       = 'YOUR_PUBLIC_KEY';        // ← replace
+const EMAILJS_SERVICE_ID       = 'YOUR_SERVICE_ID';        // ← replace
+const EMAILJS_TEMPLATE_ID      = 'YOUR_TEMPLATE_ID';       // ← replace (booking template)
+const EMAILJS_TEMPLATE_WAITLIST = 'YOUR_WAITLIST_TEMPLATE'; // ← replace (waitlist template)
 
 // Init EmailJS
 (function() {
@@ -345,7 +346,108 @@ function resetForm() {
 }
 
 
+/* ═══════════════════════════════════════════════════════════
+   COUNTDOWN TIMER — target: June 1, 2026, 9:00 AM local
+═══════════════════════════════════════════════════════════ */
+const OPENING_DATE = new Date('2026-06-01T09:00:00');
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function updateCountdown() {
+  const now  = new Date();
+  const diff = OPENING_DATE - now;
+
+  if (diff <= 0) {
+    const wrap = document.getElementById('countdown');
+    if (wrap) wrap.innerHTML = '<div class="countdown-open">&#127881; We are now open!</div>';
+    return;
+  }
+
+  const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs  = Math.floor((diff % (1000 * 60)) / 1000);
+
+  const dEl = document.getElementById('cd-days');
+  const hEl = document.getElementById('cd-hours');
+  const mEl = document.getElementById('cd-mins');
+  const sEl = document.getElementById('cd-secs');
+
+  if (dEl) dEl.textContent = pad(days);
+  if (hEl) hEl.textContent = pad(hours);
+  if (mEl) mEl.textContent = pad(mins);
+  if (sEl) sEl.textContent = pad(secs);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   WAITLIST FORM SUBMISSION → michael@goldaba.com
+═══════════════════════════════════════════════════════════ */
+async function submitWaitlist() {
+  const firstName = document.getElementById('wl-firstName').value.trim();
+  const lastName  = document.getElementById('wl-lastName').value.trim();
+  const email     = document.getElementById('wl-email').value.trim();
+  const phone     = document.getElementById('wl-phone').value.trim();
+  const state     = document.getElementById('wl-state').value;
+  const insurance = document.getElementById('wl-insurance').value.trim();
+  const message   = document.getElementById('wl-message').value.trim();
+
+  if (!firstName || !lastName) { alert('Please enter your first and last name.'); return; }
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { alert('Please enter a valid email address.'); return; }
+  if (!state) { alert('Please select your state.'); return; }
+
+  const btn = document.getElementById('wlSubmitBtn');
+  btn.disabled    = true;
+  btn.textContent = 'Submitting\u2026';
+
+  const templateParams = {
+    to_email:        'michael@goldaba.com',
+    from_name:       `${firstName} ${lastName}`,
+    from_email:      email,
+    phone:           phone || 'Not provided',
+    state:           state,
+    insurance:       insurance || 'Not provided',
+    message:         message || 'No message provided',
+    reply_to:        email,
+    submission_date: new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
+    form_type:       'Waitlist Signup',
+  };
+
+  try {
+    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_WAITLIST, templateParams);
+    } else {
+      console.log('\uD83D\uDCEC Waitlist submission (EmailJS not yet configured):', templateParams);
+      await new Promise(r => setTimeout(r, 700));
+    }
+    document.getElementById('waitlistFormCard').style.display = 'none';
+    const successEl = document.getElementById('waitlistSuccess');
+    successEl.style.display = 'block';
+    document.getElementById('wl-success-name').textContent  = firstName;
+    document.getElementById('wl-success-email').textContent = email;
+    document.getElementById('wl-success-state').textContent = state;
+  } catch (err) {
+    console.error('EmailJS waitlist error:', err);
+    btn.disabled    = false;
+    btn.textContent = '\u2605 Join the Waitlist';
+    alert('Something went wrong. Please email us directly at michael@goldaba.com');
+  }
+}
+
+function resetWaitlist() {
+  ['wl-firstName','wl-lastName','wl-email','wl-phone','wl-state','wl-insurance','wl-message']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  const btn = document.getElementById('wlSubmitBtn');
+  btn.disabled    = false;
+  btn.textContent = '\u2605 Join the Waitlist';
+  document.getElementById('waitlistSuccess').style.display  = 'none';
+  document.getElementById('waitlistFormCard').style.display = 'block';
+}
+
+
 /* ── Boot ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  initCalendar();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  if (document.getElementById('calGrid')) initCalendar();
 });

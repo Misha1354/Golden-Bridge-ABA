@@ -29,7 +29,7 @@
         <a href="#locations">Locations</a>
         <a href="#insurance">Insurance</a>
         <a href="intake.html">Intake Form</a>
-        <a href="#contact" class="nav-cta">Get Started</a>
+        <a href="#waitlist" class="nav-cta">Join Waitlist</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -45,7 +45,7 @@
       <h1>Building Brighter Futures Through <em>ABA Therapy</em></h1>
       <p class="hero-sub">Golden Bridge ABA delivers compassionate, evidence-based Applied Behavior Analysis therapy in the home and school environments where children thrive most.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">Schedule a Consultation</a>
+        <a href="#waitlist" class="btn btn-primary">&#9733; Join the Waitlist</a>
         <a href="#services" class="btn btn-outline">Learn More</a>
       </div>
       <div class="hero-stats">
@@ -263,180 +263,120 @@
     </div>
   </section>
 
-  <!-- CONTACT / BOOKING -->
-  <section class="section contact" id="contact">
+  <!-- WAITLIST -->
+  <section class="section waitlist-section" id="waitlist">
     <div class="container">
-      <div class="contact-grid">
+      <div class="waitlist-grid">
 
-        <!-- LEFT: Info panel -->
-        <div class="contact-info">
-          <div class="section-label">Book a Consultation</div>
-          <h2>Let's Start the Conversation</h2>
-          <p>Getting started is simple. Choose a date and time that works for you and we'll reach out to confirm your free consultation.</p>
-          <div class="contact-details">
-            <div class="contact-item">
-              <span class="contact-icon">&#128222;</span>
-              <div>
-                <strong>Call or Text</strong>
-                <p>Available Monday–Friday, 9am–5pm</p>
+        <!-- LEFT: Countdown & info -->
+        <div class="waitlist-info">
+          <div class="waitlist-badge">&#9733; Now Accepting Applications</div>
+          <h2>We're Opening in June&nbsp;2026</h2>
+          <p>Golden Bridge ABA is preparing to launch services in Massachusetts and New Mexico. Join our waitlist today and we'll contact you the moment we're ready to schedule your child's evaluation.</p>
+
+          <!-- Countdown timer -->
+          <div class="countdown-wrap">
+            <div class="countdown-label">Estimated opening in</div>
+            <div class="countdown-timer" id="countdown">
+              <div class="countdown-unit">
+                <span class="countdown-num" id="cd-days">--</span>
+                <span class="countdown-lbl">Days</span>
+              </div>
+              <div class="countdown-sep">:</div>
+              <div class="countdown-unit">
+                <span class="countdown-num" id="cd-hours">--</span>
+                <span class="countdown-lbl">Hours</span>
+              </div>
+              <div class="countdown-sep">:</div>
+              <div class="countdown-unit">
+                <span class="countdown-num" id="cd-mins">--</span>
+                <span class="countdown-lbl">Minutes</span>
+              </div>
+              <div class="countdown-sep">:</div>
+              <div class="countdown-unit">
+                <span class="countdown-num" id="cd-secs">--</span>
+                <span class="countdown-lbl">Seconds</span>
               </div>
             </div>
-            <div class="contact-item">
-              <span class="contact-icon">&#128140;</span>
-              <div>
-                <strong>Email Us</strong>
-                <p>michael@goldaba.com</p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="contact-icon">&#128205;</span>
-              <div>
-                <strong>Service Areas</strong>
-                <p>Massachusetts &amp; New Mexico</p>
-              </div>
-            </div>
+            <div class="countdown-date">Target opening: June 1, 2026</div>
           </div>
 
-          <!-- Step progress indicator -->
-          <div class="step-progress">
-            <div class="step-item active" id="prog-1">
-              <div class="step-dot">1</div>
-              <span>Your Info</span>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-item" id="prog-2">
-              <div class="step-dot">2</div>
-              <span>Pick a Date</span>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-item" id="prog-3">
-              <div class="step-dot">3</div>
-              <span>Pick a Time</span>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-item" id="prog-4">
-              <div class="step-dot">4</div>
-              <span>Confirm</span>
-            </div>
+          <!-- Perks list -->
+          <ul class="waitlist-perks">
+            <li><span class="perk-icon">&#10003;</span> Your spot is reserved — first come, first served</li>
+            <li><span class="perk-icon">&#10003;</span> We'll reach out the moment we're ready</li>
+            <li><span class="perk-icon">&#10003;</span> Free no-obligation consultation call</li>
+            <li><span class="perk-icon">&#10003;</span> Insurance verified before your first appointment</li>
+          </ul>
+
+          <!-- Contact info -->
+          <div class="waitlist-contact">
+            <span>&#128140;</span> Questions? Email us at
+            <a href="mailto:michael@goldaba.com">michael@goldaba.com</a>
           </div>
         </div>
 
-        <!-- RIGHT: Multi-step form -->
-        <div class="contact-form-wrap">
-
-          <!-- STEP 1: Personal Info -->
-          <div class="form-step active" id="step-1">
-            <div class="step-header">
-              <span class="step-tag">Step 1 of 4</span>
-              <h3>Tell Us About Yourself</h3>
+        <!-- RIGHT: Waitlist signup form -->
+        <div class="waitlist-form-wrap">
+          <div class="waitlist-form-card" id="waitlistFormCard">
+            <div class="waitlist-form-header">
+              <h3>Reserve Your Spot</h3>
+              <p>Takes less than 2 minutes. No payment required.</p>
             </div>
+
             <div class="form-row">
               <div class="form-group">
-                <label for="firstName">First Name *</label>
-                <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
+                <label for="wl-firstName">First Name *</label>
+                <input type="text" id="wl-firstName" placeholder="Jane" required />
               </div>
               <div class="form-group">
-                <label for="lastName">Last Name *</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Smith" required />
+                <label for="wl-lastName">Last Name *</label>
+                <input type="text" id="wl-lastName" placeholder="Smith" required />
               </div>
             </div>
             <div class="form-group">
-              <label for="email">Email Address *</label>
-              <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+              <label for="wl-email">Email Address *</label>
+              <input type="email" id="wl-email" placeholder="jane@example.com" required />
             </div>
             <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" />
+              <label for="wl-phone">Phone Number</label>
+              <input type="tel" id="wl-phone" placeholder="(555) 000-0000" />
             </div>
             <div class="form-group">
-              <label for="state">State *</label>
-              <select id="state" name="state" required>
+              <label for="wl-state">State *</label>
+              <select id="wl-state" required>
                 <option value="" disabled selected>Select your state</option>
-                <option value="MA">Massachusetts</option>
-                <option value="NM">New Mexico</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="New Mexico">New Mexico</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="message">How Can We Help?</label>
-              <textarea id="message" name="message" rows="3" placeholder="Tell us a little about your child and what you're looking for..."></textarea>
+              <label for="wl-insurance">Insurance Provider</label>
+              <input type="text" id="wl-insurance" placeholder="e.g. MassHealth, BCBS, Molina…" />
             </div>
-            <button type="button" class="btn btn-primary btn-full" onclick="goToStep(2)">Next: Choose a Date &rarr;</button>
+            <div class="form-group">
+              <label for="wl-message">Tell Us About Your Child <span class="label-opt">(optional)</span></label>
+              <textarea id="wl-message" rows="3" placeholder="Age, diagnosis, services you're looking for…"></textarea>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-full waitlist-submit-btn" id="wlSubmitBtn" onclick="submitWaitlist()">
+              &#9733; Join the Waitlist
+            </button>
+            <p class="form-note">By joining, you agree to be contacted by Golden Bridge ABA. We will never share your information.</p>
           </div>
 
-          <!-- STEP 2: Calendar -->
-          <div class="form-step" id="step-2">
-            <div class="step-header">
-              <span class="step-tag">Step 2 of 4</span>
-              <h3>Select a Date</h3>
-              <p class="step-sub">Consultations available Monday – Friday</p>
+          <!-- Success state -->
+          <div class="waitlist-success" id="waitlistSuccess" style="display:none;">
+            <div class="wl-success-icon">&#10003;</div>
+            <h3>You're on the List!</h3>
+            <p>Thank you, <strong id="wl-success-name">there</strong>! We've saved your spot and will reach out to <strong id="wl-success-email"></strong> as soon as we're ready to schedule.</p>
+            <div class="wl-success-note">
+              <span>&#128205;</span> <span id="wl-success-state"></span> &nbsp;|&nbsp; <span>&#128140;</span> michael@goldaba.com
             </div>
-            <div class="calendar-wrap">
-              <div class="cal-nav">
-                <button type="button" class="cal-nav-btn" id="prevMonth">&#8592;</button>
-                <span class="cal-month-label" id="calMonthLabel"></span>
-                <button type="button" class="cal-nav-btn" id="nextMonth">&#8594;</button>
-              </div>
-              <div class="cal-dow">
-                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-              </div>
-              <div class="cal-grid" id="calGrid"></div>
-            </div>
-            <div class="step-footer">
-              <button type="button" class="btn btn-ghost" onclick="goToStep(1)">&larr; Back</button>
-              <button type="button" class="btn btn-primary" id="toStep3Btn" onclick="goToStep(3)" disabled>Next: Choose a Time &rarr;</button>
-            </div>
+            <button type="button" class="btn btn-outline-dark" onclick="resetWaitlist()">Submit Another</button>
           </div>
-
-          <!-- STEP 3: Time Slots -->
-          <div class="form-step" id="step-3">
-            <div class="step-header">
-              <span class="step-tag">Step 3 of 4</span>
-              <h3>Select a Time</h3>
-              <p class="step-sub" id="selectedDateLabel">—</p>
-            </div>
-            <div class="time-slots" id="timeSlots"></div>
-            <div class="step-footer">
-              <button type="button" class="btn btn-ghost" onclick="goToStep(2)">&larr; Back</button>
-              <button type="button" class="btn btn-primary" id="toStep4Btn" onclick="goToStep(4)" disabled>Next: Confirm &rarr;</button>
-            </div>
-          </div>
-
-          <!-- STEP 4: Review & Confirm -->
-          <div class="form-step" id="step-4">
-            <div class="step-header">
-              <span class="step-tag">Step 4 of 4</span>
-              <h3>Review &amp; Confirm</h3>
-              <p class="step-sub">Please review your details before submitting.</p>
-            </div>
-            <div class="review-card">
-              <div class="review-row"><span>Name</span><strong id="rev-name">—</strong></div>
-              <div class="review-row"><span>Email</span><strong id="rev-email">—</strong></div>
-              <div class="review-row"><span>Phone</span><strong id="rev-phone">—</strong></div>
-              <div class="review-row"><span>State</span><strong id="rev-state">—</strong></div>
-              <div class="review-row"><span>Date</span><strong id="rev-date">—</strong></div>
-              <div class="review-row"><span>Time</span><strong id="rev-time">—</strong></div>
-              <div class="review-row review-row-msg"><span>Message</span><strong id="rev-message">—</strong></div>
-            </div>
-            <div class="step-footer">
-              <button type="button" class="btn btn-ghost" onclick="goToStep(3)">&larr; Back</button>
-              <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitBooking()">&#10003; Confirm Booking</button>
-            </div>
-          </div>
-
-          <!-- SUCCESS STATE -->
-          <div class="form-step" id="step-success" style="display:none;">
-            <div class="form-success">
-              <div class="success-icon">&#10003;</div>
-              <h3>You're Booked!</h3>
-              <p>A confirmation has been sent to <strong id="success-email">your email</strong>. Our team will reach out to confirm your appointment.</p>
-              <div class="success-details">
-                <p id="success-datetime"></p>
-              </div>
-              <button type="button" class="btn btn-outline-dark" onclick="resetForm()">Schedule Another</button>
-            </div>
-          </div>
-
         </div>
+
       </div>
     </div>
   </section>
@@ -444,11 +384,10 @@
   <!-- INTAKE FORM CTA -->
   <section class="intake-cta-section">
     <div class="intake-cta-inner">
-      <h3>Already Scheduled? Complete Your Intake Form</h3>
+      <h3>Already on the Waitlist? Get a Head Start</h3>
       <p>
-        Save time at your first appointment by completing your client intake form online.
-        It takes about 10&ndash;15 minutes and helps our clinical team prepare a personalized
-        care plan for your child before your first session.
+        Complete your client intake form now so we can hit the ground running when we open.
+        It takes about 10–15 minutes and helps our clinical team prepare a personalized care plan for your child.
       </p>
       <a href="intake.html" class="btn-intake-cta">
         &#128274; Complete Intake Form &rarr;
@@ -473,7 +412,7 @@
         <a href="#locations">Locations</a>
         <a href="#insurance">Insurance</a>
         <a href="intake.html">Intake Form</a>
-        <a href="#contact">Contact</a>
+        <a href="#waitlist">Join Waitlist</a>
       </div>
       <div class="footer-locations">
         <h4>Serving</h4>
