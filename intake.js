@@ -16,6 +16,16 @@ const EMAILJS_PUBLIC_KEY         = 'btXpytjzt6k7rwIQ5';
 const EMAILJS_SERVICE_ID         = 'service_i6ba13z';
 const EMAILJS_TEMPLATE_INTAKE_ID = 'template_7sej6cs';
 
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
+function sendToSheet(data) {
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).catch(err => console.warn('Sheet sync failed:', err));
+}
+
 // ── Init EmailJS ──────────────────────────────────────────
 (function () {
   if (typeof emailjs !== 'undefined') {
@@ -477,6 +487,14 @@ async function submitIntake() {
     // Full dump for reference
     full_submission:   JSON.stringify(data, null, 2),
   };
+
+  sendToSheet({
+    form:    'Intake',
+    name:    data.guardian_name  || '',
+    email:   data.guardian_email || '',
+    phone:   data.guardian_phone || '',
+    message: [data.patient_name, data.diagnosis, data.therapy_goals].filter(Boolean).join(' | '),
+  });
 
   try {
     if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {

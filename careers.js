@@ -7,6 +7,16 @@ const EMAILJS_PUBLIC_KEY        = 'btXpytjzt6k7rwIQ5';
 const EMAILJS_SERVICE_ID        = 'service_i6ba13z';
 const EMAILJS_TEMPLATE_CAREERS  = 'template_7sej6cs';
 
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
+function sendToSheet(data) {
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).catch(err => console.warn('Sheet sync failed:', err));
+}
+
 (function () {
   if (typeof emailjs !== 'undefined') {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -89,6 +99,14 @@ async function submitApplication() {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     }),
   };
+
+  sendToSheet({
+    form:    'Career Application',
+    name:    `${firstName} ${lastName}`,
+    email:   email,
+    phone:   phone,
+    message: [role, experience, message].filter(Boolean).join(' | '),
+  });
 
   try {
     if (typeof emailjs !== 'undefined') {

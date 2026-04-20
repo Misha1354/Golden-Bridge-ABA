@@ -16,6 +16,18 @@ const EMAILJS_SERVICE_ID        = 'service_i6ba13z';
 const EMAILJS_TEMPLATE_ID       = 'template_7sej6cs';
 const EMAILJS_TEMPLATE_WAITLIST = 'template_7sej6cs';
 
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
+
+/* Send form data to Google Sheet (fire-and-forget) */
+function sendToSheet(data) {
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).catch(err => console.warn('Sheet sync failed:', err));
+}
+
 // Init EmailJS
 (function() {
   if (typeof emailjs !== 'undefined') {
@@ -414,6 +426,13 @@ async function submitWaitlist() {
   };
 
   try {
+    sendToSheet({
+      form:    'Waitlist',
+      name:    `${firstName} ${lastName}`,
+      email:   email,
+      phone:   phone || '',
+      message: [state, insurance, message].filter(Boolean).join(' | '),
+    });
     if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_WAITLIST, templateParams);
     } else {
