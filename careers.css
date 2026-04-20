@@ -1,0 +1,361 @@
+/* =============================================================
+   careers.css — Golden Bridge ABA Careers Page
+   Complements styles.css. Uses the same CSS variables.
+============================================================= */
+
+/* ── Force scrolled header state on careers page ────────── */
+body.careers-page .header {
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 0;
+}
+body.careers-page .header .logo { color: var(--navy); }
+body.careers-page .header .nav a:not(.nav-cta) { color: var(--slate); }
+body.careers-page .header .nav a:not(.nav-cta):hover { color: var(--gold); }
+body.careers-page .header .hamburger span { background: var(--navy); }
+body.careers-page .header .nav-active { color: var(--gold) !important; font-weight: 700; }
+
+/* ── Hero ────────────────────────────────────────────────── */
+.careers-hero {
+  position: relative;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 0 90px;
+  overflow: hidden;
+}
+
+.careers-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1A2A3A 0%, #2A4A5A 45%, #1E3D30 100%);
+  z-index: 0;
+}
+.careers-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 80% 40%, rgba(201,151,58,0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 50% at 15% 75%, rgba(42,123,111,0.2) 0%, transparent 55%);
+}
+.careers-hero-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to top, var(--white), transparent);
+  z-index: 1;
+}
+
+.careers-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+
+.careers-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,151,58,0.18);
+  border: 1px solid rgba(201,151,58,0.4);
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 22px;
+}
+
+.careers-hero-content h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  color: var(--white);
+  margin-bottom: 18px;
+  line-height: 1.18;
+}
+.careers-hero-content h1 em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+.careers-hero-content p {
+  font-size: 1.08rem;
+  color: rgba(255,255,255,0.76);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 540px;
+}
+
+/* ── Why Join Us ─────────────────────────────────────────── */
+.careers-why { background: var(--gray-1); }
+
+.careers-why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.careers-why-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 26px;
+  border: 1px solid var(--gray-2);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.careers-why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.careers-why-icon {
+  font-size: 2rem;
+  margin-bottom: 14px;
+  display: block;
+}
+.careers-why-card h4 {
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.careers-why-card p {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* ── Job Listings ────────────────────────────────────────── */
+.careers-openings { background: var(--white); }
+
+.job-listings {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.job-card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
+}
+.job-card:hover { box-shadow: var(--shadow-md); }
+
+.job-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 36px;
+  background: linear-gradient(to right, var(--gold-pale), #fff);
+  border-bottom: 1.5px solid var(--gray-2);
+  flex-wrap: wrap;
+}
+
+.job-title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.job-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.job-title-wrap h3 {
+  font-size: 1.35rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.job-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 50px;
+  background: var(--teal-pale);
+  color: var(--teal);
+}
+.job-tag-type {
+  background: rgba(201,151,58,0.12);
+  color: var(--gold-dark);
+}
+
+.job-pay {
+  text-align: right;
+  flex-shrink: 0;
+}
+.job-pay-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  line-height: 1;
+  white-space: nowrap;
+}
+.job-pay-label {
+  font-size: 0.78rem;
+  color: var(--gray-4);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  display: block;
+}
+
+.job-body {
+  padding: 32px 36px;
+}
+
+.job-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.job-section { margin-bottom: 0; }
+.job-section h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 12px;
+}
+.job-section > p {
+  color: var(--text-light);
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+.job-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.job-section li {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.job-section li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.job-card-footer {
+  padding: 24px 36px;
+  background: var(--gray-1);
+  border-top: 1.5px solid var(--gray-2);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.job-apply-btn { padding: 13px 32px; }
+
+/* ── Application Form ────────────────────────────────────── */
+.careers-apply { background: var(--gray-1); }
+
+.apply-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 72px;
+  align-items: start;
+}
+
+.apply-info h2 {
+  font-size: clamp(1.7rem, 2.5vw, 2.3rem);
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+.apply-info > p {
+  color: var(--text-light);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.apply-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.apply-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.93rem;
+  color: var(--slate);
+  font-weight: 500;
+}
+
+.apply-form-wrap {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  border: 1px solid var(--gray-2);
+  box-shadow: var(--shadow-sm);
+}
+.apply-form-wrap h3 {
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+.apply-success {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 56px 36px;
+  text-align: center;
+  border: 1px solid var(--gray-2);
+  box-shadow: var(--shadow-sm);
+  animation: stepIn 0.35s ease;
+}
+.apply-success h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 12px; }
+.apply-success > p { color: var(--text-light); line-height: 1.7; margin-bottom: 28px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .careers-why-grid { grid-template-columns: repeat(2, 1fr); }
+  .apply-grid { gap: 48px; }
+}
+
+@media (max-width: 768px) {
+  .careers-hero { padding: 120px 0 70px; }
+  .careers-why-grid { grid-template-columns: 1fr 1fr; }
+
+  .job-card-header { flex-direction: column; gap: 16px; }
+  .job-pay { text-align: left; }
+  .job-body, .job-card-footer, .job-card-header { padding: 24px 24px; }
+  .job-columns { grid-template-columns: 1fr; gap: 20px; }
+  .job-card-footer { justify-content: stretch; }
+  .job-apply-btn { width: 100%; justify-content: center; }
+
+  .apply-grid { grid-template-columns: 1fr; gap: 36px; }
+  .apply-form-wrap { padding: 32px 24px; }
+  .apply-success { padding: 40px 24px; }
+}
+
+@media (max-width: 480px) {
+  .careers-why-grid { grid-template-columns: 1fr; }
+}
