@@ -1,27 +1,19 @@
 /* =============================================================
    careers.js — Golden Bridge ABA Careers Page
-   Application form → michael@goldaba.com via EmailJS
+   All submissions POST JSON to the Google Apps Script endpoint,
+   which logs to the Sheet and emails michael@goldaba.com.
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY        = 'btXpytjzt6k7rwIQ5';
-const EMAILJS_SERVICE_ID        = 'service_i6ba13z';
-const EMAILJS_TEMPLATE_CAREERS  = 'template_7sej6cs';
+const SERVER_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
 
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
-function sendToSheet(data) {
-  fetch(SHEET_URL, {
+async function sendToServer(data) {
+  await fetch(SERVER_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).catch(err => console.warn('Sheet sync failed:', err));
+  });
 }
-
-(function () {
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  }
-})();
 
 /* ── Mobile menu ───────────────────────────────────────────── */
 const hamburger = document.getElementById('hamburger');
@@ -84,37 +76,18 @@ async function submitApplication() {
   btn.disabled    = true;
   btn.textContent = 'Submitting\u2026';
 
-  const templateParams = {
-    to_email:        'michael@goldaba.com',
-    form_type:       'Career Application',
-    position:        role,
-    from_name:       `${firstName} ${lastName}`,
-    from_email:      email,
-    phone:           phone,
-    state:           state,
-    experience:      experience,
-    message:         message,
-    reply_to:        email,
-    submission_date: new Date().toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    }),
-  };
-
-  sendToSheet({
-    form:    'Career Application',
-    name:    `${firstName} ${lastName}`,
-    email:   email,
-    phone:   phone,
-    message: [role, experience, message].filter(Boolean).join(' | '),
-  });
-
   try {
-    if (typeof emailjs !== 'undefined') {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CAREERS, templateParams);
-    } else {
-      console.log('\uD83D\uDCEC Career application (EmailJS unavailable):', templateParams);
-      await new Promise(r => setTimeout(r, 700));
-    }
+    await sendToServer({
+      form:       'Career Application',
+      name:       `${firstName} ${lastName}`,
+      email:      email,
+      phone:      phone,
+      state:      state,
+      position:   role,
+      experience: experience,
+      message:    message,
+      submitted:  new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
+    });
 
     document.getElementById('applyFormWrap').style.display = 'none';
     const successEl = document.getElementById('applySuccess');
@@ -123,7 +96,7 @@ async function submitApplication() {
     document.getElementById('apply-success-role').textContent = role;
 
   } catch (err) {
-    console.error('EmailJS error:', err);
+    console.error('Submission error:', err);
     btn.disabled    = false;
     btn.textContent = 'Submit Application';
     alert('Something went wrong. Please email us directly at michael@goldaba.com');

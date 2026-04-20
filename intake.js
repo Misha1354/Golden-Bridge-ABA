@@ -1,37 +1,22 @@
 /* =============================================================
    intake.js — Golden Bridge ABA Client Intake Form
-   EmailJS sends all submissions to michael@goldaba.com
+   All submissions POST JSON to the Google Apps Script endpoint,
+   which logs to the Sheet and emails michael@goldaba.com.
 
-   NOTE: For full HIPAA compliance, this form must be served
-   over HTTPS and EmailJS must have a signed BAA. Consider a
-   HIPAA-compliant form service (Jotform HIPAA, Formstack) for
-   production use.
-
-   SETUP: Match these to your EmailJS account values.
-   The intake template should have "To Email" set to:
-     michael@goldaba.com
+   NOTE: For full HIPAA compliance this form must be served
+   over HTTPS.
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY         = 'btXpytjzt6k7rwIQ5';
-const EMAILJS_SERVICE_ID         = 'service_i6ba13z';
-const EMAILJS_TEMPLATE_INTAKE_ID = 'template_7sej6cs';
+const SERVER_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
 
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
-function sendToSheet(data) {
-  fetch(SHEET_URL, {
+async function sendToServer(data) {
+  await fetch(SERVER_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).catch(err => console.warn('Sheet sync failed:', err));
+  });
 }
-
-// ── Init EmailJS ──────────────────────────────────────────
-(function () {
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  }
-})();
 
 // ── State ─────────────────────────────────────────────────
 let currentIntakeStep = 1;
@@ -434,81 +419,51 @@ async function submitIntake() {
 
   const data = collectFormData();
 
-  // Build a comprehensive email-safe template params object
-  const templateParams = {
-    to_email:          'michael@goldaba.com',
-    reply_to:          data.guardian_email || 'N/A',
-    submission_date:   data.submission_date,
-
-    // Core identifiers
-    patient_name:      data.patient_name,
-    dob:               data.dob,
-    diagnosis:         data.diagnosis,
-    primary_language:  data.primary_language,
-    school_enrolled:   data.school_enrolled,
-
-    // Guardian
-    guardian_name:     data.guardian_name,
-    guardian_email:    data.guardian_email,
-    guardian_phone:    data.guardian_phone,
-    guardian_rel:      data.guardian_rel,
-    address:           `${data.address1}${data.address2 ? ', ' + data.address2 : ''}, ${data.city}, ${data.state} ${data.zip}`,
-
-    // Insurance
-    insurance_company: data.insurance_company,
-    member_id:         data.member_id,
-    plan_type:         data.plan_type,
-    subscriber_name:   data.subscriber_name,
-
-    // Clinical
-    medications:       data.medications,
-    allergies:         data.allergies,
-    therapy_goals:     data.therapy_goals,
-    target_areas:      data.target_areas,
-    co_occurring:      data.co_occurring,
-    other_therapies:   data.other_therapies,
-    prev_aba:          data.prev_aba,
-
-    // Emergency
-    ec1_name:          data.ec1_name,
-    ec1_phone:         data.ec1_phone,
-
-    // Consents
-    consents_given:    data.consents_given,
-
-    // Signature
-    sig_name:          data.sig_name,
-    sig_relationship:  data.sig_relationship,
-    sig_date:          data.sig_date,
-    photo_release:     data.photo_release,
-    referral_source:   data.referral_source,
-    additional_notes:  data.additional_notes,
-
-    // Full dump for reference
-    full_submission:   JSON.stringify(data, null, 2),
-  };
-
-  sendToSheet({
-    form:    'Intake',
-    name:    data.guardian_name  || '',
-    email:   data.guardian_email || '',
-    phone:   data.guardian_phone || '',
-    message: [data.patient_name, data.diagnosis, data.therapy_goals].filter(Boolean).join(' | '),
-  });
-
   try {
-    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_INTAKE_ID, templateParams);
-    } else {
-      // Dev fallback — simulates send when EmailJS not configured
-      console.log('📋 Intake Submission (EmailJS not yet configured):', templateParams);
-      await new Promise(r => setTimeout(r, 1000));
-    }
+    await sendToServer({
+      form:             'Intake',
+      // Guardian / contact
+      name:             data.guardian_name      || '',
+      email:            data.guardian_email     || '',
+      phone:            data.guardian_phone     || '',
+      guardian_rel:     data.guardian_rel       || '',
+      address:          `${data.address1}${data.address2 ? ', ' + data.address2 : ''}, ${data.city}, ${data.state} ${data.zip}`,
+      // Patient
+      patient_name:     data.patient_name       || '',
+      dob:              data.dob                || '',
+      diagnosis:        data.diagnosis          || '',
+      primary_language: data.primary_language   || '',
+      school_enrolled:  data.school_enrolled    || '',
+      // Insurance
+      insurance_company: data.insurance_company || '',
+      member_id:        data.member_id          || '',
+      plan_type:        data.plan_type          || '',
+      subscriber_name:  data.subscriber_name    || '',
+      // Clinical
+      medications:      data.medications        || '',
+      allergies:        data.allergies          || '',
+      therapy_goals:    data.therapy_goals      || '',
+      target_areas:     data.target_areas       || '',
+      co_occurring:     data.co_occurring       || '',
+      other_therapies:  data.other_therapies    || '',
+      prev_aba:         data.prev_aba           || '',
+      // Emergency
+      ec1_name:         data.ec1_name           || '',
+      ec1_phone:        data.ec1_phone          || '',
+      // Consents & signature
+      consents_given:   data.consents_given     || '',
+      sig_name:         data.sig_name           || '',
+      sig_relationship: data.sig_relationship   || '',
+      photo_release:    data.photo_release      || '',
+      referral_source:  data.referral_source    || '',
+      additional_notes: data.additional_notes   || '',
+      submitted:        data.submission_date    || new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
+    });
     showIntakeSuccess(data.guardian_name, data.patient_name);
   } catch (err) {
-    console.error('EmailJS intake error:', err);
+    console.error('Submission error:', err);
     if (btn) {
-      btn.disabled = false;
+      btn.disabled  = false;
       btn.innerHTML = '&#10003; Submit Intake Form';
     }
     alert('Something went wrong while submitting the form. Please try again or email us directly at michael@goldaba.com');

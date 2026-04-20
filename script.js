@@ -1,39 +1,20 @@
 /* =============================================================
    Golden Bridge ABA — script.js
-   EmailJS setup (5 min — free tier is enough):
-   1. Go to https://emailjs.com and create a free account
-   2. Add an Email Service (Gmail works great) → copy Service ID
-   3. Create an Email Template — use these template variables:
-        {{from_name}}, {{from_email}}, {{phone}}, {{state}},
-        {{appt_date}}, {{appt_time}}, {{message}}
-      Set "To Email" in the template to: michael@goldaba.com
-   4. Go to Account → API Keys → copy your Public Key
-   5. Replace the three placeholders below with your real values
+   All form submissions POST JSON to the Google Apps Script
+   endpoint, which logs to the Sheet and emails
+   michael@goldaba.com — no third-party SDK required.
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY        = 'btXpytjzt6k7rwIQ5';
-const EMAILJS_SERVICE_ID        = 'service_i6ba13z';
-const EMAILJS_TEMPLATE_ID       = 'template_7sej6cs';
-const EMAILJS_TEMPLATE_WAITLIST = 'template_7sej6cs';
+const SERVER_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
 
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
-
-/* Send form data to Google Sheet (fire-and-forget) */
-function sendToSheet(data) {
-  fetch(SHEET_URL, {
+async function sendToServer(data) {
+  await fetch(SERVER_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).catch(err => console.warn('Sheet sync failed:', err));
+  });
 }
-
-// Init EmailJS
-(function() {
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  }
-})();
 
 
 /* ── Sticky header ─────────────────────────────────────────── */
@@ -288,30 +269,22 @@ async function submitBooking() {
   const msg     = document.getElementById('message').value.trim();
   const dateStr = selectedDate ? formatDate(selectedDate) : '—';
 
-  const templateParams = {
-    to_email:   'michael@goldaba.com',
-    from_name:  `${first} ${last}`,
-    from_email: email,
-    phone:      phone || 'Not provided',
-    state:      state,
-    appt_date:  dateStr,
-    appt_time:  selectedTime,
-    message:    msg || 'No message provided',
-    reply_to:   email,
-  };
-
   try {
-    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-    } else {
-      // Dev fallback — log to console until EmailJS credentials are configured
-      console.log('📬 Booking submission (EmailJS not yet configured):', templateParams);
-      await new Promise(r => setTimeout(r, 800)); // simulate delay
-    }
+    await sendToServer({
+      form:      'Consultation Booking',
+      name:      `${first} ${last}`,
+      email:     email,
+      phone:     phone || '',
+      state:     state,
+      appt_date: dateStr,
+      appt_time: selectedTime,
+      message:   msg || '',
+      submitted: new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
+    });
     showSuccess(email, dateStr, selectedTime);
   } catch (err) {
-    console.error('EmailJS error:', err);
-    btn.disabled   = false;
+    console.error('Submission error:', err);
+    btn.disabled    = false;
     btn.textContent = '✓ Confirm Booking';
     alert('Something went wrong. Please try again or email us directly at michael@goldaba.com');
   }
@@ -412,33 +385,17 @@ async function submitWaitlist() {
   btn.disabled    = true;
   btn.textContent = 'Submitting\u2026';
 
-  const templateParams = {
-    to_email:        'michael@goldaba.com',
-    from_name:       `${firstName} ${lastName}`,
-    from_email:      email,
-    phone:           phone || 'Not provided',
-    state:           state,
-    insurance:       insurance || 'Not provided',
-    message:         message || 'No message provided',
-    reply_to:        email,
-    submission_date: new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
-    form_type:       'Waitlist Signup',
-  };
-
   try {
-    sendToSheet({
-      form:    'Waitlist',
-      name:    `${firstName} ${lastName}`,
-      email:   email,
-      phone:   phone || '',
-      message: [state, insurance, message].filter(Boolean).join(' | '),
+    await sendToServer({
+      form:      'Waitlist',
+      name:      `${firstName} ${lastName}`,
+      email:     email,
+      phone:     phone || '',
+      state:     state,
+      insurance: insurance || '',
+      message:   message || '',
+      submitted: new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }),
     });
-    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_WAITLIST, templateParams);
-    } else {
-      console.log('\uD83D\uDCEC Waitlist submission (EmailJS not yet configured):', templateParams);
-      await new Promise(r => setTimeout(r, 700));
-    }
     document.getElementById('waitlistFormCard').style.display = 'none';
     const successEl = document.getElementById('waitlistSuccess');
     successEl.style.display = 'block';
@@ -446,7 +403,7 @@ async function submitWaitlist() {
     document.getElementById('wl-success-email').textContent = email;
     document.getElementById('wl-success-state').textContent = state;
   } catch (err) {
-    console.error('EmailJS waitlist error:', err);
+    console.error('Submission error:', err);
     btn.disabled    = false;
     btn.textContent = '\u2605 Join the Waitlist';
     alert('Something went wrong. Please email us directly at michael@goldaba.com');
