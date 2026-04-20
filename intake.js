@@ -12,9 +12,9 @@
      michael@goldaba.com
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY         = 'YOUR_PUBLIC_KEY';       // ← replace
-const EMAILJS_SERVICE_ID         = 'YOUR_SERVICE_ID';       // ← replace
-const EMAILJS_TEMPLATE_INTAKE_ID = 'YOUR_INTAKE_TEMPLATE_ID'; // ← replace
+const EMAILJS_PUBLIC_KEY         = 'btXpytjzt6k7rwIQ5';
+const EMAILJS_SERVICE_ID         = 'service_i6ba13z';
+const EMAILJS_TEMPLATE_INTAKE_ID = 'template_7sej6cs';
 
 // ── Init EmailJS ──────────────────────────────────────────
 (function () {

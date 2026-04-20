@@ -11,10 +11,10 @@
    5. Replace the three placeholders below with your real values
 ============================================================= */
 
-const EMAILJS_PUBLIC_KEY       = 'YOUR_PUBLIC_KEY';        // ← replace
-const EMAILJS_SERVICE_ID       = 'YOUR_SERVICE_ID';        // ← replace
-const EMAILJS_TEMPLATE_ID      = 'YOUR_TEMPLATE_ID';       // ← replace (booking template)
-const EMAILJS_TEMPLATE_WAITLIST = 'YOUR_WAITLIST_TEMPLATE'; // ← replace (waitlist template)
+const EMAILJS_PUBLIC_KEY        = 'btXpytjzt6k7rwIQ5';
+const EMAILJS_SERVICE_ID        = 'service_i6ba13z';
+const EMAILJS_TEMPLATE_ID       = 'template_7sej6cs';
+const EMAILJS_TEMPLATE_WAITLIST = 'template_7sej6cs';
 
 // Init EmailJS
 (function() {
