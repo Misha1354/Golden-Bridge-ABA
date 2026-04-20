@@ -13,7 +13,7 @@ async function sendToServer(data) {
   await fetch(SERVER_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(data),
   });
 }

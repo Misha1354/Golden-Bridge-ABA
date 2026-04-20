@@ -8,10 +8,12 @@
 const SERVER_URL = 'https://script.google.com/macros/s/AKfycbyCfdqo6q05CLKxyBQdnfisKIa9tcOlGbUdFTqAkzfVnueUqOpuCILO5DJ4kiCX-mFx/exec';
 
 async function sendToServer(data) {
+  // Content-Type must be text/plain for no-cors mode (avoids CORS preflight).
+  // GAS receives the raw body and we JSON.parse() it on that side.
   await fetch(SERVER_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(data),
   });
 }
