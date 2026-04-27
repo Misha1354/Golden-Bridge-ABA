@@ -1,642 +1,649 @@
-/* ============================================================
-   ABA Clinical Assessment Tool — assessment.js
-   Golden Bridge ABA LLC — Staff Only
-   ============================================================ */
+/* =============================================================
+   assessment.js — Golden Bridge ABA Staff Assessment Tool
+   Builds UI, autosave, and generates a branded multi-page PDF
+   matching the "Initial Assessment Summary & Treatment Plan" template.
+============================================================= */
 
-'use strict';
+/* ── Goal domains (4 domains × 2 goals) ───────────────────── */
+const GOAL_DOMAINS = [
+  { key: 'comm', label: 'Communication Skills' },
+  { key: 'soc',  label: 'Social Skills' },
+  { key: 'dls',  label: 'Daily Living Skills' },
+  { key: 'mal',  label: 'Maladaptive, Repetitive, and/or Stereotypical Behaviors' },
+];
 
-// ==================== SECTION NAVIGATION ====================
+const GOAL_DEFAULTS = {
+  mastery:       '90% independence over 3 days, with 2 people',
+  maintenance:   '90% independence for probe data over 3 months, with 2 people',
+  generalization:'90% independence for probe data across instructors, settings, time frame and stimuli',
+  data:          'DTT, duration, frequency, Task Analysis',
+};
 
-let currentSection = 0;
-const TOTAL = 10;
-
-function goTo(n) {
-  document.getElementById('s' + currentSection).classList.remove('active');
-  document.getElementById('nav-' + currentSection).classList.remove('active');
-  currentSection = Math.max(0, Math.min(n, TOTAL - 1));
-  document.getElementById('s' + currentSection).classList.add('active');
-  document.getElementById('nav-' + currentSection).classList.add('active');
-  document.querySelector('.content').scrollTo(0, 0);
-  updateProgress();
-  updateNavButtons();
-}
-
-function updateProgress() {
-  const pct = ((currentSection + 1) / TOTAL) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent =
-    'Section ' + (currentSection + 1) + ' of ' + TOTAL;
-}
-
-function updateNavButtons() {
-  document.getElementById('backBtn').style.visibility =
-    currentSection === 0 ? 'hidden' : 'visible';
-  document.getElementById('nextBtn').textContent =
-    currentSection === TOTAL - 1 ? 'Review & Download' : 'Next →';
-}
-
-// ==================== CPT TOTAL CALC ====================
-
-const CPT_CODES = ['97151', '97152', '97153', '97154', '97155', '97156', '97157'];
-
-function calcCptTotal() {
-  let total = 0;
-  CPT_CODES.forEach(function (code) {
-    const el = document.getElementById('cpt-' + code);
-    if (el && el.value !== '') {
-      total += parseFloat(el.value) || 0;
-    }
+/* ── Build goal blocks ────────────────────────────────────── */
+function buildGoals() {
+  const c = document.getElementById('goalsContainer');
+  let html = '';
+  GOAL_DOMAINS.forEach(d => {
+    html += `<h4>${d.label}</h4>
+      <div class="field"><label>Outcome</label>
+        <input type="text" id="goal_${d.key}_outcome" value="Remediate deficits identified above">
+      </div>`;
+    [1, 2].forEach(n => {
+      const id = `goal_${d.key}_${n}`;
+      html += `<div class="goal-block">
+        <div class="goal-title">Goal ${n}</div>
+        <div class="field"><label>Description</label>
+          <span class="helper">Operationally defined goal — be specific, include number of targets.</span>
+          <textarea id="${id}_desc" class="fill-required" placeholder="[operationally defined goal]"></textarea></div>
+        <div class="grid-2">
+          <div class="field"><label>Baseline</label>
+            <input type="text" id="${id}_base" class="fill-required" placeholder="[baseline + date]"></div>
+          <div class="field"><label>Date of Mastery</label>
+            <input type="date" id="${id}_date"></div>
+        </div>
+        <div class="field"><label>Mastery Criteria</label>
+          <input type="text" id="${id}_mastery" value="${GOAL_DEFAULTS.mastery}"></div>
+        <div class="field"><label>Maintenance Criteria</label>
+          <input type="text" id="${id}_maint" value="${GOAL_DEFAULTS.maintenance}"></div>
+        <div class="field"><label>Generalization Criteria</label>
+          <input type="text" id="${id}_gen" value="${GOAL_DEFAULTS.generalization}"></div>
+        <div class="field"><label>Type of Data Collection</label>
+          <input type="text" id="${id}_data" value="${GOAL_DEFAULTS.data}"></div>
+      </div>`;
+    });
   });
-  document.getElementById('cptTotal').textContent = total % 1 === 0 ? total : total.toFixed(1);
+  c.innerHTML = html;
 }
 
-// ==================== FORM VALUE HELPERS ====================
+/* ── Build Parent Training goals (3) ─────────────────────── */
+function buildPTGoals() {
+  const c = document.getElementById('ptGoalsContainer');
+  let html = '';
+  [1, 2, 3].forEach(n => {
+    html += `<div class="goal-block">
+      <div class="goal-title">Parent Training Goal ${n}</div>
+      <div class="field"><label>Description</label>
+        <textarea id="pt${n}_desc" class="fill-required" placeholder="[goal description]"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Baseline</label>
+          <input type="text" id="pt${n}_base" class="fill-required" placeholder="[baseline]"></div>
+        <div class="field"><label>Date of Mastery</label>
+          <input type="date" id="pt${n}_date"></div>
+      </div>
+      <div class="field"><label>Mastery Criteria</label>
+        <input type="text" id="pt${n}_mastery" value="90% independence over 3 days, with 2 people"></div>
+      <div class="field"><label>Type of Data Collection</label>
+        <input type="text" id="pt${n}_data" value="Probe Data"></div>
+    </div>`;
+  });
+  c.innerHTML = html;
+}
 
-const v = function (id) {
-  return (document.getElementById(id) ? document.getElementById(id).value || '' : '').trim();
-};
+/* ── Nav ──────────────────────────────────────────────────── */
+function initNav() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sec = btn.dataset.sec;
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.section[data-sec="${sec}"]`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
 
-const chips = function (id) {
-  return [...document.querySelectorAll('#' + id + ' .chip.selected')]
-    .map(function (c) { return c.dataset.value; })
-    .join(' · ');
-};
+/* ── FBA option select ───────────────────────────────────── */
+function initFBA() {
+  document.querySelectorAll('.fba-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.fba-opt').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('fba_choice').value = el.dataset.opt;
+      saveDraft();
+    });
+  });
+}
 
-// ==================== PDF GENERATION ====================
+/* ── Autosave (localStorage) ─────────────────────────────── */
+const LS_KEY = 'gbaba_assessment_draft_v2';
+function collectAll() {
+  const data = {};
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.id) return;
+    data[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
+  });
+  data._fba = document.getElementById('fba_choice').value;
+  return data;
+}
+function saveDraft() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(collectAll())); } catch(e){}
+}
+function loadDraft(alertIfNone) {
+  const raw = localStorage.getItem(LS_KEY);
+  if (!raw) { if (alertIfNone) alert('No saved draft found.'); return; }
+  try {
+    const data = JSON.parse(raw);
+    Object.entries(data).forEach(([k, v]) => {
+      const el = document.getElementById(k);
+      if (!el) return;
+      if (el.type === 'checkbox') el.checked = !!v; else el.value = v;
+    });
+    if (data._fba) {
+      document.querySelectorAll('.fba-opt').forEach(x => x.classList.remove('selected'));
+      const o = document.querySelector(`.fba-opt[data-opt="${data._fba}"]`);
+      if (o) o.classList.add('selected');
+    }
+  } catch(e){}
+}
+function clearAll() {
+  if (!confirm('Clear all fields and the saved draft? This cannot be undone.')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
 
+/* ── Helpers ──────────────────────────────────────────────── */
+const v   = id => (document.getElementById(id)?.value || '').trim();
+const chk = id => !!document.getElementById(id)?.checked;
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+/* =============================================================
+   PDF GENERATION — boxed, tabular layout mirroring goldaba2.pdf
+   Every field is rendered as a two-column bordered row (label
+   on shaded left ~32% / value on right ~68%) grouped under a
+   full-width section header bar.
+============================================================= */
 function generatePDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+  const PAGE_W = doc.internal.pageSize.getWidth();   // 612
+  const PAGE_H = doc.internal.pageSize.getHeight();  // 792
+  const M = 48;
+  const CONTENT_W = PAGE_W - M * 2;
+  const LABEL_W = Math.round(CONTENT_W * 0.32);
+  const VALUE_W = CONTENT_W - LABEL_W;
+  const TOP_Y = 104;
+  const BOTTOM_Y = 742;
 
-  const PW = 215.9;
-  const PH = 279.4;
-  const M  = 20;
-  const CW = 175.9;
-
-  // Color palettes
-  const BLUE  = [30, 64, 175];
-  const LGRAY = [241, 245, 249];
-  const GRAY  = [71, 85, 105];
-  const BLACK = [30, 41, 59];
-  const WHITE = [255, 255, 255];
-
-  let y = M;
-
-  // ---- Helpers ----
-
-  function ck(needed) {
-    if (y + needed > PH - 28) {
-      doc.addPage();
-      y = M;
-    }
-  }
-
-  function sectionHead(title) {
-    ck(20);
-    doc.setFillColor(241, 245, 249);
-    doc.rect(M, y - 1, CW, 10, 'F');
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...BLUE);
-    doc.text(title, M + 3, y + 6.5);
-    y += 14;
-  }
-
-  function field(label, val) {
-    if (!val) return;
-    ck(8);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...GRAY);
-    doc.text(label + ':', M, y);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...BLACK);
-    const labelWidth = doc.getTextWidth(label + ':') + 3;
-    const maxValWidth = CW - labelWidth;
-    const valLines = doc.splitTextToSize(val, maxValWidth);
-    doc.text(valLines[0], M + labelWidth, y);
-    if (valLines.length > 1) {
-      y += 5;
-      for (let i = 1; i < valLines.length; i++) {
-        ck(5);
-        doc.text(valLines[i], M + labelWidth, y);
-        if (i < valLines.length - 1) y += 5;
-      }
-    }
-    y += 6;
-  }
-
-  function twoCol(pairs) {
-    ck(8);
-    const colW = CW / 2 - 5;
-    let rowY = y;
-    pairs.forEach(function (pair, idx) {
-      const label = pair[0];
-      const val   = pair[1];
-      if (!val) return;
-      const xOff = (idx % 2 === 0) ? M : M + CW / 2 + 5;
-      if (idx % 2 === 0 && idx > 0) {
-        rowY = y;
-      }
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...GRAY);
-      doc.text(label + ':', xOff, rowY);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(...BLACK);
-      const lw = doc.getTextWidth(label + ':') + 2;
-      const valLines = doc.splitTextToSize(val, colW - lw);
-      doc.text(valLines[0], xOff + lw, rowY);
-      if (idx % 2 === 1 || idx === pairs.length - 1) {
-        y = rowY + 6;
-      }
-    });
-    if (pairs.length % 2 !== 0) y += 6;
-  }
-
-  function textBlock(label, val) {
-    if (!val) return;
-    const lines = doc.splitTextToSize(val, CW);
-    ck(10 + lines.length * 4.5);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...GRAY);
-    doc.text(label, M, y);
-    y += 5;
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...BLACK);
-    lines.forEach(function (line) {
-      ck(5);
-      doc.text(line, M, y);
-      y += 4.5;
-    });
-    y += 6;
-  }
-
-  function chipsLine(label, val) {
-    if (!val) return;
-    textBlock(label, val);
-  }
-
-  function spacer(n) {
-    y += (n || 6);
-  }
-
-  // ==================== COVER PAGE ====================
-
-  doc.setFillColor(...BLUE);
-  doc.rect(0, 0, PW, 50, 'F');
-
-  doc.setFontSize(18);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...WHITE);
-  doc.text('ABA CLINICAL ASSESSMENT REPORT', M, 22);
-
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  doc.text(v('agencyName') || 'Golden Bridge ABA LLC', M, 32);
-
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'italic');
-  doc.text('Confidential \u2014 Protected Health Information', M, 40);
-
-  y = 70;
-
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...GRAY);
-  doc.text('Client:', M, y);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...BLACK);
-  doc.text(v('clientName') || '—', M + 22, y); y += 7;
-
-  field('Date of Birth', v('dob'));
-  field('MassHealth ID', v('massHealthId'));
-  field('MCO Plan', v('mcoPlan'));
-  field('Assessment Date(s)', v('assessmentDates'));
-  field('Report Date', v('reportDate'));
-  field('Assessment Type', v('assessmentType'));
-
-  const bcbaCredSig = v('sig-bcbaCredentials');
-  const bcbaDisplay = v('bcbaName') + (bcbaCredSig ? ', ' + bcbaCredSig : '');
-  field('BCBA/LABA', bcbaDisplay);
-  field('Agency', v('agencyName'));
-
-  doc.addPage();
-  y = M;
-
-  // ==================== SECTION 1 — IDENTIFYING INFORMATION ====================
-
-  sectionHead('1. Identifying Information');
-
-  field('Client Name', v('clientName'));
-  field('Date of Birth', v('dob'));
-  twoCol([['Age', v('age')], ['MassHealth ID', v('massHealthId')]]);
-  twoCol([['MCO Plan', v('mcoPlan')], ['Behavioral Health Plan', v('bhPlan')]]);
-  field('Address', v('address'));
-  twoCol([['ZIP', v('zip')], ['Relationship', v('guardianRel')]]);
-  field('Parent/Guardian', v('guardianName'));
-  twoCol([['Phone', v('guardianPhone')], ['Referring Provider', v('referringProvider')]]);
-  twoCol([['Referring NPI', v('referringNpi')], ['Credential', v('referringCredential')]]);
-  field('Primary Diagnosis (DSM-5)', v('primaryDx'));
-  twoCol([['ICD-10 Code', v('icd10')], ['Diagnosis Date', v('dxDate')]]);
-  field('Secondary Diagnoses', v('secondaryDx'));
-  twoCol([['Assessment Date(s)', v('assessmentDates')], ['Report Date', v('reportDate')]]);
-  twoCol([['Assessment Type', v('assessmentType')], ['Service Setting', v('serviceSetting')]]);
-  field('BCBA/LABA', v('bcbaName'));
-  twoCol([['BACB Cert #', v('bacbCert')], ['MA LABA License #', v('labaLicense')]]);
-  twoCol([['Agency Name', v('agencyName')], ['Agency NPI', v('agencyNpi')]]);
-  field('School District', v('schoolDistrict'));
-
-  // ==================== SECTION 2 — REASON FOR REFERRAL ====================
-
-  sectionHead('2. Reason for Referral & History');
-  textBlock('Reason for Referral', v('reasonReferral'));
-  textBlock('Developmental History', v('devHistory'));
-  textBlock('Medical/Psychiatric History', v('medHistory'));
-  textBlock('Prior ABA Services', v('priorAba'));
-  textBlock('Other Therapeutic Services', v('otherTherapies'));
-  chipsLine('School Placement', chips('chips-schoolPlacement'));
-  textBlock('IEP Goals Related to ABA', v('iepGoals'));
-
-  // ==================== SECTION 3 — SOURCES OF INFORMATION ====================
-
-  sectionHead('3. Sources of Information');
-  chipsLine('Informants', chips('chips-informants'));
-  chipsLine('Observation Settings', chips('chips-obsSettings'));
-  chipsLine('Record Review', chips('chips-records'));
-  chipsLine('Other Methods', chips('chips-otherMethods'));
-  textBlock('Informants Detail', v('informantsDetail'));
-
-  // ==================== SECTION 4 — ASSESSMENT INSTRUMENTS ====================
-
-  sectionHead('4. Assessment Instruments');
-
-  // Skill-Based Assessments table
-  const skillRows = [];
-  const skillInstruments = [
-    { name: 'VB-MAPP',       scoreId: 'skill-vbmapp-score',  notesId: 'skill-vbmapp-notes' },
-    { name: 'ABLLS-R',       scoreId: 'skill-ablls-score',   notesId: 'skill-ablls-notes' },
-    { name: 'AFLS',          scoreId: 'skill-afls-score',    notesId: 'skill-afls-notes' },
-    { name: 'PEAK',          scoreId: 'skill-peak-score',    notesId: 'skill-peak-notes' },
-    { name: 'EIBI Checklist',scoreId: 'skill-eibi-score',    notesId: 'skill-eibi-notes' },
-  ];
-  skillInstruments.forEach(function (inst) {
-    const score = v(inst.scoreId);
-    const notes = v(inst.notesId);
-    if (score || notes) skillRows.push([inst.name, score, notes]);
-  });
-  const skillOtherName  = v('skill-other-name');
-  const skillOtherScore = v('skill-other-score');
-  const skillOtherNotes = v('skill-other-notes');
-  if (skillOtherName || skillOtherScore || skillOtherNotes) {
-    skillRows.push([skillOtherName || 'Other', skillOtherScore, skillOtherNotes]);
-  }
-
-  if (skillRows.length > 0) {
-    ck(30);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...GRAY);
-    doc.text('Skill-Based Assessments', M, y);
-    y += 4;
-    doc.autoTable({
-      startY: y,
-      head: [['Instrument', 'Score/Level', 'Notes']],
-      body: skillRows,
-      styles: { fontSize: 8.5, cellPadding: 3, textColor: BLACK },
-      headStyles: { fillColor: LGRAY, textColor: GRAY, fontStyle: 'bold', fontSize: 8 },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
-      columnStyles: { 0: { cellWidth: 45 }, 1: { cellWidth: 35 }, 2: { cellWidth: 95.9 } },
-      margin: { left: M, right: M },
-      theme: 'grid',
-    });
-    y = doc.lastAutoTable.finalY + 8;
-  }
-
-  // Adaptive / Standardized Assessments table
-  const adapRows = [];
-  const adapInstruments = [
-    { name: 'Vineland-3', scoreId: 'adap-vineland-score', notesId: 'adap-vineland-notes' },
-    { name: 'ABAS-3',     scoreId: 'adap-abas-score',     notesId: 'adap-abas-notes' },
-    { name: 'CARS-2',     scoreId: 'adap-cars-score',     notesId: 'adap-cars-notes' },
-    { name: 'SRS-2',      scoreId: 'adap-srs-score',      notesId: 'adap-srs-notes' },
-    { name: 'Conners-3',  scoreId: 'adap-conners-score',  notesId: 'adap-conners-notes' },
-  ];
-  adapInstruments.forEach(function (inst) {
-    const score = v(inst.scoreId);
-    const notes = v(inst.notesId);
-    if (score || notes) adapRows.push([inst.name, score, notes]);
-  });
-  const adapOtherName  = v('adap-other-name');
-  const adapOtherScore = v('adap-other-score');
-  const adapOtherNotes = v('adap-other-notes');
-  if (adapOtherName || adapOtherScore || adapOtherNotes) {
-    adapRows.push([adapOtherName || 'Other', adapOtherScore, adapOtherNotes]);
-  }
-
-  if (adapRows.length > 0) {
-    ck(30);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...GRAY);
-    doc.text('Adaptive / Standardized Assessments', M, y);
-    y += 4;
-    doc.autoTable({
-      startY: y,
-      head: [['Instrument', 'Score/Level', 'Notes']],
-      body: adapRows,
-      styles: { fontSize: 8.5, cellPadding: 3, textColor: BLACK },
-      headStyles: { fillColor: LGRAY, textColor: GRAY, fontStyle: 'bold', fontSize: 8 },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
-      columnStyles: { 0: { cellWidth: 45 }, 1: { cellWidth: 35 }, 2: { cellWidth: 95.9 } },
-      margin: { left: M, right: M },
-      theme: 'grid',
-    });
-    y = doc.lastAutoTable.finalY + 8;
-  }
-
-  chipsLine('FBA Methods', chips('chips-fbaMethods'));
-  field('Preference Assessment Type', v('prefAssessType'));
-
-  // ==================== SECTION 5 — BEHAVIORAL OBSERVATIONS ====================
-
-  sectionHead('5. Behavioral Observations');
-  textBlock('General Demeanor/Affect', v('obs-demeanor'));
-  textBlock('Communication — Expressive', v('obs-expressive'));
-  textBlock('Communication — Receptive', v('obs-receptive'));
-  textBlock('Social Interaction / Joint Attention', v('obs-social'));
-  textBlock('Play Skills', v('obs-play'));
-  textBlock('Restricted/Repetitive Behaviors', v('obs-rrb'));
-  textBlock('Response to Instructions/Transitions', v('obs-transitions'));
-  textBlock('Additional Observations', v('obs-additional'));
-
-  // ==================== SECTION 6 — SKILL ASSESSMENT RESULTS ====================
-
-  sectionHead('6. Skill Assessment Results');
-
-  ck(8);
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...BLUE);
-  doc.text('Communication Skills', M, y);
-  y += 8;
-
-  textBlock('Manding', v('skill-manding'));
-  textBlock('Tacting', v('skill-tacting'));
-  textBlock('Echoic / Vocal Imitation', v('skill-echoic'));
-  textBlock('Intraverbal', v('skill-intraverbal'));
-  textBlock('Receptive Language', v('skill-receptive'));
-  textBlock('Overall Language Summary', v('skill-langSummary'));
-
-  ck(8);
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...BLUE);
-  doc.text('Adaptive Behavior', M, y);
-  y += 8;
-
-  textBlock('Daily Living Skills', v('skill-dailyLiving'));
-  textBlock('Socialization', v('skill-socialization'));
-  textBlock('Gross Motor', v('skill-grossMotor'));
-  textBlock('Fine Motor / Pre-Academic', v('skill-fineMotor'));
-
-  // ==================== SECTION 7 — FBA RESULTS ====================
-
-  sectionHead('7. FBA Results');
-
-  [1, 2, 3].forEach(function (n) {
-    const bName = v('fba' + n + '-name');
-    if (!bName) return;
-
-    ck(14);
-    doc.setFillColor(235, 243, 255);
-    doc.rect(M, y - 2, CW, 10, 'F');
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...BLUE);
-    doc.text('Behavior ' + n + ': ' + bName, M + 3, y + 5.5);
-    y += 14;
-
-    field('Frequency/Severity', v('fba' + n + '-freq'));
-    textBlock('Operational Definition', v('fba' + n + '-def'));
-    textBlock('Antecedents', v('fba' + n + '-ante'));
-    textBlock('Consequences', v('fba' + n + '-cons'));
-    chipsLine('Hypothesized Function', chips('chips-fba' + n + '-func'));
-    spacer(4);
-  });
-
-  // ==================== SECTION 8 — CLINICAL SUMMARY ====================
-
-  sectionHead('8. Clinical Summary');
-  textBlock('Clinical Summary Narrative', v('clinicalSummary'));
-  textBlock('Medical Necessity Statement', v('medNecessity'));
-  field('Prognosis', v('prognosis'));
-  textBlock('Additional Notes', v('additionalNotes'));
-
-  // ==================== SECTION 9 — TREATMENT RECOMMENDATIONS ====================
-
-  sectionHead('9. Treatment Recommendations');
-
-  // CPT Table
-  const cptDescriptions = {
-    '97151': 'Behavior identification assessment',
-    '97152': 'Behavior identification supporting assessment',
-    '97153': 'Adaptive behavior treatment by protocol',
-    '97154': 'Group adaptive behavior treatment',
-    '97155': 'Adaptive behavior treatment w/ protocol modification',
-    '97156': 'Family adaptive behavior treatment guidance',
-    '97157': 'Multiple-family group adaptive behavior treatment',
+  // Colors (match the template's muted navy/gold/beige feel)
+  const COLOR = {
+    navy:    [30, 41, 59],
+    navyTxt: [15, 23, 42],
+    gold:    [184, 134, 58],
+    label:   [245, 242, 234],   // warm beige, like the template
+    border:  [180, 180, 180],
+    value:   [255, 255, 255],
+    muted:   [100, 116, 139],
+    body:    [30, 30, 30],
+    accent:  [37, 99, 235],
   };
 
-  const cptBody = [];
-  let cptTotalPdf = 0;
-  CPT_CODES.forEach(function (code) {
-    const hrs = v('cpt-' + code);
-    if (hrs) {
-      cptBody.push([code, cptDescriptions[code], hrs + ' hrs/wk']);
-      cptTotalPdf += parseFloat(hrs) || 0;
-    }
-  });
+  const clientName = v('pt_name') || '—';
+  const clientDob  = fmtDate(v('pt_dob')) || '—';
+  const authStart  = fmtDate(v('auth_start'));
+  const authEnd    = fmtDate(v('auth_end'));
+  const authPeriod = (authStart || authEnd) ? `${authStart}${authStart && authEnd ? ' – ' : ''}${authEnd}` : '—';
 
-  if (cptBody.length > 0) {
-    cptBody.push(['', 'TOTAL', (cptTotalPdf % 1 === 0 ? cptTotalPdf : cptTotalPdf.toFixed(1)) + ' hrs/wk']);
-    ck(30);
+  /* ── Page header / footer ───────────────────────────────── */
+  function drawHeader() {
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLOR.navyTxt);
+    doc.setFontSize(13);
+    doc.text('Golden Bridge ABA', M, 34);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...COLOR.muted);
+    doc.text('Initial Assessment Summary & Treatment Plan', M, 48);
+    doc.text('michael@goldaba.com  |  goldaba.com', M, 60);
+    doc.text('Licensed in New Mexico & Massachusetts', M, 72);
+
+    // Right client block
+    const rx = PAGE_W - M;
+    doc.setFontSize(7.8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLOR.navyTxt);
+    doc.text('Client:',       rx - 180, 34);
+    doc.text('DOB:',          rx - 180, 48);
+    doc.text('Auth. Period:', rx - 180, 62);
+    doc.setFont('helvetica', 'normal');
+    doc.text(clientName, rx - 118, 34, { maxWidth: 118 });
+    doc.text(clientDob,  rx - 118, 48, { maxWidth: 118 });
+    doc.text(authPeriod, rx - 118, 62, { maxWidth: 118 });
+
+    doc.setDrawColor(...COLOR.gold);
+    doc.setLineWidth(1.1);
+    doc.line(M, 84, PAGE_W - M, 84);
+  }
+  function drawFooter(pageNum, totalPages) {
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.5);
+    doc.line(M, 754, PAGE_W - M, 754);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...COLOR.muted);
+    doc.text('Golden Bridge ABA LLC  |  Serving New Mexico & Massachusetts', M, 767);
+    doc.text('Confidential — HIPAA Protected', PAGE_W / 2, 767, { align: 'center' });
+    doc.text(`Page ${pageNum} of ${totalPages}`, PAGE_W - M, 767, { align: 'right' });
+  }
+
+  let y = TOP_Y;
+  function newPage() { doc.addPage(); drawHeader(); y = TOP_Y; }
+  function ensure(h) { if (y + h > BOTTOM_Y) newPage(); }
+
+  /* ── Section header bar (full width, navy) ─────────────── */
+  function sectionBar(title) {
+    ensure(26);
+    doc.setFillColor(...COLOR.navy);
+    doc.rect(M, y, CONTENT_W, 20, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(255, 255, 255);
+    doc.text(title.toUpperCase(), M + 8, y + 13.5);
+    y += 20;
+  }
+
+  /* ── Sub-header bar (gold accent, smaller) ─────────────── */
+  function subBar(title) {
+    ensure(22);
+    doc.setFillColor(250, 243, 224); // light gold tint
+    doc.rect(M, y, CONTENT_W, 16, 'F');
+    doc.setDrawColor(...COLOR.gold);
+    doc.setLineWidth(0.6);
+    doc.rect(M, y, CONTENT_W, 16, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLOR.navyTxt);
+    doc.text(title, M + 6, y + 11);
+    y += 16;
+  }
+
+  /* ── Label / value row (renders as autoTable row) ──────── */
+  function kvTable(rows, opts = {}) {
+    // rows: [[label, value], ...] — skips rows where value is empty unless keepEmpty
+    const body = rows
+      .filter(r => opts.keepEmpty || (r[1] !== undefined && String(r[1]).trim() !== ''))
+      .map(r => [r[0], String(r[1] ?? '')]);
+    if (!body.length) return;
     doc.autoTable({
       startY: y,
-      head: [['CPT Code', 'Description', 'Hrs/Week']],
-      body: cptBody,
-      styles: { fontSize: 8.5, cellPadding: 3, textColor: BLACK },
-      headStyles: { fillColor: LGRAY, textColor: GRAY, fontStyle: 'bold', fontSize: 8 },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
-      columnStyles: { 0: { cellWidth: 22 }, 1: { cellWidth: 125 }, 2: { cellWidth: 28.9 } },
-      margin: { left: M, right: M },
+      body,
       theme: 'grid',
-      didDrawCell: function (data) {
-        if (data.row.index === cptBody.length - 1) {
-          doc.setFont('helvetica', 'bold');
-        }
+      margin: { left: M, right: M, top: TOP_Y, bottom: PAGE_H - BOTTOM_Y },
+      styles: {
+        fontSize: 9, cellPadding: 5,
+        textColor: COLOR.body, lineColor: COLOR.border, lineWidth: 0.4,
+        valign: 'top',
+      },
+      columnStyles: {
+        0: { cellWidth: LABEL_W, fillColor: COLOR.label, fontStyle: 'bold', textColor: COLOR.navyTxt },
+        1: { cellWidth: VALUE_W, fillColor: COLOR.value },
+      },
+      didDrawPage: (data) => {
+        // When autoTable spills to a new page it calls this — re-draw header.
+        // We use margin.top so it starts below our header automatically.
+        drawHeader();
       },
     });
-    y = doc.lastAutoTable.finalY + 8;
+    y = doc.lastAutoTable.finalY;
   }
 
-  twoCol([['Auth Period', v('authPeriod')], ['Service Location', v('serviceLocation')]]);
-  textBlock('Rationale for Intensity', v('intensityRationale'));
-  textBlock('Short-Term Goals (3–6 months)', v('goalsShortTerm'));
-  textBlock('Long-Term Goals (12 months)', v('goalsLongTerm'));
-  textBlock('Caregiver Training Plan', v('caregiverPlan'));
-  chipsLine('Provider Coordination', chips('chips-providerCoord'));
+  /* ── Full-width paragraph box (bordered, for long default paragraphs) ── */
+  function paragraphBox(text, opts = {}) {
+    if (!text) return;
+    doc.autoTable({
+      startY: y,
+      body: [[text]],
+      theme: 'grid',
+      margin: { left: M, right: M, top: TOP_Y, bottom: PAGE_H - BOTTOM_Y },
+      styles: {
+        fontSize: 9, cellPadding: 7,
+        textColor: COLOR.body, lineColor: COLOR.border, lineWidth: 0.4,
+        valign: 'top',
+        fontStyle: opts.italic ? 'italic' : 'normal',
+      },
+      columnStyles: { 0: { cellWidth: CONTENT_W, fillColor: opts.fill || COLOR.value } },
+      didDrawPage: () => drawHeader(),
+    });
+    y = doc.lastAutoTable.finalY;
+  }
 
-  // ==================== SECTION 10 — SIGNATURES ====================
+  function gap(h = 10) { y += h; }
 
-  sectionHead('10. Signatures');
+  /* ── Render table (for severity / service hours / schedule) */
+  function renderTable(head, body, colStyles = {}) {
+    doc.autoTable({
+      startY: y,
+      head, body,
+      theme: 'grid',
+      margin: { left: M, right: M, top: TOP_Y, bottom: PAGE_H - BOTTOM_Y },
+      styles: {
+        fontSize: 8.5, cellPadding: 5,
+        textColor: COLOR.body, lineColor: COLOR.border, lineWidth: 0.4,
+        valign: 'top',
+      },
+      headStyles: {
+        fillColor: COLOR.navy, textColor: 255, fontSize: 8.5,
+        fontStyle: 'bold', halign: 'left', lineColor: COLOR.border,
+      },
+      columnStyles: colStyles,
+      didDrawPage: () => drawHeader(),
+    });
+    y = doc.lastAutoTable.finalY;
+  }
 
-  // BCBA Block
-  ck(14);
-  doc.setFillColor(248, 250, 252);
-  doc.rect(M, y - 2, CW, 10, 'F');
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...BLACK);
-  doc.text('BCBA/LABA Completing Assessment', M + 3, y + 5.5);
-  y += 14;
+  /* ───────────────── BEGIN DOCUMENT ───────────────── */
+  drawHeader();
 
-  field('Name', v('sig-bcbaName'));
-  field('Credentials', v('sig-bcbaCredentials'));
-  twoCol([['BACB Cert #', v('sig-bacbCert')], ['MA LABA License #', v('sig-labaLicense')]]);
-  twoCol([['Email', v('sig-bcbaEmail')], ['Date', v('sig-bcbaDate')]]);
+  // PATIENT INFORMATION
+  sectionBar('Patient Information');
+  kvTable([
+    ['Name', v('pt_name')],
+    ['Diagnosis (F84.0 + comorbid)', v('pt_dx')],
+    ['DOB', fmtDate(v('pt_dob'))],
+    ['Date of ASD Diagnosis', fmtDate(v('pt_dxDate'))],
+    ['Diagnosing Physician', v('pt_dxPhys')],
+    ['Treatment Setting', v('pt_setting')],
+    ['Diagnosing Physician Address/Phone', v('pt_dxPhysContact')],
+    ['Referring Physician', v('pt_refPhys')],
+    ['Date of Referral', fmtDate(v('pt_refDate'))],
+    ['Referring Physician Address/Phone', v('pt_refPhysContact')],
+  ]);
+  gap();
 
-  // Attestation box
-  ck(24);
-  const attestText = 'I attest that the information in this report is accurate, that this assessment was conducted in accordance with BACB ethical guidelines and MassHealth ABA program requirements, and that the recommended services are medically necessary for this individual.';
-  const attestLines = doc.splitTextToSize(attestText, CW - 10);
-  const attestHeight = attestLines.length * 4.5 + 10;
-  doc.setFillColor(240, 253, 244);
-  doc.setDrawColor(187, 247, 208);
-  doc.roundedRect(M, y, CW, attestHeight, 3, 3, 'FD');
-  doc.setFontSize(8.5);
-  doc.setFont('helvetica', 'italic');
-  doc.setTextColor(22, 101, 52);
-  let attestY = y + 6;
-  attestLines.forEach(function (line) {
-    doc.text(line, M + 5, attestY);
-    attestY += 4.5;
+  // ASSESSMENT INFORMATION
+  sectionBar('Assessment Information');
+  kvTable([
+    ['Total Assessment Hours', v('a_hours')],
+    ['Dates & Location', v('a_datesLoc')],
+    ['Assessment Instruments', v('a_instruments')],
+  ]);
+  gap();
+
+  // PROVIDER INFORMATION
+  sectionBar('Provider Information');
+  kvTable([
+    ['Name & Credentials', v('prov_name')],
+    ['Contact Information', v('prov_contact')],
+  ]);
+  gap();
+
+  // CONSENT
+  sectionBar('Consent and Risk Assessment Information');
+  paragraphBox(v('consent_text'));
+  gap();
+
+  // BIOPSYCHOSOCIAL
+  sectionBar('Biopsychosocial Information');
+  const bpsLabels = [
+    "1. Patient's name, gender, diagnosis",
+    '2. Family structure / support system',
+    '3. Languages spoken',
+    '4. Cultural, legal, religious considerations',
+    '5. Recent family changes',
+    '6. Other psychosocial conditions',
+    "7. History of patient's development (language, social, etc.)",
+    '8. Past and present medical conditions — emphasis on seizures, GI, feeding, sleep, psychiatric',
+    '9. Medications (name, frequency, dosage, reason prescribed)',
+    '10. Supplements and dietary accommodations',
+    '11. List of present treatments (OT, PT, speech, etc.)',
+    '12. List of past treatments (OT, PT, speech, etc.)',
+    '13. School functioning: school name, grade, schedule, placement',
+    '14. Date of last IEP',
+    '15. Prior ABA agency history',
+    '16. Intake narrative',
+  ];
+  kvTable(bpsLabels.map((lab, i) => [lab, v(`bps_${i+1}`)]), { keepEmpty: true });
+  gap();
+
+  // OBSERVATIONS
+  sectionBar('Observations');
+  subBar('Observation 1');
+  kvTable([
+    ['Date', fmtDate(v('obs1_date'))],
+    ['Location', v('obs1_loc')],
+    ['Notes', v('obs1_notes')],
+  ], { keepEmpty: true });
+  gap(4);
+  subBar('Observation 2');
+  kvTable([
+    ['Date', fmtDate(v('obs2_date'))],
+    ['Location', v('obs2_loc')],
+    ['Notes', v('obs2_notes')],
+  ], { keepEmpty: true });
+  gap();
+
+  // STRENGTHS
+  sectionBar("Client's Strengths");
+  paragraphBox(v('strengths') || ' ');
+  gap();
+
+  // SEVERITY TABLE
+  sectionBar('Current Performance and Deficits — Severity Levels');
+  renderTable(
+    [['Domain', 'Level 1 (mild)', 'Level 2 (moderate)', 'Level 3 (severe)']],
+    [
+      ['Communication/Language', v('sev_comm_1'), v('sev_comm_2'), v('sev_comm_3')],
+      ['Social',                 v('sev_soc_1'),  v('sev_soc_2'),  v('sev_soc_3')],
+      ['Maladaptive behaviors',  v('sev_mal_1'),  v('sev_mal_2'),  v('sev_mal_3')],
+      ['Repetitive/stereotypical', v('sev_rep_1'), v('sev_rep_2'), v('sev_rep_3')],
+    ],
+    { 0: { fontStyle: 'bold', cellWidth: 120, fillColor: COLOR.label, textColor: COLOR.navyTxt } }
+  );
+  gap();
+
+  // DETAILED DEFICITS
+  sectionBar('Current Performance and Deficits — Detailed Description');
+  kvTable([
+    ['Communication/Language', v('def_comm')],
+    ['Social', v('def_soc')],
+    ['Maladaptive behaviors', v('def_mal')],
+    ['Repetitive/stereotypical behaviors', v('def_rep')],
+    ['Daily Living Skills', v('def_dls')],
+  ], { keepEmpty: true });
+  gap();
+
+  // ASSESSMENT INSTRUMENTS
+  sectionBar('Assessment Instruments');
+  const instruments = [
+    ['use_vbmapp',   'VB-MAPP (Sundberg, 2008)',  'desc_vbmapp'],
+    ['use_afls',     'AFLS (Partington, 2010)',   'desc_afls'],
+    ['use_ablls',    'ABLLS-R (Partington, 2010)','desc_ablls'],
+    ['use_efl',      'EFL',                       'desc_efl'],
+    ['use_vineland', 'Vineland-3',                'desc_vineland'],
+    ['use_ssis',     'SSIS SEL',                  'desc_ssis'],
+  ];
+  const instrRows = instruments.filter(([cb]) => chk(cb)).map(([, t, d]) => [t, v(d)]);
+  if (instrRows.length) kvTable(instrRows);
+  gap(4);
+  kvTable([
+    ['Assessment Results', v('results')],
+    ['Barriers to Treatment', v('barriers')],
+    ['Preference Assessment', v('preference')],
+  ], { keepEmpty: true });
+  gap();
+
+  // CLINICAL INTERPRETATION
+  sectionBar('Clinical Interpretation / Response to Treatment');
+  paragraphBox(v('clin_interp'));
+  gap(4);
+  kvTable([['Additional clinical notes / individualized response', v('clin_notes')]], { keepEmpty: true });
+  gap();
+
+  // TREATMENT PLAN GOALS
+  sectionBar('Treatment Plan Goals');
+  GOAL_DOMAINS.forEach(d => {
+    subBar(d.label);
+    const outcome = v(`goal_${d.key}_outcome`);
+    if (outcome) kvTable([['Outcome', outcome]]);
+    [1, 2].forEach(n => {
+      const id = `goal_${d.key}_${n}`;
+      if (!v(`${id}_desc`) && !v(`${id}_base`)) return;
+      kvTable([
+        [`Goal ${n} Description`, v(`${id}_desc`)],
+        ['Baseline', v(`${id}_base`)],
+        ['Mastery Criteria', v(`${id}_mastery`)],
+        ['Maintenance Criteria', v(`${id}_maint`)],
+        ['Generalization Criteria', v(`${id}_gen`)],
+        ['Date of Mastery', fmtDate(v(`${id}_date`))],
+        ['Type of Data Collection', v(`${id}_data`)],
+      ], { keepEmpty: true });
+      gap(4);
+    });
   });
-  y += attestHeight + 8;
+  gap();
 
-  // BCBA Signature line
-  ck(20);
-  doc.setDrawColor(180, 180, 180);
-  doc.setLineWidth(0.4);
-  doc.line(M, y + 15, M + 80, y + 15);
-  doc.setFontSize(8.5);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...GRAY);
-  doc.text(v('sig-bcbaName') || '________________________', M, y + 12);
-  doc.text('BCBA/LABA Signature & Date', M, y + 20);
-  y += 28;
+  // FBA / BIP
+  sectionBar('Functional Behavior Assessment and Behavior Intervention Plan');
+  const fbaChoice = v('fba_choice');
+  const FBA_TEXTS = {
+    A: "An FBA was not conducted formally at this time as [Name]'s maladaptive behaviors of [list behaviors] were not directly observed or reported as severe. Ongoing data will be collected; if behavior increases in intensity or severity, an FBA will be conducted and an individualized BIP will be created and implemented.",
+    B: "According to [FAST/ABC data/FA/other assessment], it is hypothesized that the function of [list behavior(s)] is [list function(s)]. Problem behavior will be addressed through [list interventions] and individual behavioral goals and protocols. Least intrusive behavior management techniques will be initially implemented.",
+    C: "[Name] does not currently present with maladaptive behaviors that interfere with progress or daily functioning. Ongoing data will be collected; if [Name] begins to emit behavior that interferes with progress or functioning, an FBA will be conducted and an individualized BIP and behavior reduction/replacement goals will be created and implemented.",
+  };
+  if (fbaChoice && FBA_TEXTS[fbaChoice]) {
+    subBar(`Option ${fbaChoice}`);
+    paragraphBox(FBA_TEXTS[fbaChoice]);
+  }
+  if (v('fba_detail')) {
+    gap(4);
+    kvTable([['FBA/BIP Detail', v('fba_detail')]]);
+  }
+  gap();
 
-  // Guardian Block
-  ck(14);
-  doc.setFillColor(248, 250, 252);
-  doc.rect(M, y - 2, CW, 10, 'F');
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...BLACK);
-  doc.text('Parent/Guardian', M + 3, y + 5.5);
-  y += 14;
+  // PARENT INVOLVEMENT
+  sectionBar('Parent Involvement');
+  paragraphBox(v('parent_involve') || ' ');
+  gap(4);
+  subBar('Parent Training Goals');
+  [1, 2, 3].forEach(n => {
+    if (!v(`pt${n}_desc`)) return;
+    kvTable([
+      [`PT Goal ${n} Description`, v(`pt${n}_desc`)],
+      ['Mastery Criteria', v(`pt${n}_mastery`)],
+      ['Baseline', v(`pt${n}_base`)],
+      ['Date of Mastery', fmtDate(v(`pt${n}_date`))],
+      ['Type of Data Collection', v(`pt${n}_data`)],
+    ], { keepEmpty: true });
+    gap(4);
+  });
+  gap();
 
-  field('Name', v('sig-guardianName'));
-  twoCol([['Relationship', v('sig-guardianRel')], ['Date', v('sig-guardianDate')]]);
-  field('Phone', v('sig-guardianPhone'));
+  // CRISIS MANAGEMENT
+  sectionBar('Crisis Management');
+  paragraphBox(v('crisis_text'));
+  if (v('crisis_notes')) { gap(4); kvTable([['Client-specific crisis notes', v('crisis_notes')]]); }
+  gap();
 
-  // Guardian signature line
-  ck(20);
-  doc.setDrawColor(180, 180, 180);
-  doc.setLineWidth(0.4);
-  doc.line(M, y + 15, M + 80, y + 15);
-  doc.setFontSize(8.5);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...GRAY);
-  doc.text(v('sig-guardianName') || '________________________', M, y + 12);
-  doc.text('Parent/Guardian Signature & Date', M, y + 20);
-  y += 28;
+  // COORDINATION OF CARE
+  sectionBar('Coordination of Care');
+  paragraphBox(v('coord_text'));
+  if (v('coord_providers')) { gap(4); kvTable([['Care providers', v('coord_providers')]]); }
+  gap();
 
-  // ==================== FOOTER & HIPAA NOTICE ====================
+  // GENERALIZATION PLAN
+  sectionBar('Generalization Plan');
+  paragraphBox(v('gen_text'));
+  if (v('gen_notes')) { gap(4); kvTable([['Client-specific generalization notes', v('gen_notes')]]); }
+  gap();
 
-  const totalPages = doc.internal.pages.length - 1;
+  // TRANSITION PLAN
+  sectionBar('Transition Plan');
+  paragraphBox(v('transition') || ' ');
+  gap();
 
-  // HIPAA notice on last page
-  doc.setPage(totalPages);
-  doc.setFontSize(7.5);
-  doc.setFont('helvetica', 'italic');
-  doc.setTextColor(150, 150, 150);
-  const hipaa = 'This document contains protected health information (PHI) covered under HIPAA (45 CFR Parts 160 and 164). Unauthorized use, disclosure, or reproduction is strictly prohibited.';
-  const hipaaLines = doc.splitTextToSize(hipaa, CW);
-  doc.text(hipaaLines, PW / 2, PH - 20, { align: 'center' });
+  // DISCHARGE
+  sectionBar('Discharge Criteria');
+  paragraphBox(v('discharge_text'));
+  if (v('discharge_notes')) { gap(4); kvTable([['Client-specific discharge criteria', v('discharge_notes')]]); }
+  gap();
 
-  // Footer on every page
-  for (let i = 1; i <= totalPages; i++) {
-    doc.setPage(i);
-    const footY = PH - 10;
-    doc.setFontSize(7.5);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(120, 120, 120);
-    doc.text(v('clientName') || 'Client Name', M, footY);
-    doc.text('Confidential \u2014 HIPAA Protected', PW / 2, footY, { align: 'center' });
-    doc.text('Page ' + i + ' of ' + totalPages, PW - M, footY, { align: 'right' });
+  // TELEHEALTH CONSENT
+  sectionBar('Telehealth Consent');
+  paragraphBox(v('telehealth_text'));
+  gap();
+
+  // RECOMMENDATIONS
+  sectionBar('Recommendations for Treatment');
+  paragraphBox(v('rec_text'));
+  gap(4);
+  subBar('Recommended Service Hours');
+  renderTable(
+    [['CPT Code & Service', 'Hrs / Week', 'Days / Week']],
+    [
+      ['97155 — Supervision with Paraprofessional / Protocol Modification (BCBA)', v('sv_97155_h'), v('sv_97155_d')],
+      ['97153 — Behavior Treatment (Paraprofessional / RBT)',                       v('sv_97153_h'), v('sv_97153_d')],
+      ['97156 — Family Treatment Guidance / Parent Training (BCBA)',                v('sv_97156_h'), v('sv_97156_d')],
+      ['97151 — Reassessment (BCBA)',                                               v('sv_97151_h'), v('sv_97151_d')],
+    ],
+    {
+      0: { cellWidth: CONTENT_W - 180, fillColor: COLOR.label, textColor: COLOR.navyTxt, fontStyle: 'bold' },
+      1: { halign: 'center', cellWidth: 90 },
+      2: { halign: 'center', cellWidth: 90 },
+    }
+  );
+  gap(6);
+
+  subBar('Proposed Session Schedule');
+  const daysColW = CONTENT_W / 7;
+  renderTable(
+    [['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']],
+    [[ v('sch_mon'), v('sch_tue'), v('sch_wed'), v('sch_thu'), v('sch_fri'), v('sch_sat'), v('sch_sun') ]],
+    Object.fromEntries([0,1,2,3,4,5,6].map(i => [i, { halign: 'center', cellWidth: daysColW }]))
+  );
+  gap();
+
+  // SIGNATURES
+  sectionBar('Signatures');
+  subBar('Reported By');
+  kvTable([
+    ['Name & Credentials', v('sig_prov_name')],
+    ['Signature', v('sig_prov_sig')],
+    ['Date', fmtDate(v('sig_prov_date'))],
+  ], { keepEmpty: true });
+  gap(4);
+  subBar('Parent / Guardian');
+  kvTable([
+    ['Parent/Guardian Name', v('sig_par_name')],
+    ['Parent/Guardian Signature', v('sig_par_sig')],
+    ['Date', fmtDate(v('sig_par_date'))],
+  ], { keepEmpty: true });
+
+  /* ── Footer on every page ──────────────────────────────── */
+  const total = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= total; p++) {
+    doc.setPage(p);
+    drawFooter(p, total);
   }
 
-  // Save
-  const safeName = (v('clientName') || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
-  const safeDate = (v('reportDate') || new Date().toISOString().slice(0, 10)).replace(/-/g, '');
-  doc.save('ABA_Assessment_' + safeName + '_' + safeDate + '.pdf');
+  /* ── Filename ──────────────────────────────────────────── */
+  const safeName = (v('pt_name') || 'Client').replace(/[^a-z0-9]+/gi, '_');
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  doc.save(`ABA_Assessment_${safeName}_${stamp}.pdf`);
 }
 
-// ==================== INIT ====================
+/* ── Init ─────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildGoals();
+  buildPTGoals();
+  initNav();
+  initFBA();
+  loadDraft(false);
 
-document.addEventListener('DOMContentLoaded', function () {
-
-  // Initial state
-  updateProgress();
-  updateNavButtons();
-
-  // Back / Next buttons
-  document.getElementById('backBtn').addEventListener('click', function () {
-    goTo(currentSection - 1);
+  document.getElementById('genPdf').addEventListener('click', () => {
+    try { generatePDF(); }
+    catch (e) { console.error(e); alert('PDF generation failed: ' + e.message); }
   });
+  document.getElementById('saveDraft').addEventListener('click', () => { saveDraft(); alert('Draft saved to this browser.'); });
+  document.getElementById('loadDraft').addEventListener('click', () => loadDraft(true));
+  document.getElementById('clearAll').addEventListener('click', clearAll);
 
-  document.getElementById('nextBtn').addEventListener('click', function () {
-    if (currentSection === TOTAL - 1) {
-      generatePDF();
-    } else {
-      goTo(currentSection + 1);
-    }
-  });
-
-  // Sidebar nav buttons
-  document.querySelectorAll('.nav-item').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const n = parseInt(btn.dataset.section, 10);
-      goTo(n);
-    });
-  });
-
-  // Chip toggle
-  document.querySelectorAll('.chip').forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      chip.classList.toggle('selected');
-    });
-  });
-
-  // CPT total auto-calc
-  CPT_CODES.forEach(function (code) {
-    const el = document.getElementById('cpt-' + code);
-    if (el) el.addEventListener('input', calcCptTotal);
-  });
-
-  // Download PDF button
-  document.getElementById('downloadPdf').addEventListener('click', generatePDF);
-
+  // Auto-save on change
+  document.addEventListener('input', () => saveDraft());
+  document.addEventListener('change', () => saveDraft());
 });

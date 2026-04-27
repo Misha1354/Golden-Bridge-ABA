@@ -1,840 +1,432 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ABA Clinical Assessment — Staff Only</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-  <link rel="stylesheet" href="assessment.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Initial Assessment Summary &amp; Treatment Plan — Staff</title>
+  <link rel="stylesheet" href="assessment.css">
 </head>
 <body>
 <div class="app">
 
-  <!-- ===== SIDEBAR ===== -->
+  <!-- ───────────── SIDEBAR ───────────── -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h1>ABA Clinical Assessment</h1>
-      <div class="sidebar-subtitle">Golden Bridge ABA — Staff Only</div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-label" id="progressLabel">Section 1 of 10</div>
+      <h1>Golden Bridge ABA</h1>
+      <p>Initial Assessment &amp; Treatment Plan</p>
     </div>
-
-    <nav class="section-nav">
-      <button class="nav-item active" id="nav-0" data-section="0">1. Identifying Information</button>
-      <button class="nav-item" id="nav-1" data-section="1">2. Reason for Referral &amp; History</button>
-      <button class="nav-item" id="nav-2" data-section="2">3. Sources of Information</button>
-      <button class="nav-item" id="nav-3" data-section="3">4. Assessment Instruments</button>
-      <button class="nav-item" id="nav-4" data-section="4">5. Behavioral Observations</button>
-      <button class="nav-item" id="nav-5" data-section="5">6. Skill Assessment Results</button>
-      <button class="nav-item" id="nav-6" data-section="6">7. FBA Results</button>
-      <button class="nav-item" id="nav-7" data-section="7">8. Clinical Summary</button>
-      <button class="nav-item" id="nav-8" data-section="8">9. Treatment Recommendations</button>
-      <button class="nav-item" id="nav-9" data-section="9">10. Signatures</button>
+    <nav class="sidebar-nav" id="nav">
+      <button class="nav-btn active" data-sec="0"><span class="num">1.</span>Patient &amp; Assessment Info</button>
+      <button class="nav-btn" data-sec="1"><span class="num">2.</span>Provider &amp; Consent</button>
+      <button class="nav-btn" data-sec="2"><span class="num">3.</span>Biopsychosocial</button>
+      <button class="nav-btn" data-sec="3"><span class="num">4.</span>Observations &amp; Strengths</button>
+      <button class="nav-btn" data-sec="4"><span class="num">5.</span>Deficits &amp; Severity</button>
+      <button class="nav-btn" data-sec="5"><span class="num">6.</span>Assessment Instruments</button>
+      <button class="nav-btn" data-sec="6"><span class="num">7.</span>Clinical Interpretation</button>
+      <button class="nav-btn" data-sec="7"><span class="num">8.</span>Treatment Plan Goals</button>
+      <button class="nav-btn" data-sec="8"><span class="num">9.</span>FBA / BIP</button>
+      <button class="nav-btn" data-sec="9"><span class="num">10.</span>Parent Involvement</button>
+      <button class="nav-btn" data-sec="10"><span class="num">11.</span>Crisis, Coord., Generalization</button>
+      <button class="nav-btn" data-sec="11"><span class="num">12.</span>Discharge &amp; Telehealth</button>
+      <button class="nav-btn" data-sec="12"><span class="num">13.</span>Recommendations &amp; Schedule</button>
+      <button class="nav-btn" data-sec="13"><span class="num">14.</span>Signatures</button>
     </nav>
-
-    <button class="download-btn" id="downloadPdf">⬇ Download PDF Report</button>
+    <div class="sidebar-footer">
+      <button class="btn-pdf" id="genPdf">⬇ Generate PDF</button>
+      <button class="btn-sec" id="saveDraft">Save Draft</button>
+      <button class="btn-sec" id="loadDraft">Load Draft</button>
+      <button class="btn-sec" id="clearAll">Clear All</button>
+    </div>
   </aside>
 
-  <!-- ===== MAIN CONTENT ===== -->
-  <main class="content">
-
-    <!-- ==================== SECTION 1 ==================== -->
-    <div class="section active" id="s0">
-      <h2>Section 1: Identifying Information</h2>
-      <div class="form-grid">
-
-        <div class="field-group full">
-          <label for="clientName">Client Full Name</label>
-          <input type="text" id="clientName" />
-        </div>
-
-        <div class="field-group">
-          <label for="dob">Date of Birth</label>
-          <input type="date" id="dob" />
-        </div>
-
-        <div class="field-group">
-          <label for="age">Age</label>
-          <input type="text" id="age" placeholder="e.g. 7 years 3 months" />
-        </div>
-
-        <div class="field-group">
-          <label for="massHealthId">MassHealth ID</label>
-          <input type="text" id="massHealthId" />
-        </div>
-
-        <div class="field-group">
-          <label for="mcoPlan">MCO Plan</label>
-          <select id="mcoPlan">
-            <option value="">— Select —</option>
-            <option>MBHP</option>
-            <option>Beacon/Carelon</option>
-            <option>Tufts Health Public Plans</option>
-            <option>WellSense</option>
-            <option>Fallon</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="bhPlan">Behavioral Health Plan</label>
-          <input type="text" id="bhPlan" />
-        </div>
-
-        <div class="field-group full">
-          <label for="address">Address</label>
-          <input type="text" id="address" />
-        </div>
-
-        <div class="field-group">
-          <label for="zip">ZIP Code</label>
-          <input type="text" id="zip" />
-        </div>
-
-        <div class="field-group">
-          <label for="guardianName">Parent/Guardian Name</label>
-          <input type="text" id="guardianName" />
-        </div>
-
-        <div class="field-group">
-          <label for="guardianRel">Relationship</label>
-          <input type="text" id="guardianRel" placeholder="e.g. Mother, Father" />
-        </div>
-
-        <div class="field-group">
-          <label for="guardianPhone">Phone</label>
-          <input type="tel" id="guardianPhone" />
-        </div>
-
-        <div class="field-group">
-          <label for="referringProvider">Referring Provider</label>
-          <input type="text" id="referringProvider" />
-        </div>
-
-        <div class="field-group">
-          <label for="referringNpi">NPI</label>
-          <input type="text" id="referringNpi" />
-        </div>
-
-        <div class="field-group">
-          <label for="referringCredential">Credential</label>
-          <input type="text" id="referringCredential" placeholder="e.g. MD, LCSW" />
-        </div>
-
-        <div class="field-group full">
-          <label for="primaryDx">Primary Diagnosis (DSM-5)</label>
-          <input type="text" id="primaryDx" placeholder="e.g. Autism Spectrum Disorder, Level 2" />
-        </div>
-
-        <div class="field-group">
-          <label for="icd10">ICD-10 Code</label>
-          <input type="text" id="icd10" placeholder="e.g. F84.0" />
-        </div>
-
-        <div class="field-group">
-          <label for="dxDate">Diagnosis Date</label>
-          <input type="date" id="dxDate" />
-        </div>
-
-        <div class="field-group full">
-          <label for="secondaryDx">Secondary Diagnoses</label>
-          <input type="text" id="secondaryDx" placeholder="e.g. ADHD (F90.0), Anxiety (F41.1)" />
-        </div>
-
-        <div class="field-group">
-          <label for="assessmentDates">Assessment Date(s)</label>
-          <input type="text" id="assessmentDates" placeholder="e.g. 04/01/2026, 04/08/2026" />
-        </div>
-
-        <div class="field-group">
-          <label for="reportDate">Report Date</label>
-          <input type="date" id="reportDate" />
-        </div>
-
-        <div class="field-group">
-          <label for="assessmentType">Assessment Type</label>
-          <select id="assessmentType">
-            <option value="">— Select —</option>
-            <option>Initial Evaluation</option>
-            <option>Reassessment</option>
-            <option>Annual Update</option>
-            <option>Functional Assessment Only</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="bcbaName">BCBA/LABA Name</label>
-          <input type="text" id="bcbaName" />
-        </div>
-
-        <div class="field-group">
-          <label for="bacbCert">BACB Cert #</label>
-          <input type="text" id="bacbCert" />
-        </div>
-
-        <div class="field-group">
-          <label for="labaLicense">MA LABA License #</label>
-          <input type="text" id="labaLicense" />
-        </div>
-
-        <div class="field-group">
-          <label for="agencyName">Agency Name</label>
-          <input type="text" id="agencyName" value="Golden Bridge ABA LLC" />
-        </div>
-
-        <div class="field-group">
-          <label for="agencyNpi">Agency NPI</label>
-          <input type="text" id="agencyNpi" />
-        </div>
-
-        <div class="field-group">
-          <label for="serviceSetting">Service Setting</label>
-          <select id="serviceSetting">
-            <option value="">— Select —</option>
-            <option>Home</option>
-            <option>School</option>
-            <option>Clinic</option>
-            <option>Community</option>
-            <option>Home + School</option>
-            <option>Home + Community</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="schoolDistrict">School District</label>
-          <input type="text" id="schoolDistrict" />
-        </div>
-
-      </div>
+  <!-- ───────────── MAIN ───────────── -->
+  <main class="main">
+    <div class="main-header">
+      <h2>Initial Assessment Summary &amp; Treatment Plan</h2>
+      <p>All fields auto-save to this browser. Blue italic text is guidance only — it will not appear in the generated PDF.</p>
     </div>
 
-    <!-- ==================== SECTION 2 ==================== -->
-    <div class="section" id="s1">
-      <h2>Section 2: Reason for Referral &amp; History</h2>
+    <!-- =================================================== -->
+    <!-- SECTION 0 — PATIENT & ASSESSMENT INFO              -->
+    <!-- =================================================== -->
+    <section class="section active" data-sec="0">
+      <h3>Patient Information</h3>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="reasonReferral">Reason for Referral</label>
-        <textarea id="reasonReferral" rows="6"></textarea>
+      <div class="grid-2">
+        <div class="field"><label>Name</label><input type="text" id="pt_name" class="fill-required" placeholder="[enter full name]"></div>
+        <div class="field"><label>Diagnosis (F84.0 + comorbid)</label><input type="text" id="pt_dx" value="F84.0"></div>
+        <div class="field"><label>DOB</label><input type="date" id="pt_dob"></div>
+        <div class="field"><label>Date of ASD Diagnosis</label><input type="date" id="pt_dxDate"></div>
+        <div class="field"><label>Diagnosing Physician</label><input type="text" id="pt_dxPhys" class="fill-required" placeholder="[physician name]"></div>
+        <div class="field"><label>Treatment Setting</label><input type="text" id="pt_setting" value="Home, community, telehealth, school"></div>
+        <div class="field"><label>Diagnosing Physician Address / Phone</label><input type="text" id="pt_dxPhysContact" class="fill-required" placeholder="[address / phone]"></div>
+        <div class="field"><label>Referring Physician (if applicable)</label><input type="text" id="pt_refPhys" placeholder="(if applicable)"></div>
+        <div class="field"><label>Date of Referral (if applicable)</label><input type="date" id="pt_refDate"></div>
+        <div class="field"><label>Referring Physician Address / Phone (if applicable)</label><input type="text" id="pt_refPhysContact" placeholder="(if applicable)"></div>
       </div>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="devHistory">Developmental History</label>
-        <textarea id="devHistory" rows="6"></textarea>
+      <h3>Assessment Information</h3>
+      <div class="grid-2">
+        <div class="field"><label>Total Assessment Hours</label><input type="text" id="a_hours" class="fill-required" placeholder="[hours]"></div>
+        <div class="field"><label>Dates &amp; Location</label><input type="text" id="a_datesLoc" class="fill-required" placeholder="[dates / location]"></div>
+      </div>
+      <div class="field">
+        <label>Assessment Instruments</label>
+        <span class="helper">List each instrument administered (e.g., VB-MAPP, AFLS, ABLLS-R, EFL, Vineland-3, SSIS SEL). Per-instrument descriptions appear in Section 6.</span>
+        <textarea id="a_instruments" class="fill-required" placeholder="[list of instruments]"></textarea>
       </div>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="medHistory">Medical/Psychiatric History</label>
-        <textarea id="medHistory" rows="5"></textarea>
+      <h3>Authorization Period (PDF header)</h3>
+      <span class="helper">Used in the top-right "Client / DOB / Auth. Period" block on every PDF page.</span>
+      <div class="grid-2">
+        <div class="field"><label>Auth. Period Start</label><input type="date" id="auth_start"></div>
+        <div class="field"><label>Auth. Period End</label><input type="date" id="auth_end"></div>
+      </div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 1 — PROVIDER & CONSENT                     -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="1">
+      <h3>Provider Information</h3>
+      <div class="grid-2">
+        <div class="field"><label>Name &amp; Credentials</label><input type="text" id="prov_name" class="fill-required" placeholder="[e.g., Jane Doe, M.A., BCBA]"></div>
+        <div class="field"><label>Contact Information</label><input type="text" id="prov_contact" class="fill-required" placeholder="[phone / email]"></div>
       </div>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="priorAba">Prior ABA Services</label>
-        <textarea id="priorAba" rows="4"></textarea>
+      <h3>Consent and Risk Assessment Information</h3>
+      <span class="helper">Default paragraph below is auto-included in the PDF. Edit freely if client-specific language is needed.</span>
+      <div class="field">
+        <textarea id="consent_text" rows="10">Parents gave consent to participate in treatment planning and assessment, wherein the assessment findings were shared and discussed with them. All objectives were formulated with parental input. Parents were actively involved in devising strategies for generalizing behaviors and establishing timelines for achieving behavioral goals. Parents received education regarding potential risks associated with certain treatment modalities. In the event of utilizing extinction techniques, there might be an initial surge in maladaptive behaviors or the emergence of new ones, which can be effectively managed by maintaining established demands and withholding reinforcement for problematic behaviors. In cases of severe extinction bursts posing a danger to the client or others, reference should be made to the Crisis Management plan outlined below. Whenever possible, the least intrusive behavior management techniques are employed initially. The client may respond with aggression or begin to avoid the individual administering the intervention. Behavior intervention strategies may yield temporary effects, with the potential for new behaviors to emerge. Parents were duly informed and comprehend the risks associated with non-compliance to treatment recommendations. Consistent attendance at sessions and adherence to established contingencies set forth by the BCBA are mandatory.</textarea>
       </div>
+    </section>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="otherTherapies">Other Therapeutic Services (OT/PT/SLP/CBHI)</label>
-        <textarea id="otherTherapies" rows="4"></textarea>
+    <!-- =================================================== -->
+    <!-- SECTION 2 — BIOPSYCHOSOCIAL                        -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="2">
+      <h3>Biopsychosocial Information</h3>
+      <span class="helper">Complete each of the 16 items. Keep responses concise and specific.</span>
+
+      <div class="field"><label>1. Patient's name, gender, diagnosis</label><textarea id="bps_1" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>2. Family structure / support system</label><textarea id="bps_2" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>3. Languages spoken</label><textarea id="bps_3" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>4. Cultural, legal, religious considerations</label><textarea id="bps_4" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>5. Recent family changes</label><textarea id="bps_5" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>6. Other psychosocial conditions</label><textarea id="bps_6" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>7. History of patient's development (language, social, etc.)</label><textarea id="bps_7" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>8. Past and present medical conditions — emphasis on seizures, GI, feeding, sleep, psychiatric</label><textarea id="bps_8" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>9. Medications (name, frequency, dosage, reason prescribed)</label><textarea id="bps_9" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>10. Supplements and dietary accommodations</label><textarea id="bps_10" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>11. List of present treatments (OT, PT, speech, etc.)</label><textarea id="bps_11" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>12. List of past treatments (OT, PT, speech, etc.)</label><textarea id="bps_12" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>13. School functioning — name, grade, schedule, placement (student/teacher ratio)</label><textarea id="bps_13" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>14. Date of last IEP</label><input type="text" id="bps_14" class="fill-required" placeholder="[date]"></div>
+      <div class="field"><label>15. Did they receive ABA from another agency? If yes: when, hours/week, reason for termination</label><textarea id="bps_15" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field">
+        <label>16. Intake narrative</label>
+        <span class="helper">Replace bracketed placeholders with client-specific details. This exact paragraph will appear in the PDF.</span>
+        <textarea id="bps_16" rows="6">[Parent name] requested ABA services from Golden Bridge ABA due to concerns about [Client name]'s delays in [developmental areas — specify]. An initial assessment was conducted from [start date] to [end date], which included interviews with [parent name], observations, and administration of [assessment name]. The information gathered will be used to develop an initial treatment plan to address [client name]'s needs.</textarea>
       </div>
+    </section>
 
-      <div style="margin-bottom:20px">
-        <span class="chip-label">School Placement</span>
-        <div class="chip-group" id="chips-schoolPlacement">
-          <span class="chip" data-value="General Education">General Education</span>
-          <span class="chip" data-value="Inclusion">Inclusion</span>
-          <span class="chip" data-value="Sub-separate">Sub-separate</span>
-          <span class="chip" data-value="Home/Homebound">Home/Homebound</span>
-          <span class="chip" data-value="Not Enrolled">Not Enrolled</span>
+    <!-- =================================================== -->
+    <!-- SECTION 3 — OBSERVATIONS & STRENGTHS               -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="3">
+      <h3>Observations</h3>
+      <span class="helper">Two observations must be documented. Include core deficits associated with ASD in social, communication, and maladaptive/repetitive behaviors.</span>
+
+      <div class="goal-block">
+        <div class="goal-title">Observation 1</div>
+        <div class="grid-2">
+          <div class="field"><label>Date</label><input type="date" id="obs1_date"></div>
+          <div class="field"><label>Location</label><input type="text" id="obs1_loc" class="fill-required" placeholder="[location]"></div>
         </div>
+        <div class="field"><label>Notes</label><textarea id="obs1_notes" rows="5" class="fill-required" placeholder="[observation notes]"></textarea></div>
       </div>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="iepGoals">IEP Goals Related to ABA</label>
-        <textarea id="iepGoals" rows="4"></textarea>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 3 ==================== -->
-    <div class="section" id="s2">
-      <h2>Section 3: Sources of Information</h2>
-
-      <div style="margin-bottom:20px">
-        <span class="chip-label">Informants</span>
-        <div class="chip-group" id="chips-informants">
-          <span class="chip" data-value="Parent/Caregiver Interview">Parent/Caregiver Interview</span>
-          <span class="chip" data-value="Client Interview">Client Interview</span>
-          <span class="chip" data-value="Teacher/School Interview">Teacher/School Interview</span>
-          <span class="chip" data-value="Other Provider">Other Provider</span>
+      <div class="goal-block">
+        <div class="goal-title">Observation 2</div>
+        <div class="grid-2">
+          <div class="field"><label>Date</label><input type="date" id="obs2_date"></div>
+          <div class="field"><label>Location</label><input type="text" id="obs2_loc" class="fill-required" placeholder="[location]"></div>
         </div>
+        <div class="field"><label>Notes</label><textarea id="obs2_notes" rows="5" class="fill-required" placeholder="[observation notes]"></textarea></div>
       </div>
 
-      <div style="margin-bottom:20px">
-        <span class="chip-label">Observation Settings</span>
-        <div class="chip-group" id="chips-obsSettings">
-          <span class="chip" data-value="Home">Home</span>
-          <span class="chip" data-value="School">School</span>
-          <span class="chip" data-value="Community">Community</span>
-          <span class="chip" data-value="Clinic">Clinic</span>
-        </div>
-      </div>
+      <h3>Client's Strengths</h3>
+      <div class="field"><textarea id="strengths" rows="5" class="fill-required" placeholder="[strengths]"></textarea></div>
+    </section>
 
-      <div style="margin-bottom:20px">
-        <span class="chip-label">Record Review</span>
-        <div class="chip-group" id="chips-records">
-          <span class="chip" data-value="Prior ABA Records">Prior ABA Records</span>
-          <span class="chip" data-value="Medical Records">Medical Records</span>
-          <span class="chip" data-value="IEP/School Records">IEP/School Records</span>
-          <span class="chip" data-value="Prior Psych Eval">Prior Psych Eval</span>
-        </div>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <span class="chip-label">Other Methods</span>
-        <div class="chip-group" id="chips-otherMethods">
-          <span class="chip" data-value="Standardized Tools">Standardized Tools</span>
-          <span class="chip" data-value="Rating Scales">Rating Scales</span>
-          <span class="chip" data-value="Experimental Functional Analysis">Experimental Functional Analysis</span>
-        </div>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="informantsDetail">Informants Detail</label>
-        <textarea id="informantsDetail" rows="4"></textarea>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 4 ==================== -->
-    <div class="section" id="s3">
-      <h2>Section 4: Assessment Instruments</h2>
-
-      <div class="sub-header">Skill-Based Assessments</div>
-      <table class="instrument-table">
-        <thead>
-          <tr>
-            <th>Instrument</th>
-            <th>Score/Level</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
+    <!-- =================================================== -->
+    <!-- SECTION 4 — DEFICITS & SEVERITY                    -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="4">
+      <h3>Current Performance and Deficits — Severity Levels</h3>
+      <span class="helper">Mark severity or describe observable behavior per domain and level.</span>
+      <table class="tbl">
+        <thead><tr><th>Domain</th><th>Level 1 (mild)</th><th>Level 2 (moderate)</th><th>Level 3 (severe)</th></tr></thead>
         <tbody>
-          <tr>
-            <td>VB-MAPP</td>
-            <td><input type="text" id="skill-vbmapp-score" /></td>
-            <td><input type="text" id="skill-vbmapp-notes" /></td>
-          </tr>
-          <tr>
-            <td>ABLLS-R</td>
-            <td><input type="text" id="skill-ablls-score" /></td>
-            <td><input type="text" id="skill-ablls-notes" /></td>
-          </tr>
-          <tr>
-            <td>AFLS</td>
-            <td><input type="text" id="skill-afls-score" /></td>
-            <td><input type="text" id="skill-afls-notes" /></td>
-          </tr>
-          <tr>
-            <td>PEAK</td>
-            <td><input type="text" id="skill-peak-score" /></td>
-            <td><input type="text" id="skill-peak-notes" /></td>
-          </tr>
-          <tr>
-            <td>EIBI Checklist</td>
-            <td><input type="text" id="skill-eibi-score" /></td>
-            <td><input type="text" id="skill-eibi-notes" /></td>
-          </tr>
-          <tr>
-            <td><input type="text" id="skill-other-name" placeholder="Other" /></td>
-            <td><input type="text" id="skill-other-score" /></td>
-            <td><input type="text" id="skill-other-notes" /></td>
-          </tr>
+          <tr><td><strong>Communication/Language</strong></td>
+            <td><textarea id="sev_comm_1"></textarea></td>
+            <td><textarea id="sev_comm_2"></textarea></td>
+            <td><textarea id="sev_comm_3"></textarea></td></tr>
+          <tr><td><strong>Social</strong></td>
+            <td><textarea id="sev_soc_1"></textarea></td>
+            <td><textarea id="sev_soc_2"></textarea></td>
+            <td><textarea id="sev_soc_3"></textarea></td></tr>
+          <tr><td><strong>Maladaptive behaviors</strong></td>
+            <td><textarea id="sev_mal_1"></textarea></td>
+            <td><textarea id="sev_mal_2"></textarea></td>
+            <td><textarea id="sev_mal_3"></textarea></td></tr>
+          <tr><td><strong>Repetitive/stereotypical</strong></td>
+            <td><textarea id="sev_rep_1"></textarea></td>
+            <td><textarea id="sev_rep_2"></textarea></td>
+            <td><textarea id="sev_rep_3"></textarea></td></tr>
         </tbody>
       </table>
 
-      <div class="sub-header">Adaptive / Standardized Assessments</div>
-      <table class="instrument-table">
-        <thead>
-          <tr>
-            <th>Instrument</th>
-            <th>Score/Level</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
+      <h3>Current Performance and Deficits — Detailed Description</h3>
+      <span class="helper">Use CDC ASD diagnostic criteria terminology: cdc.gov/autism/hcp/diagnosis — use the same terminology from that page.</span>
+      <div class="field"><label>Communication/Language</label><textarea id="def_comm" rows="4" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>Social</label><textarea id="def_soc" rows="4" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>Maladaptive behaviors</label><textarea id="def_mal" rows="4" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>Repetitive/stereotypical behaviors</label><textarea id="def_rep" rows="4" class="fill-required" placeholder="[enter]"></textarea></div>
+      <div class="field"><label>Daily Living Skills</label><textarea id="def_dls" rows="4" class="fill-required" placeholder="[enter]"></textarea></div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 5 — ASSESSMENT INSTRUMENTS                 -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="5">
+      <h3>Assessment Instruments</h3>
+      <span class="helper">Provide a statement about the assessment instrument(s) used. Include the applicable descriptions below and delete the rest (uncheck those not used).</span>
+
+      <div class="field">
+        <label><input type="checkbox" id="use_vbmapp" checked> VB-MAPP (Sundberg, 2008)</label>
+        <textarea id="desc_vbmapp" rows="4">The VB-MAPP is a criterion-referenced assessment based on B.F. Skinner's analysis of Verbal Behavior (1957). It contains five components: Milestones Assessment, Barriers Assessment, Transition Assessment, Task Analysis, and Curriculum Placement Guide. The Milestones Assessment contains 170 measurable learning and language milestones across 3 developmental levels. The Barriers Assessment evaluates 24 common learning and language acquisition barriers.</textarea>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="use_afls"> AFLS (Partington, 2010)</label>
+        <textarea id="desc_afls" rows="3">The AFLS assesses functional, practical, and essential skills of everyday life across modules: Basic Living Skills, Home Skills, Community Participation Skills, School Skills, Independent Living Skills, and Vocational Skills.</textarea>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="use_ablls"> ABLLS-R (Partington, 2010)</label>
+        <textarea id="desc_ablls" rows="3">The ABLLS-R is an assessment, curriculum guide, and skills-tracking system for children with language delays. It reviews 544 skills from 25 skill areas including language, social interaction, self-help, academic, and motor skills.</textarea>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="use_efl"> EFL</label>
+        <textarea id="desc_efl" rows="3">The EFL is a communication, behavior, and functional skills assessment for individuals with moderate-to-severe disabilities with limited communication repertoires or severe problem behavior.</textarea>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="use_vineland"> Vineland-3</label>
+        <textarea id="desc_vineland" rows="3">The Vineland-3 is a standardized, norm-referenced measure of adaptive behavior organized in three domains: Communication, Daily Living Skills, and Socialization, with optional Motor Skills and Maladaptive Behavior Index.</textarea>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="use_ssis"> SSIS SEL</label>
+        <textarea id="desc_ssis" rows="3">The SSIS SEL assesses five SEL competencies: Self-Awareness, Self-Management, Social Awareness, Relationship Skills, and Responsible Decision Making. Standard scores (M=100, SD=15) and percentile ranks are provided.</textarea>
+      </div>
+
+      <h3>Assessment Results</h3>
+      <span class="helper">Describe every domain and include graphs (attach separately when sending report).</span>
+      <div class="field"><textarea id="results" rows="5" class="fill-required" placeholder="[results summary]"></textarea></div>
+
+      <h3>Barriers to Treatment</h3>
+      <span class="helper">Use VB-MAPP Barriers Treatment Grid. Include description, graphs, and write why it is important to identify barriers and how you will work on decreasing them.</span>
+      <div class="field"><textarea id="barriers" rows="5" class="fill-required" placeholder="[barriers]"></textarea></div>
+
+      <h3>Preference Assessment</h3>
+      <span class="helper">Describe type used (parent interview for severely disabled children, forced choice, free operant, systematic with/without replacement). Include order of highly preferred items/activities, non-preferred items, and reinforcement plan.</span>
+      <div class="field"><textarea id="preference" rows="5" class="fill-required" placeholder="[preference assessment]"></textarea></div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 6 — CLINICAL INTERPRETATION                -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="6">
+      <h3>Clinical Interpretation / Response to Treatment</h3>
+      <span class="helper">The default paragraph below will appear in the PDF. Replace [Name] with the client's name. Edit as needed.</span>
+      <div class="field">
+        <textarea id="clin_interp" rows="8">Based on the initial assessment, [Name] would benefit from ABA treatment. The US Surgeon General has endorsed intensive behavioral intervention for individuals with autism stating, "Thirty years of research demonstrated the efficacy of applied behavioral methods in reducing inappropriate behavior and increasing communication, learning, and appropriate social behavior" (The Reports of the Surgeon General, 1999). Various ABA techniques will be implemented as necessary for acquisition and generalization of skills. These may include but are not limited to: prompting/prompt fading, shaping, correction procedures, positive/negative reinforcement, differential reinforcement, pairing procedures, task analyses, chaining procedures, stimulus discrimination training, extinction, discrete trial instruction, and natural environment teaching.</textarea>
+      </div>
+      <div class="field">
+        <label>Additional clinical notes / individualized response</label>
+        <textarea id="clin_notes" rows="5" class="fill-required" placeholder="[individualized response]"></textarea>
+      </div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 7 — TREATMENT PLAN GOALS                   -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="7">
+      <h3>Treatment Plan Goals</h3>
+      <span class="helper">Four domains, two goals each. Mastery / Maintenance / Generalization criteria are pre-filled to Golden Bridge defaults — edit per goal if needed.</span>
+
+      <div id="goalsContainer"></div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 8 — FBA / BIP                              -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="8">
+      <h3>Functional Behavior Assessment and Behavior Intervention Plan</h3>
+      <span class="helper">Read each option and select the one that applies. The selected option's text appears in the PDF. Attach FAST to your report for every maladaptive behavior (depts.washington.edu/dbpeds/Screening%20Tools/FAST.pdf).</span>
+
+      <div class="fba-options" id="fbaOptions">
+        <div class="fba-opt" data-opt="A">
+          <strong>Option A — FBA not formally conducted</strong>
+          <p>An FBA was not conducted formally at this time as [Name]'s maladaptive behaviors of [list behaviors] were not directly observed or reported as severe. Ongoing data will be collected; if behavior increases in intensity or severity, an FBA will be conducted and an individualized BIP will be created and implemented.</p>
+        </div>
+        <div class="fba-opt" data-opt="B">
+          <strong>Option B — FBA hypothesis</strong>
+          <p>According to [FAST/ABC data/FA/other assessment], it is hypothesized that the function of [list behavior(s)] is [list function(s)]. Problem behavior will be addressed through [list interventions] and individual behavioral goals and protocols. Least intrusive behavior management techniques will be initially implemented.</p>
+        </div>
+        <div class="fba-opt" data-opt="C">
+          <strong>Option C — No maladaptive behaviors present</strong>
+          <p>[Name] does not currently present with maladaptive behaviors that interfere with progress or daily functioning. Ongoing data will be collected; if [Name] begins to emit behavior that interferes with progress or functioning, an FBA will be conducted and an individualized BIP and behavior reduction/replacement goals will be created and implemented.</p>
+        </div>
+      </div>
+      <input type="hidden" id="fba_choice" value="">
+
+      <div class="field">
+        <label>FBA/BIP Detail (complete if FBA conducted)</label>
+        <span class="helper">If FBA was conducted during assessment include: definition of target behavior for decrease, method of measurement (direct: ABC/event recording/timing/time sampling; indirect: FAST/MAS/parent questionnaire), baseline results (frequency/duration), intensity/severity and daily impact, and function hypothesis. If BIP needed add: replacement behavior definition, proactive/antecedent manipulation interventions, and reactive/consequence interventions.</span>
+        <textarea id="fba_detail" rows="6" placeholder="[FBA/BIP detail — leave blank if not applicable]"></textarea>
+      </div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 9 — PARENT INVOLVEMENT                     -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="9">
+      <h3>Parent Involvement</h3>
+      <span class="helper">Describe parent involvement in the assessment and treatment planning process.</span>
+      <div class="field"><textarea id="parent_involve" rows="5" class="fill-required" placeholder="[parent involvement]"></textarea></div>
+
+      <h3>Parent Training Goals</h3>
+      <span class="helper">Include approximately 2–3 parent training goals.</span>
+      <div id="ptGoalsContainer"></div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 10 — CRISIS, COORDINATION, GEN, TRANSITION -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="10">
+      <h3>Crisis Management</h3>
+      <span class="helper">Default crisis paragraph below will appear in the PDF. Edit if needed.</span>
+      <div class="field">
+        <textarea id="crisis_text" rows="10">In the event of an unforeseen behavioral crisis that extends beyond the parameters outlined in the Behavior Intervention Plan (BIP), the provider will follow these steps: de-escalation by respecting the patient's personal space, maintaining a minimum arm's-length distance, being mindful of body position (avoiding eye-to-eye or toe-to-toe positioning), demonstrating empathy towards the patient's feelings, ensuring non-threatening nonverbal cues (gestures, facial expressions, movement, tone of voice), disregarding challenging questions if applicable, setting and enforcing reasonable limits through clear and concise instructions and choices, allowing verbal venting, identifying the actual reasons behind the behavior, maintaining composure, and avoiding overreaction. If the patient's behavior does not de-escalate and the patient continues to present a significant risk to themselves or others, the provider will promptly involve the parent/caregiver and contact crisis hotlines (e.g., 988 Suicide &amp; Crisis Lifeline), 911, or seek behavioral support from the local hospital. In the event that transportation to the hospital becomes necessary, the session will be concluded once the patient is secured in the vehicle and pertinent information will be shared with medical personnel. Medical Emergency: The provider will promptly contact the parents/caregivers and/or 911, and report the emergency to the BCBA and Program Director via phone.</textarea>
+      </div>
+      <div class="field"><label>Client-specific crisis notes</label><textarea id="crisis_notes" rows="4" class="fill-required" placeholder="[client-specific crisis notes]"></textarea></div>
+
+      <h3>Coordination of Care</h3>
+      <div class="field">
+        <textarea id="coord_text" rows="6">The BCBA will collaborate with all care providers, such as therapists, teachers, etc., to ensure coordination. This collaboration will occur through documented telephone conversations, email correspondence, communication books, etc. Golden Bridge ABA will furnish updated treatment plans to [Name]'s physicians. The following details will be included in all reassessments: date of contact and documentation of communication and collaboration with each provider.</textarea>
+      </div>
+      <div class="field"><label>Care providers (names, titles, contact)</label><textarea id="coord_providers" rows="4" class="fill-required" placeholder="[list names, titles, contact info]"></textarea></div>
+
+      <h3>Generalization Plan</h3>
+      <div class="field">
+        <textarea id="gen_text" rows="8">Generalization of skills is one of the major deficits associated with ASD. Programming for generalization is of paramount importance as it enhances the likelihood of [Name] autonomously transferring acquired skills to real-world scenarios and producing unlearned, associated responses. To foster generalization, [Name]'s family, behavior technician, and BCBA will implement some or all of the following strategies: utilize multiple exemplars; gradually transition from dense reinforcement schedules to intermittent schedules, eventually progressing to natural reinforcement; introduce generalization stimuli into the instructional setting; vary teachers, locations, positions, reinforcers, tone of voice, choice of words, and stimulus angles; instruct skills in novel environments; engage in community outings with [Name] to practice skills in authentic settings; arrange for individuals in the generalized setting to administer reinforcement when possible; and conduct generalization probes before, during, and after instruction.</textarea>
+      </div>
+      <div class="field"><label>Client-specific generalization notes</label><textarea id="gen_notes" rows="4" class="fill-required" placeholder="[client-specific notes]"></textarea></div>
+
+      <h3>Transition Plan</h3>
+      <span class="helper">Write your plan for titration, desired transition goals and how you will work on transition.</span>
+      <div class="field"><textarea id="transition" rows="5" class="fill-required" placeholder="[transition plan]"></textarea></div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 11 — DISCHARGE & TELEHEALTH                -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="11">
+      <h3>Discharge Criteria</h3>
+      <span class="helper">Replace bracketed placeholders with client-specific behaviors and goals. This full paragraph appears in the PDF.</span>
+      <div class="field">
+        <textarea id="discharge_text" rows="14">The following criteria will be employed to determine the gradual reduction of ABA services and eventual discharge, contingent upon the acquisition of skills and reduction of maladaptive behaviors. If [Name] accomplishes the following criteria over a three-month period: (1) demonstrates a 90% reduction in maladaptive behaviors, specifically [include behaviors], and maintains this reduction; (2) achieves a 90% increase above baseline in basic socially significant and independence skills across communication, social, and self-regulation domains — this includes but is not limited to [include specific age-appropriate goals]; (3) attains a 90% increase above baseline in independence skills essential for functioning at home and in the community — this includes [include specific skills], and sustains this progress — then direct therapy will gradually decrease by two hours biweekly over no more than a three-month period. Parent training hours will increase by 0.5 hours for every two hours reduced. After removal of direct therapy, parent training hours will decrease by one hour weekly until services are no longer required. Post-discharge, the BCBA will consult with the family once monthly for six months. Discharge will also be considered if: [Name] achieves mastery of all treatment plan goals and objectives for six months; barriers to social skills are no longer observable; parents no longer request services; parents can implement behavior interventions independently; [Name] no longer meets admission criteria or meets criteria for another level of care; or [Name] shows no progress toward goals with no expectation of future progress.</textarea>
+      </div>
+      <div class="field"><label>Client-specific discharge criteria</label><textarea id="discharge_notes" rows="4" placeholder="[optional additional criteria]"></textarea></div>
+
+      <h3>Telehealth Consent</h3>
+      <div class="field">
+        <textarea id="telehealth_text" rows="4">By signing this report, the parent/guardian understands and agrees to the use of telehealth/telemedicine services which may involve the Internet or a telecommunication device to conduct sessions at any time, as deemed clinically appropriate by the BCBA.</textarea>
+      </div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- SECTION 12 — RECOMMENDATIONS & SCHEDULE            -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="12">
+      <h3>Recommendations for Treatment</h3>
+      <span class="helper">Replace bracketed placeholders with client-specific domains, behaviors, and barriers.</span>
+      <div class="field">
+        <textarea id="rec_text" rows="8">Based on the assessment conducted, [Name] would benefit from receiving ABA services to address the following domains: [include domains]. Treatment will address the following maladaptive behaviors: [include behaviors]. Treatment will address the following barriers: [include barriers]. During treatment implementation, only evidence-based, established treatment interventions will be used. These may include but are not limited to: Discrete Trial Training, Modeling, Prompting, Video Modeling, Differential Reinforcement, Extinction, Response Interruption, Scripting, Self-Management, Visual Supports, Antecedent-based Interventions, Naturalistic Interventions, etc.</textarea>
+      </div>
+
+      <h3>Recommended Service Hours</h3>
+      <table class="tbl">
+        <thead><tr><th>CPT Code &amp; Service</th><th>Hrs / Week</th><th>Days / Week</th></tr></thead>
         <tbody>
-          <tr>
-            <td>Vineland-3</td>
-            <td><input type="text" id="adap-vineland-score" /></td>
-            <td><input type="text" id="adap-vineland-notes" /></td>
-          </tr>
-          <tr>
-            <td>ABAS-3</td>
-            <td><input type="text" id="adap-abas-score" /></td>
-            <td><input type="text" id="adap-abas-notes" /></td>
-          </tr>
-          <tr>
-            <td>CARS-2</td>
-            <td><input type="text" id="adap-cars-score" /></td>
-            <td><input type="text" id="adap-cars-notes" /></td>
-          </tr>
-          <tr>
-            <td>SRS-2</td>
-            <td><input type="text" id="adap-srs-score" /></td>
-            <td><input type="text" id="adap-srs-notes" /></td>
-          </tr>
-          <tr>
-            <td>Conners-3</td>
-            <td><input type="text" id="adap-conners-score" /></td>
-            <td><input type="text" id="adap-conners-notes" /></td>
-          </tr>
-          <tr>
-            <td><input type="text" id="adap-other-name" placeholder="Other" /></td>
-            <td><input type="text" id="adap-other-score" /></td>
-            <td><input type="text" id="adap-other-notes" /></td>
-          </tr>
+          <tr><td><strong>97155</strong> — Supervision with Paraprofessional / Protocol Modification (BCBA)</td>
+            <td><input type="text" id="sv_97155_h" class="fill-required" placeholder="[hrs]"></td>
+            <td><input type="text" id="sv_97155_d" class="fill-required" placeholder="[days]"></td></tr>
+          <tr><td><strong>97153</strong> — Behavior Treatment (Paraprofessional / RBT)</td>
+            <td><input type="text" id="sv_97153_h" class="fill-required" placeholder="[hrs]"></td>
+            <td><input type="text" id="sv_97153_d" class="fill-required" placeholder="[days]"></td></tr>
+          <tr><td><strong>97156</strong> — Family Treatment Guidance / Parent Training (BCBA)</td>
+            <td><input type="text" id="sv_97156_h" class="fill-required" placeholder="[hr]"></td>
+            <td><input type="text" id="sv_97156_d" class="fill-required" placeholder="[day]"></td></tr>
+          <tr><td><strong>97151</strong> — Reassessment (BCBA)</td>
+            <td><input type="text" id="sv_97151_h" class="fill-required" placeholder="[hrs / auth period]"></td>
+            <td><input type="text" id="sv_97151_d" class="fill-required" placeholder="[days]"></td></tr>
         </tbody>
       </table>
 
-      <div style="margin-bottom:20px">
-        <span class="chip-label">FBA Methods</span>
-        <div class="chip-group" id="chips-fbaMethods">
-          <span class="chip" data-value="Direct Observation">Direct Observation</span>
-          <span class="chip" data-value="ABC Data">ABC Data</span>
-          <span class="chip" data-value="Indirect Interview (FAST/MAS)">Indirect Interview (FAST/MAS)</span>
-          <span class="chip" data-value="Scatter Plot">Scatter Plot</span>
-          <span class="chip" data-value="Experimental FA">Experimental FA</span>
-          <span class="chip" data-value="Record Review">Record Review</span>
-        </div>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="prefAssessType">Preference Assessment Type</label>
-        <input type="text" id="prefAssessType" placeholder="e.g. MSWO, Paired Stimulus, Free Operant" />
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 5 ==================== -->
-    <div class="section" id="s4">
-      <h2>Section 5: Behavioral Observations</h2>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-demeanor">General Demeanor/Affect</label>
-        <textarea id="obs-demeanor" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-expressive">Communication — Expressive</label>
-        <textarea id="obs-expressive" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-receptive">Communication — Receptive</label>
-        <textarea id="obs-receptive" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-social">Social Interaction / Joint Attention</label>
-        <textarea id="obs-social" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-play">Play Skills</label>
-        <textarea id="obs-play" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-rrb">Restricted/Repetitive Behaviors</label>
-        <textarea id="obs-rrb" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-transitions">Response to Instructions/Transitions</label>
-        <textarea id="obs-transitions" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="obs-additional">Additional Observations</label>
-        <textarea id="obs-additional" rows="5"></textarea>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 6 ==================== -->
-    <div class="section" id="s5">
-      <h2>Section 6: Skill Assessment Results</h2>
-
-      <div class="sub-header">Communication Skills</div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-manding">Manding</label>
-        <textarea id="skill-manding" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-tacting">Tacting</label>
-        <textarea id="skill-tacting" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-echoic">Echoic / Vocal Imitation</label>
-        <textarea id="skill-echoic" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-intraverbal">Intraverbal</label>
-        <textarea id="skill-intraverbal" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-receptive">Receptive Language</label>
-        <textarea id="skill-receptive" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-langSummary">Overall Language Summary</label>
-        <textarea id="skill-langSummary" rows="6"></textarea>
-      </div>
-
-      <div class="sub-header">Adaptive Behavior</div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-dailyLiving">Daily Living Skills</label>
-        <textarea id="skill-dailyLiving" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-socialization">Socialization</label>
-        <textarea id="skill-socialization" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-grossMotor">Gross Motor</label>
-        <textarea id="skill-grossMotor" rows="4"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="skill-fineMotor">Fine Motor / Pre-Academic</label>
-        <textarea id="skill-fineMotor" rows="4"></textarea>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 7 ==================== -->
-    <div class="section" id="s6">
-      <h2>Section 7: FBA Results</h2>
-
-      <!-- Behavior 1 -->
-      <div class="behavior-block">
-        <h4>Behavior 1</h4>
-        <div class="form-grid">
-          <div class="field-group">
-            <label for="fba1-name">Behavior Name</label>
-            <input type="text" id="fba1-name" placeholder="e.g. Self-Injurious Behavior" />
-          </div>
-          <div class="field-group">
-            <label for="fba1-freq">Frequency/Severity</label>
-            <input type="text" id="fba1-freq" placeholder="e.g. 15x/hr, moderate severity" />
-          </div>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba1-def">Operational Definition</label>
-          <textarea id="fba1-def" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba1-ante">Antecedents</label>
-          <textarea id="fba1-ante" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba1-cons">Consequences</label>
-          <textarea id="fba1-cons" rows="4"></textarea>
-        </div>
-        <span class="chip-label">Hypothesized Function</span>
-        <div class="chip-group" id="chips-fba1-func">
-          <span class="chip" data-value="Attention">Attention</span>
-          <span class="chip" data-value="Escape/Avoidance">Escape/Avoidance</span>
-          <span class="chip" data-value="Access to Tangibles">Access to Tangibles</span>
-          <span class="chip" data-value="Automatic/Sensory">Automatic/Sensory</span>
-          <span class="chip" data-value="Multiple Functions">Multiple Functions</span>
-        </div>
-      </div>
-
-      <!-- Behavior 2 -->
-      <div class="behavior-block">
-        <h4>Behavior 2</h4>
-        <div class="form-grid">
-          <div class="field-group">
-            <label for="fba2-name">Behavior Name</label>
-            <input type="text" id="fba2-name" placeholder="e.g. Self-Injurious Behavior" />
-          </div>
-          <div class="field-group">
-            <label for="fba2-freq">Frequency/Severity</label>
-            <input type="text" id="fba2-freq" placeholder="e.g. 15x/hr, moderate severity" />
-          </div>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba2-def">Operational Definition</label>
-          <textarea id="fba2-def" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba2-ante">Antecedents</label>
-          <textarea id="fba2-ante" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba2-cons">Consequences</label>
-          <textarea id="fba2-cons" rows="4"></textarea>
-        </div>
-        <span class="chip-label">Hypothesized Function</span>
-        <div class="chip-group" id="chips-fba2-func">
-          <span class="chip" data-value="Attention">Attention</span>
-          <span class="chip" data-value="Escape/Avoidance">Escape/Avoidance</span>
-          <span class="chip" data-value="Access to Tangibles">Access to Tangibles</span>
-          <span class="chip" data-value="Automatic/Sensory">Automatic/Sensory</span>
-          <span class="chip" data-value="Multiple Functions">Multiple Functions</span>
-        </div>
-      </div>
-
-      <!-- Behavior 3 -->
-      <div class="behavior-block">
-        <h4>Behavior 3</h4>
-        <div class="form-grid">
-          <div class="field-group">
-            <label for="fba3-name">Behavior Name</label>
-            <input type="text" id="fba3-name" placeholder="e.g. Self-Injurious Behavior" />
-          </div>
-          <div class="field-group">
-            <label for="fba3-freq">Frequency/Severity</label>
-            <input type="text" id="fba3-freq" placeholder="e.g. 15x/hr, moderate severity" />
-          </div>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba3-def">Operational Definition</label>
-          <textarea id="fba3-def" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba3-ante">Antecedents</label>
-          <textarea id="fba3-ante" rows="4"></textarea>
-        </div>
-        <div class="field-group" style="margin-bottom:16px">
-          <label for="fba3-cons">Consequences</label>
-          <textarea id="fba3-cons" rows="4"></textarea>
-        </div>
-        <span class="chip-label">Hypothesized Function</span>
-        <div class="chip-group" id="chips-fba3-func">
-          <span class="chip" data-value="Attention">Attention</span>
-          <span class="chip" data-value="Escape/Avoidance">Escape/Avoidance</span>
-          <span class="chip" data-value="Access to Tangibles">Access to Tangibles</span>
-          <span class="chip" data-value="Automatic/Sensory">Automatic/Sensory</span>
-          <span class="chip" data-value="Multiple Functions">Multiple Functions</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 8 ==================== -->
-    <div class="section" id="s7">
-      <h2>Section 8: Clinical Summary</h2>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="clinicalSummary">Clinical Summary Narrative</label>
-        <textarea id="clinicalSummary" rows="10" placeholder="Comprehensive summary of assessment findings..."></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="medNecessity">Medical Necessity Statement</label>
-        <textarea id="medNecessity" rows="10" placeholder="Describe why ABA services are medically necessary for this individual per MassHealth criteria..."></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="prognosis">Prognosis</label>
-        <select id="prognosis">
-          <option value="">— Select —</option>
-          <option>Excellent</option>
-          <option>Good</option>
-          <option>Fair</option>
-          <option>Guarded</option>
-        </select>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="additionalNotes">Additional Notes</label>
-        <textarea id="additionalNotes" rows="4"></textarea>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 9 ==================== -->
-    <div class="section" id="s8">
-      <h2>Section 9: Treatment Recommendations</h2>
-
-      <table class="cpt-table">
-        <thead>
-          <tr>
-            <th>CPT Code</th>
-            <th>Description</th>
-            <th style="width:110px">Hrs/Week</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>97151</td>
-            <td>Behavior identification assessment</td>
-            <td><input type="number" id="cpt-97151" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97152</td>
-            <td>Behavior identification supporting assessment</td>
-            <td><input type="number" id="cpt-97152" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97153</td>
-            <td>Adaptive behavior treatment by protocol</td>
-            <td><input type="number" id="cpt-97153" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97154</td>
-            <td>Group adaptive behavior treatment</td>
-            <td><input type="number" id="cpt-97154" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97155</td>
-            <td>Adaptive behavior treatment w/ protocol modification</td>
-            <td><input type="number" id="cpt-97155" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97156</td>
-            <td>Family adaptive behavior treatment guidance</td>
-            <td><input type="number" id="cpt-97156" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr>
-            <td>97157</td>
-            <td>Multiple-family group adaptive behavior treatment</td>
-            <td><input type="number" id="cpt-97157" min="0" step="0.5" style="width:90px" /></td>
-          </tr>
-          <tr class="cpt-total">
-            <td colspan="2"><strong>Total Hours/Week</strong></td>
-            <td id="cptTotal" style="font-weight:700; padding:8px 12px;">0</td>
-          </tr>
-        </tbody>
+      <h3>Proposed Session Schedule</h3>
+      <table class="tbl">
+        <thead><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
+        <tbody><tr>
+          <td><textarea id="sch_mon"></textarea></td>
+          <td><textarea id="sch_tue"></textarea></td>
+          <td><textarea id="sch_wed"></textarea></td>
+          <td><textarea id="sch_thu"></textarea></td>
+          <td><textarea id="sch_fri"></textarea></td>
+          <td><textarea id="sch_sat"></textarea></td>
+          <td><textarea id="sch_sun"></textarea></td>
+        </tr></tbody>
       </table>
+    </section>
 
-      <div class="form-grid">
-        <div class="field-group">
-          <label for="authPeriod">Auth Period</label>
-          <select id="authPeriod">
-            <option value="">— Select —</option>
-            <option>3 Months</option>
-            <option>6 Months</option>
-            <option>12 Months</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label for="serviceLocation">Service Location</label>
-          <input type="text" id="serviceLocation" />
-        </div>
+    <!-- =================================================== -->
+    <!-- SECTION 13 — SIGNATURES                            -->
+    <!-- =================================================== -->
+    <section class="section" data-sec="13">
+      <h3>Signatures</h3>
+      <span class="helper">After this report is reviewed it will be sent to the parent(s) to obtain signatures.</span>
+
+      <h4>Reported By</h4>
+      <div class="grid-2">
+        <div class="field"><label>Name &amp; Credentials</label><input type="text" id="sig_prov_name" class="fill-required" placeholder="[name, credentials]"></div>
+        <div class="field"><label>Date</label><input type="date" id="sig_prov_date"></div>
       </div>
+      <div class="field"><label>Signature (typed)</label><input type="text" id="sig_prov_sig" placeholder="[typed signature]"></div>
 
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="intensityRationale">Rationale for Intensity</label>
-        <textarea id="intensityRationale" rows="5"></textarea>
+      <h4>Parent / Guardian</h4>
+      <div class="grid-2">
+        <div class="field"><label>Parent/Guardian Name</label><input type="text" id="sig_par_name" class="fill-required" placeholder="[name]"></div>
+        <div class="field"><label>Date</label><input type="date" id="sig_par_date"></div>
       </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="goalsShortTerm">Short-Term Goals (3–6 months)</label>
-        <textarea id="goalsShortTerm" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="goalsLongTerm">Long-Term Goals (12 months)</label>
-        <textarea id="goalsLongTerm" rows="5"></textarea>
-      </div>
-
-      <div class="field-group" style="margin-bottom:20px">
-        <label for="caregiverPlan">Caregiver Training Plan</label>
-        <textarea id="caregiverPlan" rows="4"></textarea>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <span class="chip-label">Provider Coordination</span>
-        <div class="chip-group" id="chips-providerCoord">
-          <span class="chip" data-value="SLP">SLP</span>
-          <span class="chip" data-value="OT">OT</span>
-          <span class="chip" data-value="PT">PT</span>
-          <span class="chip" data-value="School Team">School Team</span>
-          <span class="chip" data-value="Psychiatry">Psychiatry</span>
-          <span class="chip" data-value="Primary Care">Primary Care</span>
-          <span class="chip" data-value="CBHI/Mental Health">CBHI/Mental Health</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== SECTION 10 ==================== -->
-    <div class="section" id="s9">
-      <h2>Section 10: Signatures</h2>
-
-      <div class="sig-block">
-        <h3>BCBA/LABA Completing Assessment</h3>
-        <div class="form-grid">
-          <div class="field-group">
-            <label for="sig-bcbaName">BCBA/LABA Name</label>
-            <input type="text" id="sig-bcbaName" />
-          </div>
-          <div class="field-group">
-            <label for="sig-bcbaCredentials">Credentials</label>
-            <input type="text" id="sig-bcbaCredentials" placeholder="e.g. BCBA, LABA" />
-          </div>
-          <div class="field-group">
-            <label for="sig-bacbCert">BACB Cert #</label>
-            <input type="text" id="sig-bacbCert" />
-          </div>
-          <div class="field-group">
-            <label for="sig-labaLicense">MA LABA License #</label>
-            <input type="text" id="sig-labaLicense" />
-          </div>
-          <div class="field-group">
-            <label for="sig-bcbaEmail">Email</label>
-            <input type="email" id="sig-bcbaEmail" />
-          </div>
-          <div class="field-group">
-            <label for="sig-bcbaDate">Date</label>
-            <input type="date" id="sig-bcbaDate" />
-          </div>
-        </div>
-        <div class="attestation">
-          I attest that the information in this report is accurate, that this assessment was conducted in accordance with BACB ethical guidelines and MassHealth ABA program requirements, and that the recommended services are medically necessary for this individual.
-        </div>
-      </div>
-
-      <div class="sig-block">
-        <h3>Parent/Guardian</h3>
-        <div class="form-grid">
-          <div class="field-group">
-            <label for="sig-guardianName">Name</label>
-            <input type="text" id="sig-guardianName" />
-          </div>
-          <div class="field-group">
-            <label for="sig-guardianRel">Relationship</label>
-            <input type="text" id="sig-guardianRel" />
-          </div>
-          <div class="field-group">
-            <label for="sig-guardianDate">Date</label>
-            <input type="date" id="sig-guardianDate" />
-          </div>
-          <div class="field-group">
-            <label for="sig-guardianPhone">Phone</label>
-            <input type="tel" id="sig-guardianPhone" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Nav Bar -->
-    <div class="nav-bar">
-      <button id="backBtn">← Back</button>
-      <button id="nextBtn">Next →</button>
-    </div>
+      <div class="field"><label>Parent/Guardian Signature (typed)</label><input type="text" id="sig_par_sig" placeholder="[typed signature]"></div>
+    </section>
 
   </main>
 </div>
 
+<!-- jsPDF + autotable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <script src="assessment.js"></script>
 </body>
 </html>
