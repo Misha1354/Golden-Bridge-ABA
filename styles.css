@@ -1473,9 +1473,22 @@ img { max-width: 100%; display: block; }
 .how-cta {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 14px;
   margin-top: 44px;
   flex-wrap: wrap;
+}
+
+/* Override hero-specific .btn-outline so it's visible on the cream bg */
+.how-cta .btn-outline {
+  color: #b8863a;
+  border: 1px solid #b8863a;
+  background: transparent;
+}
+.how-cta .btn-outline:hover {
+  background: #b8863a;
+  color: #ffffff;
+  border-color: #b8863a;
 }
 
 @media (max-width: 860px) {
