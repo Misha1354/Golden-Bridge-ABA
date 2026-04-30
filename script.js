@@ -377,7 +377,7 @@ async function submitWaitlist() {
   const phone     = document.getElementById('wl-phone').value.trim();
   const state     = document.getElementById('wl-state').value;
   const insurance = document.getElementById('wl-insurance').value.trim();
-  const message   = document.getElementById('wl-message').value.trim();
+  const message   = document.getElementById('wl-message')?.value.trim() || '';
 
   if (!firstName || !lastName) { alert('Please enter your first and last name.'); return; }
   if (!email || !/\S+@\S+\.\S+/.test(email)) { alert('Please enter a valid email address.'); return; }
@@ -414,7 +414,7 @@ async function submitWaitlist() {
 
 function resetWaitlist() {
   ['wl-firstName','wl-lastName','wl-email','wl-phone','wl-state','wl-insurance','wl-message']
-    .forEach(id => { document.getElementById(id).value = ''; });
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const btn = document.getElementById('wlSubmitBtn');
   btn.disabled    = false;
   btn.textContent = '\u2605 Join the Waitlist';
