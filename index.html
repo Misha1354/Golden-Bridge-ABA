@@ -1,453 +1,454 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Golden Bridge ABA | Applied Behavior Analysis in MA & NM</title>
-  <meta name="description" content="Golden Bridge ABA provides in-home and in-school ABA therapy services in Massachusetts and New Mexico. Accepting most major insurance plans." />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="intake.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Bridge ABA — Compassionate ABA Therapy in MA &amp; NM</title>
+  <meta name="description" content="Golden Bridge ABA delivers compassionate, evidence-based Applied Behavior Analysis therapy in homes and schools across Massachusetts and New Mexico. BCBA-supervised programs.">
+  <link rel="icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="preview.css">
 </head>
 <body>
 
-  <!-- NAVIGATION -->
-  <header class="header" id="header">
-    <div class="container nav-container">
-      <a href="#home" class="logo">
-        <span class="logo-icon">&#9670;</span>
-        <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
-      </a>
-      <nav class="nav" id="nav">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#locations">Locations</a>
-        <a href="#insurance">Insurance</a>
-        <a href="careers.html">Careers</a>
-        <a href="#waitlist" class="nav-cta">Join Waitlist</a>
-      </nav>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce">
+  <div class="container announce-inner">
+    <span>Now accepting waitlist signups in Massachusetts &amp; New Mexico</span>
+    <a href="#schedule">Book a free consultation →</a>
+  </div>
+</div>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <div class="hero-badge">Serving Massachusetts &amp; New Mexico</div>
-      <h1>Building Brighter Futures Through <em>ABA Therapy</em></h1>
-      <p class="hero-sub">Golden Bridge ABA delivers compassionate, evidence-based Applied Behavior Analysis therapy in the home and school environments where children thrive most.</p>
+<!-- HEADER -->
+<header class="hdr" id="header">
+  <div class="container hdr-inner">
+    <a href="#home" class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Golden Bridge <em>ABA</em></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#services">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="#why">Why Us</a>
+      <a href="#insurance">Insurance</a>
+      <a href="#waitlist">Waitlist</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#schedule" class="btn btn-primary btn-sm">Free Consultation</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">Applied Behavior Analysis Therapy</div>
+      <h1>Compassionate ABA therapy that meets your child where they are.</h1>
+      <p class="lead">Golden Bridge ABA provides individualized, evidence-based Applied Behavior Analysis services in the home and at school across Massachusetts and New Mexico — designed and supervised by Board Certified Behavior Analysts.</p>
       <div class="hero-actions">
-        <a href="#schedule" class="btn btn-primary">&#128197; Schedule a Free Consultation</a>
-        <a href="#waitlist" class="btn btn-outline">Join the Waitlist</a>
-        <a href="#services" class="btn btn-ghost">Learn More</a>
+        <a href="#schedule" class="btn btn-primary btn-lg">Request a Free Consultation</a>
+        <a href="#how" class="btn btn-ghost btn-lg">How It Works →</a>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">2</span>
-          <span class="stat-label">States Served</span>
+      <ul class="hero-trust">
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> BCBA-supervised programs</li>
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> In-home &amp; in-school</li>
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Most insurances accepted</li>
+      </ul>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-photo">
+        <img src="https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=900&q=80&auto=format&fit=crop" alt="Therapist working one-on-one with a child during an ABA session" loading="lazy">
+        <div class="hero-photo-stats">
+          <div class="hero-stat"><span class="num">2</span><span class="lbl">States Served</span></div>
+          <div class="hero-stat"><span class="num">2</span><span class="lbl">Service Settings</span></div>
+          <div class="hero-stat"><span class="num">10+</span><span class="lbl">Insurances</span></div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">2</span>
-          <span class="stat-label">Service Settings</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">10+</span>
-          <span class="stat-label">Insurances Accepted</span>
-        </div>
+      </div>
+      <div class="blob blob-a" aria-hidden="true"></div>
+      <div class="blob blob-b" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE STRIP -->
+<section class="insurers">
+  <div class="container">
+    <p class="insurers-label">In-network with major insurers including</p>
+    <div class="insurers-row">
+      <div class="ins-pill">MassHealth</div>
+      <div class="ins-pill">BCBS Massachusetts</div>
+      <div class="ins-pill">Tufts Health Plan</div>
+      <div class="ins-pill">Aetna</div>
+      <div class="ins-pill">Cigna</div>
+      <div class="ins-pill">Centennial Care</div>
+      <div class="ins-pill">Molina Healthcare</div>
+      <div class="ins-pill">Presbyterian</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">What We Offer</div>
+      <h2>Tailored ABA, delivered where your child thrives</h2>
+      <p>Three core services, all built around the same principle — meaningful skills for everyday life.</p>
+    </div>
+    <div class="cards-3">
+      <article class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z"/></svg></div>
+        <h3>In-Home ABA</h3>
+        <p>One-on-one therapy delivered in the comfort of your home, where your child feels most at ease. We work within your family's natural routines so skills generalize to real life.</p>
+        <ul class="svc-list">
+          <li>Daily living &amp; self-help skills</li>
+          <li>Communication &amp; social development</li>
+          <li>Parent coaching included</li>
+        </ul>
+      </article>
+      <article class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9zM5 13.18v4L12 21l7-3.82v-4L12 17z"/></svg></div>
+        <h3>School-Based ABA</h3>
+        <p>Therapists collaborate directly with teachers and support staff to help your child succeed academically and socially in the classroom.</p>
+        <ul class="svc-list">
+          <li>Classroom behavior support</li>
+          <li>IEP-aligned goals</li>
+          <li>Teacher consultation</li>
+        </ul>
+      </article>
+      <article class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3m-8 0c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13m8 0c-.29 0-.62.02-.97.05C16.16 13.84 17 15.04 17 16.5V19h7v-2.5c0-2.33-4.67-3.5-8-3.5"/></svg></div>
+        <h3>Parent Training</h3>
+        <p>Practical strategies you can use every day — from morning routines to bedtime. We train caregivers so progress continues between sessions.</p>
+        <ul class="svc-list">
+          <li>1:1 BCBA coaching</li>
+          <li>Home-program design</li>
+          <li>Crisis &amp; behavior plans</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE ARE -->
+<section class="section section-alt" id="about">
+  <div class="container who">
+    <div class="who-img">
+      <img class="who-photo" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop" alt="Child engaged in playful learning at home" loading="lazy">
+      <div class="who-badge">
+        <strong>BCBA-led</strong>
+        <span>Every program is designed and supervised by Board Certified Behavior Analysts.</span>
       </div>
     </div>
-  </section>
+    <div class="who-text">
+      <div class="eyebrow">Who We Are</div>
+      <h2>A team that believes every child has potential to grow, communicate, and connect.</h2>
+      <p>At Golden Bridge ABA, we deliver compassionate, evidence-based therapy grounded in the science of Applied Behavior Analysis. Our BCBAs and RBTs partner closely with families and educators to build meaningful, lasting skills — not just at the table, but in the moments that matter most.</p>
+      <p>We meet children where they are. That's why we operate in homes, schools, and communities — the natural environments where learning sticks.</p>
+      <a href="#schedule" class="btn btn-primary">Talk to Our Team</a>
+    </div>
+  </div>
+</section>
 
-  <!-- ABOUT -->
-  <section class="section about" id="about">
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Getting Started</div>
+      <h2>How It Works</h2>
+      <p>Three simple steps from first call to first session.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Book a free call</h3>
+        <p>Pick a time that works for you on our calendar. We'll talk through your child's needs and answer any questions.</p>
+      </div>
+      <div class="step-arrow" aria-hidden="true">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Complete intake</h3>
+        <p>We guide you through a simple intake — insurance verification, paperwork, and an initial assessment.</p>
+      </div>
+      <div class="step-arrow" aria-hidden="true">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Start services</h3>
+        <p>Your child is matched with a qualified therapist and in-home or in-school sessions begin on your schedule.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section section-alt" id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Why Golden Bridge</div>
+      <h2>Built around your family — not the other way around.</h2>
+      <p>Six things that shape how we deliver care.</p>
+    </div>
+    <div class="features">
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5z"/></svg></div>
+        <h3>Evidence-based</h3>
+        <p>Every protocol we use is grounded in peer-reviewed ABA research.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4"/></svg></div>
+        <h3>Individualized</h3>
+        <p>No two children are alike. Goals are written around your child's strengths and needs.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+        <h3>BCBA-supervised</h3>
+        <p>All therapy is overseen by Board Certified Behavior Analysts.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3zm0 4h2v-2H3zm0-8h2V7H3zm4 4h14v-2H7zm0 4h14v-2H7zM7 7v2h14V7z"/></svg></div>
+        <h3>Data-driven</h3>
+        <p>Every session is documented. We use real data to refine programs continuously.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+        <h3>In-home &amp; in-school</h3>
+        <p>We come to the environments where learning matters most.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2m0 4-8 5-8-5V6l8 5 8-5z"/></svg></div>
+        <h3>Family partnership</h3>
+        <p>Open communication, parent training, and coordination with your full care team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS / SERVICE AREAS -->
+<section class="section" id="locations">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Where We Serve</div>
+      <h2>Two states. Wherever your child learns best.</h2>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-card">
+        <div class="loc-tag">Massachusetts</div>
+        <h3>Throughout the Commonwealth</h3>
+        <p>Bringing in-home and in-school ABA therapy to families across Massachusetts.</p>
+        <a href="#schedule" class="link-arrow">Check coverage in your area →</a>
+      </div>
+      <div class="loc-card">
+        <div class="loc-tag">New Mexico</div>
+        <h3>Statewide service</h3>
+        <p>Serving families from Albuquerque to Santa Fe and beyond — meeting children where they are.</p>
+        <a href="#schedule" class="link-arrow">Check coverage in your area →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE -->
+<section class="section section-alt" id="insurance">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Coverage</div>
+      <h2>Insurance &amp; Funding</h2>
+      <p>We accept most major insurance plans across both states. Not sure if you're covered? We'll verify your benefits at no cost.</p>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-col">
+        <h4>Massachusetts</h4>
+        <ul>
+          <li>MassHealth</li>
+          <li>Blue Cross Blue Shield of MA</li>
+          <li>Tufts Health Plan</li>
+          <li>Harvard Pilgrim</li>
+          <li>Aetna</li>
+          <li>Cigna</li>
+        </ul>
+      </div>
+      <div class="ins-col">
+        <h4>New Mexico</h4>
+        <ul>
+          <li>Centennial Care (Medicaid)</li>
+          <li>Presbyterian Health Plan</li>
+          <li>Molina Healthcare</li>
+          <li>Blue Cross Blue Shield of NM</li>
+          <li>United Healthcare</li>
+          <li>Western Sky Community Care</li>
+        </ul>
+      </div>
+      <div class="ins-cta">
+        <h4>Don't see your plan?</h4>
+        <p>We'll verify your benefits and walk you through options.</p>
+        <a href="#schedule" class="btn btn-primary">Verify My Coverage</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE / CALENDLY -->
+<section class="section" id="schedule">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Book a Time</div>
+      <h2>Schedule a Free Consultation</h2>
+      <p>30 minutes, no obligation. We'll answer your questions and walk you through next steps.</p>
+    </div>
+    <div class="cal-wrap">
+      <div class="calendly-inline-widget" data-url="https://calendly.com/michael-goldaba/30min?hide_gdpr_banner=1&primary_color=b8863a" style="min-width:320px;height:760px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-alt" id="faq">
+  <div class="container faq-wrap">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common Questions</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>What is Applied Behavior Analysis (ABA)?</summary>
+        <p>ABA is a therapy grounded in the science of learning and behavior. It uses evidence-based techniques to teach communication, social, and daily living skills, while reducing behaviors that interfere with learning.</p>
+      </details>
+      <details>
+        <summary>Where do sessions take place?</summary>
+        <p>We deliver therapy in your home and at your child's school. Sessions are designed to fit naturally into the environments where your child already spends time.</p>
+      </details>
+      <details>
+        <summary>How many hours of therapy will my child receive?</summary>
+        <p>Hours are determined by an initial assessment and your child's individual needs. Most plans range from 10 to 30 hours per week and are adjusted as your child progresses.</p>
+      </details>
+      <details>
+        <summary>Do you accept my insurance?</summary>
+        <p>We're in-network with most major plans in Massachusetts and New Mexico, including Medicaid programs. Submit a request and we'll verify your benefits at no cost.</p>
+      </details>
+      <details>
+        <summary>How quickly can we start?</summary>
+        <p>After your free consultation, intake and insurance verification typically take 1–3 weeks. Once approved, we match your child with a therapist and begin sessions on your schedule.</p>
+      </details>
+      <details>
+        <summary>Who delivers the therapy?</summary>
+        <p>Therapy is delivered by trained Registered Behavior Technicians (RBTs) under the supervision of a Board Certified Behavior Analyst (BCBA), who designs and continuously updates your child's program.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="section waitlist" id="waitlist">
+  <div class="container waitlist-grid">
+    <div class="waitlist-info">
+      <div class="eyebrow">Reserve Your Spot</div>
+      <h2>Join the Waitlist</h2>
+      <p>We're preparing to launch services in Massachusetts and New Mexico. Add your family to our waitlist and we'll reach out the moment we're ready to schedule your child's evaluation.</p>
+      <ul class="waitlist-perks">
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Priority scheduling at launch</li>
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Free benefits verification</li>
+        <li><svg viewBox="0 0 24 24" class="ic"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> No commitment required</li>
+      </ul>
+      <p class="waitlist-contact">Questions? Email <a href="mailto:michael@goldaba.com">michael@goldaba.com</a></p>
+    </div>
+    <div class="waitlist-form" id="waitlistFormCard">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="wl-firstName">First Name</label>
+          <input type="text" id="wl-firstName" placeholder="Jane" required>
+        </div>
+        <div class="form-field">
+          <label for="wl-lastName">Last Name</label>
+          <input type="text" id="wl-lastName" placeholder="Smith" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="wl-email">Email</label>
+        <input type="email" id="wl-email" placeholder="jane@example.com" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="wl-phone">Phone</label>
+          <input type="tel" id="wl-phone" placeholder="(555) 000-0000">
+        </div>
+        <div class="form-field">
+          <label for="wl-state">State</label>
+          <select id="wl-state" required>
+            <option value="">Select…</option>
+            <option>Massachusetts</option>
+            <option>New Mexico</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="wl-insurance">Insurance Provider <span class="opt">(optional)</span></label>
+        <input type="text" id="wl-insurance" placeholder="e.g. MassHealth, BCBS, Molina…">
+      </div>
+      <button type="button" id="wlSubmitBtn" class="btn btn-primary btn-lg btn-full" onclick="submitWaitlist()">★ Join the Waitlist</button>
+    </div>
+    <div class="waitlist-success" id="waitlistSuccess" style="display:none;">
+      <div class="success-icon">✓</div>
+      <h3>You're on the list, <span id="wl-success-name">there</span>!</h3>
+      <p>Thanks for joining our waitlist. We've saved your spot and will reach out to <strong id="wl-success-email"></strong> as soon as we're ready to schedule. State on file: <strong id="wl-success-state"></strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<section class="cta">
+  <div class="container cta-inner">
+    <h2>Ready to start your family's journey?</h2>
+    <p>Book a free 30-minute consultation. We'll listen first, then talk through what's possible.</p>
+    <a href="#schedule" class="btn btn-light btn-lg">Schedule a Free Consultation</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ftr">
+  <div class="container ftr-grid">
+    <div>
+      <div class="brand brand-light">
+        <span class="brand-dot"></span>
+        <span class="brand-name">Golden Bridge <em>ABA</em></span>
+      </div>
+      <p class="ftr-tag">Compassionate, evidence-based ABA therapy across Massachusetts &amp; New Mexico.</p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="#services">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="#why">Why Us</a>
+      <a href="#insurance">Insurance</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div>
+      <h5>Serving</h5>
+      <a href="#locations">Massachusetts</a>
+      <a href="#locations">New Mexico</a>
+      <a href="careers.html">Careers</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:michael@goldaba.com">michael@goldaba.com</a>
+      <a href="#schedule">Book a consultation</a>
+    </div>
+  </div>
+  <div class="ftr-bottom">
     <div class="container">
-      <div class="about-grid">
-        <div class="about-visual">
-          <div class="about-card card-1">
-            <div class="card-icon">&#127775;</div>
-            <p>Evidence-Based Practice</p>
-          </div>
-          <div class="about-card card-2">
-            <div class="card-icon">&#128149;</div>
-            <p>Family-Centered Care</p>
-          </div>
-          <div class="about-card card-3">
-            <div class="card-icon">&#127891;</div>
-            <p>School &amp; Home Support</p>
-          </div>
-          <div class="about-bridge">&#9679;</div>
-        </div>
-        <div class="about-text">
-          <div class="section-label">Who We Are</div>
-          <h2>Connecting Families to the Care They Deserve</h2>
-          <p>At Golden Bridge ABA, we believe every child has the potential to grow, communicate, and connect. Our team of Board Certified Behavior Analysts (BCBAs) and Registered Behavior Technicians (RBTs) design individualized programs grounded in the science of Applied Behavior Analysis.</p>
-          <p>We meet children where they are — at home and at school — partnering closely with families and educators to build meaningful, lasting skills.</p>
-          <ul class="about-list">
-            <li><span class="check">&#10003;</span> Individualized treatment plans</li>
-            <li><span class="check">&#10003;</span> BCBA-supervised programs</li>
-            <li><span class="check">&#10003;</span> Family training &amp; collaboration</li>
-            <li><span class="check">&#10003;</span> Regular progress monitoring</li>
-          </ul>
-        </div>
-      </div>
+      <span>© Golden Bridge ABA LLC. All rights reserved.</span>
+      <span>Licensed in New Mexico &amp; Massachusetts</span>
     </div>
-  </section>
+  </div>
+</footer>
 
-  <!-- SERVICES -->
-  <section class="section services" id="services">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">What We Offer</div>
-        <h2>Our Services</h2>
-        <p>We provide ABA therapy in the settings that matter most for your child's development.</p>
-      </div>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">&#127968;</div>
-          <h3>In-Home ABA Therapy</h3>
-          <p>Therapy delivered in the comfort of your home, where your child feels most at ease. Our therapists work within your family's natural routines to build skills that generalize across everyday settings.</p>
-          <ul>
-            <li>Flexible scheduling</li>
-            <li>Parent training included</li>
-            <li>Naturalistic teaching strategies</li>
-            <li>Sibling &amp; family involvement</li>
-          </ul>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#127979;</div>
-          <h3>In-School ABA Therapy</h3>
-          <p>Our therapists collaborate directly with teachers and school staff to support your child's academic and social success within their school environment.</p>
-          <ul>
-            <li>IEP goal alignment</li>
-            <li>Classroom behavior support</li>
-            <li>Staff &amp; teacher consultation</li>
-            <li>Social skills development</li>
-          </ul>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128101;</div>
-          <h3>BCBA Supervision &amp; Consultation</h3>
-          <p>All programs are designed and overseen by Board Certified Behavior Analysts who provide ongoing supervision, data review, and program updates to ensure your child's continued progress.</p>
-          <ul>
-            <li>Comprehensive assessments</li>
-            <li>Data-driven decision making</li>
-            <li>Monthly caregiver meetings</li>
-            <li>Transition planning support</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- Calendly -->
+<link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script src="script.js"></script>
 
-  <!-- LOCATIONS -->
-  <section class="section locations" id="locations">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Where We Serve</div>
-        <h2>Our Locations</h2>
-        <p>Golden Bridge ABA proudly serves families across two states.</p>
-      </div>
-      <div class="locations-grid">
-        <div class="location-card">
-          <div class="location-header">
-            <div class="location-flag">&#127474;&#127462;</div>
-            <div>
-              <h3>Massachusetts</h3>
-              <span class="location-tag">In-Home &amp; In-School</span>
-            </div>
-          </div>
-          <p>Serving families throughout the Commonwealth of Massachusetts, bringing quality ABA therapy to children in their homes and schools across the state.</p>
-          <div class="location-detail">
-            <span>&#128205;</span> Massachusetts
-          </div>
-        </div>
-        <div class="location-card location-card-nm">
-          <div class="location-header">
-            <div class="location-flag">&#127475;&#127474;</div>
-            <div>
-              <h3>New Mexico</h3>
-              <span class="location-tag">In-Home &amp; In-School</span>
-            </div>
-          </div>
-          <p>Serving families throughout the Land of Enchantment, providing compassionate ABA therapy services in homes and schools across New Mexico.</p>
-          <div class="location-detail">
-            <span>&#128205;</span> New Mexico
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSURANCE -->
-  <section class="section insurance" id="insurance">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Coverage</div>
-        <h2>Accepted Insurance Plans</h2>
-        <p>We work with a wide range of insurance providers to make ABA therapy accessible to your family.</p>
-      </div>
-      <div class="insurance-grid">
-        <div class="insurance-col">
-          <div class="insurance-state-header">
-            <div class="state-dot"></div>
-            <h3>Massachusetts</h3>
-          </div>
-          <ul class="insurance-list">
-            <li><span class="ins-check">&#10003;</span> MassHealth (Medicaid)</li>
-            <li><span class="ins-check">&#10003;</span> Blue Cross Blue Shield of MA</li>
-            <li><span class="ins-check">&#10003;</span> Tufts Health Plan</li>
-            <li><span class="ins-check">&#10003;</span> Aetna</li>
-            <li><span class="ins-check">&#10003;</span> Cigna</li>
-          </ul>
-        </div>
-        <div class="insurance-divider"></div>
-        <div class="insurance-col">
-          <div class="insurance-state-header">
-            <div class="state-dot state-dot-nm"></div>
-            <h3>New Mexico</h3>
-          </div>
-          <ul class="insurance-list">
-            <li><span class="ins-check">&#10003;</span> Medicaid</li>
-            <li><span class="ins-check">&#10003;</span> Blue Cross Blue Shield</li>
-            <li><span class="ins-check">&#10003;</span> Molina Healthcare</li>
-            <li><span class="ins-check">&#10003;</span> United Healthcare</li>
-            <li><span class="ins-check">&#10003;</span> Presbyterian Health Plan</li>
-          </ul>
-        </div>
-      </div>
-      <div class="insurance-note">
-        <p>Not sure if your insurance is covered? <a href="#contact">Contact us</a> — we'll verify your benefits at no cost to you.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="section how-it-works" id="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Getting Started</div>
-        <h2 class="section-title">How It Works</h2>
-        <p class="section-subtitle">Three simple steps from first call to first session.</p>
-      </div>
-
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-num">1</div>
-          <h3 class="step-title">Book a free call</h3>
-          <p class="step-text">Pick a time that works for you directly on our calendar. We'll talk through your child's needs and answer any questions.</p>
-        </div>
-
-        <div class="step-connector" aria-hidden="true"></div>
-
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <h3 class="step-title">Complete intake</h3>
-          <p class="step-text">We guide you through a simple intake process — insurance verification, paperwork, and an initial assessment.</p>
-        </div>
-
-        <div class="step-connector" aria-hidden="true"></div>
-
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <h3 class="step-title">Start services</h3>
-          <p class="step-text">Your child is matched with a qualified therapist and in-home or in-school sessions begin on your schedule.</p>
-        </div>
-      </div>
-
-      <div class="how-cta">
-        <a href="#schedule" class="btn btn-primary">Schedule a Free Consultation</a>
-        <a href="#waitlist" class="btn btn-outline">Join Waitlist</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SCHEDULE / CALENDLY -->
-  <section class="section schedule-section" id="schedule">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Book a Time</div>
-        <h2 class="section-title">Schedule a Consultation</h2>
-        <p class="section-subtitle">Pick a time that works for you. The 30-minute consultation is free, and we'll answer any questions about ABA therapy, insurance coverage, and getting started.</p>
-      </div>
-
-      <div class="calendly-wrap">
-        <div
-          class="calendly-inline-widget"
-          data-url="https://calendly.com/michael-goldaba/30min?hide_gdpr_banner=1&primary_color=b8863a"
-          style="min-width:320px;height:760px;"
-        ></div>
-        <noscript>
-          <p style="text-align:center;">Please enable JavaScript to view the calendar, or
-            <a href="https://calendly.com/michael-goldaba/30min" target="_blank" rel="noopener">book directly on Calendly</a>.
-          </p>
-        </noscript>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY US -->
-  <section class="section why">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Why Golden Bridge</div>
-        <h2>Our Commitment to Your Family</h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <div class="why-icon">&#128200;</div>
-          <h4>Data-Driven</h4>
-          <p>Every session is documented and analyzed. We use real data to track progress and continuously refine your child's program.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon">&#128140;</div>
-          <h4>Individualized Plans</h4>
-          <p>No two children are alike. We conduct thorough assessments and craft programs tailored specifically to each child's unique needs and goals.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon">&#128106;</div>
-          <h4>Family Partnership</h4>
-          <p>We train and include parents and caregivers every step of the way, because the most impactful therapy extends beyond our sessions.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon">&#127891;</div>
-          <h4>Qualified Team</h4>
-          <p>All therapy is supervised by BCBAs and delivered by trained RBTs who are passionate about making a difference in children's lives.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WAITLIST -->
-  <section class="section waitlist-section" id="waitlist">
-    <div class="container">
-      <div class="waitlist-grid">
-
-        <!-- LEFT: Countdown & info -->
-        <div class="waitlist-info">
-          <div class="waitlist-badge">&#9733; Now Accepting Applications</div>
-          <h2>We're Opening in June&nbsp;2026</h2>
-          <p>Golden Bridge ABA is preparing to launch services in Massachusetts and New Mexico. Join our waitlist today and we'll contact you the moment we're ready to schedule your child's evaluation.</p>
-
-
-          <!-- Perks list -->
-          <ul class="waitlist-perks">
-            <li><span class="perk-icon">&#10003;</span> Your spot is reserved — first come, first served</li>
-            <li><span class="perk-icon">&#10003;</span> We'll reach out the moment we're ready</li>
-            <li><span class="perk-icon">&#10003;</span> Free no-obligation consultation call</li>
-            <li><span class="perk-icon">&#10003;</span> Insurance verified before your first appointment</li>
-          </ul>
-
-          <!-- Contact info -->
-          <div class="waitlist-contact">
-            <span>&#128140;</span> Questions? Email us at
-            <a href="mailto:michael@goldaba.com">michael@goldaba.com</a>
-          </div>
-        </div>
-
-        <!-- RIGHT: Waitlist signup form -->
-        <div class="waitlist-form-wrap">
-          <div class="waitlist-form-card" id="waitlistFormCard">
-            <div class="waitlist-form-header">
-              <h3>Reserve Your Spot</h3>
-              <p>Takes less than 2 minutes. No payment required.</p>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="wl-firstName">First Name *</label>
-                <input type="text" id="wl-firstName" placeholder="Jane" required />
-              </div>
-              <div class="form-group">
-                <label for="wl-lastName">Last Name *</label>
-                <input type="text" id="wl-lastName" placeholder="Smith" required />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="wl-email">Email Address *</label>
-              <input type="email" id="wl-email" placeholder="jane@example.com" required />
-            </div>
-            <div class="form-group">
-              <label for="wl-phone">Phone Number</label>
-              <input type="tel" id="wl-phone" placeholder="(555) 000-0000" />
-            </div>
-            <div class="form-group">
-              <label for="wl-state">State *</label>
-              <select id="wl-state" required>
-                <option value="" disabled selected>Select your state</option>
-                <option value="Massachusetts">Massachusetts</option>
-                <option value="New Mexico">New Mexico</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="wl-insurance">Insurance Provider</label>
-              <input type="text" id="wl-insurance" placeholder="e.g. MassHealth, BCBS, Molina…" />
-            </div>
-            <button type="button" class="btn btn-primary btn-full waitlist-submit-btn" id="wlSubmitBtn" onclick="submitWaitlist()">
-              &#9733; Join the Waitlist
-            </button>
-            <p class="form-note">By joining, you agree to be contacted by Golden Bridge ABA. We will never share your information.</p>
-          </div>
-
-          <!-- Success state -->
-          <div class="waitlist-success" id="waitlistSuccess" style="display:none;">
-            <div class="wl-success-icon">&#10003;</div>
-            <h3>You're on the List!</h3>
-            <p>Thank you, <strong id="wl-success-name">there</strong>! We've saved your spot and will reach out to <strong id="wl-success-email"></strong> as soon as we're ready to schedule.</p>
-            <div class="wl-success-note">
-              <span>&#128205;</span> <span id="wl-success-state"></span> &nbsp;|&nbsp; <span>&#128140;</span> michael@goldaba.com
-            </div>
-            <button type="button" class="btn btn-outline-dark" onclick="resetWaitlist()">Submit Another</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <a href="#home" class="logo logo-light">
-          <span class="logo-icon">&#9670;</span>
-          <span class="logo-text">Golden Bridge <span class="logo-aba">ABA</span></span>
-        </a>
-        <p>Evidence-based ABA therapy delivered in the home and school settings across Massachusetts and New Mexico.</p>
-      </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="#about">About Us</a>
-        <a href="#services">Services</a>
-        <a href="#locations">Locations</a>
-        <a href="#insurance">Insurance</a>
-        <a href="careers.html">Careers</a>
-        <a href="#waitlist">Join Waitlist</a>
-      </div>
-      <div class="footer-locations">
-        <h4>Serving</h4>
-        <p>Massachusetts</p>
-        <p>New Mexico</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">
-        <p>&copy; 2026 Golden Bridge ABA. All rights reserved.</p>
-        <p>ABA therapy services provided by qualified BCBAs and RBTs.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-  <!-- Calendly inline widget loader -->
-  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>
