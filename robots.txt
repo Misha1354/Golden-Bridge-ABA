@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /staff/
+Disallow: /intake.html
+Disallow: /preview.html
+
+Sitemap: https://goldaba.com/sitemap.xml
