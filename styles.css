@@ -146,6 +146,19 @@ img { max-width: 100%; display: block; }
 }
 .header.scrolled .logo { color: var(--navy); }
 .logo-icon { color: var(--gold); font-size: 1rem; }
+/* Real logo image — circle icon next to brand text */
+.logo .brand-logo {
+  height: 38px !important;
+  width: 38px !important;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+  max-width: 38px !important;
+  max-height: 38px !important;
+}
+@media (max-width: 600px) {
+  .logo .brand-logo { height: 32px !important; width: 32px !important; max-width: 32px !important; max-height: 32px !important; }
+}
 .logo-aba {
   color: var(--gold);
   font-style: italic;
