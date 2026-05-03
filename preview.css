@@ -79,6 +79,17 @@ em { font-style: italic; color: var(--gold); }
   border-radius: 4px; transform: rotate(45deg);
   box-shadow: 0 4px 10px rgba(184,134,58,.4);
 }
+/* Real logo image */
+.brand-logo {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+/* Footer: logo sits on dark navy bg — no filter needed, cream bg in logo is close enough */
+.brand-logo-light {
+  height: 52px;
+  width: auto;
+}
 .nav { display: flex; gap: 26px; margin-left: auto; }
 .nav a {
   font-size: 14.5px; font-weight: 500; color: var(--gray-700);
@@ -515,6 +526,7 @@ em { font-style: italic; color: var(--gold); }
 
   .hdr-inner { gap: 12px; padding: 12px 0; }
   .brand { font-size: 17px; }
+  .brand-logo { height: 42px; }
 
   .cards-3, .features { grid-template-columns: 1fr; gap: 16px; }
   .svc-card { padding: 26px 22px; }
