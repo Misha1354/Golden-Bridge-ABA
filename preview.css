@@ -79,16 +79,13 @@ em { font-style: italic; color: var(--gold); }
   border-radius: 4px; transform: rotate(45deg);
   box-shadow: 0 4px 10px rgba(184,134,58,.4);
 }
-/* Real logo image */
+/* Real logo image — circle icon only, sits next to brand text */
 .brand-logo {
-  height: 52px;
-  width: auto;
+  height: 38px !important;
+  width: 38px !important;
   display: block;
-}
-/* Footer: logo sits on dark navy bg — no filter needed, cream bg in logo is close enough */
-.brand-logo-light {
-  height: 52px;
-  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 .nav { display: flex; gap: 26px; margin-left: auto; }
 .nav a {
@@ -526,7 +523,7 @@ em { font-style: italic; color: var(--gold); }
 
   .hdr-inner { gap: 12px; padding: 12px 0; }
   .brand { font-size: 17px; }
-  .brand-logo { height: 42px; }
+  .brand-logo { height: 32px !important; width: 32px !important; }
 
   .cards-3, .features { grid-template-columns: 1fr; gap: 16px; }
   .svc-card { padding: 26px 22px; }
