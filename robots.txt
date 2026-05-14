@@ -3,5 +3,6 @@ Allow: /
 Disallow: /staff/
 Disallow: /intake.html
 Disallow: /preview.html
+Disallow: /careers.html
 
 Sitemap: https://goldaba.com/sitemap.xml
