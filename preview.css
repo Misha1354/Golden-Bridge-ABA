@@ -350,14 +350,6 @@ em { font-style: italic; color: var(--gold); }
 .ins-cta .btn-primary { background: var(--gold); color: #fff; }
 .ins-cta .btn-primary:hover { background: #fff; color: var(--navy); }
 
-/* ── Calendly wrap ─────────────────────────────────────── */
-.cal-wrap {
-  max-width: 1080px; margin: 0 auto;
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius); box-shadow: var(--shadow-md);
-  overflow: hidden; padding: 6px;
-}
-
 /* ── FAQ ───────────────────────────────────────────────── */
 .faq-wrap { max-width: 860px; margin: 0 auto; }
 .faq details {
@@ -555,6 +547,4 @@ em { font-style: italic; color: var(--gold); }
   .ftr-tag { max-width: none; }
   .ftr-bottom .container { flex-direction: column; text-align: center; }
 
-  .cal-wrap { padding: 4px; border-radius: 12px; }
-  .calendly-inline-widget { min-width: 0 !important; }
 }
